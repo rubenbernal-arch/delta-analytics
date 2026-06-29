@@ -8,32 +8,12 @@ import {
   useSpring,
   type MotionValue,
 } from 'framer-motion'
+import { useI18n } from '@/lib/i18n'
 
 const NARRATIVE_START = 0.18
 const STEP_SIZE = (1 - NARRATIVE_START) / 4
 
-const STEPS = [
-  {
-    eyebrow: '00 / EL PROBLEMA',
-    title: 'Tu equipo pierde horas en tareas que debería hacer una máquina',
-    body: 'Procesos manuales, datos dispersos, decisiones lentas. Cada hora perdida es dinero que no regresa.',
-  },
-  {
-    eyebrow: '01 / LA SOLUCIÓN',
-    title: 'Automatizamos lo repetitivo para que tu equipo haga lo que importa',
-    body: 'Conectamos tus procesos, integramos tus datos y construimos el sistema que opera por ti.',
-  },
-  {
-    eyebrow: '02 / EL RESULTADO',
-    title: 'Menos costos. Más velocidad. Decisiones en tiempo real',
-    body: 'Nuestros clientes reducen horas de trabajo manual y obtienen información accionable al instante.',
-  },
-  {
-    eyebrow: '03 / EN PRODUCCIÓN',
-    title: 'Ya está corriendo para empresas reales',
-    body: '4 sistemas activos hoy. No vendemos promesas — entregamos software que ya está generando resultados.',
-  },
-]
+// STEPS now come from i18n context
 
 function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -363,6 +343,8 @@ function Dot({ index, progress }: { index: number; progress: MotionValue<number>
 }
 
 export function HeroAssembly() {
+  const { t } = useI18n()
+  const STEPS = t.steps
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
   const progress = useSpring(scrollYProgress, { stiffness: 75, damping: 26 })
@@ -426,7 +408,7 @@ export function HeroAssembly() {
         >
           <div className="max-w-[780px]">
             <motion.p className="eyebrow" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              Delta Analytics
+              {t.hero.eyebrow}
             </motion.p>
             <motion.h1
               className="font-display font-bold leading-[1.06] tracking-tight mb-6"
@@ -438,7 +420,7 @@ export function HeroAssembly() {
               }}
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
             >
-              Tu empresa opera más rápido,<br />con más inteligencia y mejores decisiones
+              {t.hero.title.split('\n')[0]}<br />{t.hero.title.split('\n')[1]}
             </motion.h1>
             <motion.p
               className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10 leading-relaxed"
@@ -462,7 +444,7 @@ export function HeroAssembly() {
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[0.68rem] tracking-widest uppercase text-dim"
             style={{ opacity: scrollHintOpacity }} aria-hidden
           >
-            <span>scroll para ver cómo construimos</span>
+            <span>{t.hero.scroll}</span>
             <div className="w-px h-8" style={{ background: 'linear-gradient(#5B8DFF, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
           </motion.div>
         </motion.div>
