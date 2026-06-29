@@ -1,28 +1,5 @@
 'use client'
 
-/**
- * HeroAssembly — Unified hero + scroll-narrative section.
- *
- * Architecture:
- *  • One section (550vh) with a sticky 100vh viewport.
- *  • Canvas particles span the entire sticky viewport and animate throughout.
- *  • Hero copy is visible at progress=0 and fades out as scroll begins (~0.15).
- *  • Spline robot is dim at progress=0 (barely emerging from particles) and
- *    fully illuminated by progress=1.0 (stage 03 "En vivo").
- *  • Δ symbol overlaid via CSS/SVG at progress≈0.80, synced with stage 03.
- *
- * Progress windows:
- *   0.00 → 0.18  Hero phase (particles + hero copy visible)
- *   0.18 → 1.00  Narrative phase — 4 steps, each ~0.205 wide
- *     Step 0  0.18 → 0.385  (00 / PUNTO DE PARTIDA)
- *     Step 1  0.385 → 0.59  (01 / INGESTA)
- *     Step 2  0.59 → 0.795  (02 / ANÁLISIS)
- *     Step 3  0.795 → 1.0   (03 / EN VIVO)
- *
- * TODO: Replace SCENE_URL with a custom Spline scene featuring the robot +
- *       Δ symbol as a chest material / emissive node.
- */
-
 import { useEffect, useRef } from 'react'
 import {
   motion,
@@ -31,44 +8,39 @@ import {
   useSpring,
   type MotionValue,
 } from 'framer-motion'
-import { SplineScene } from '@/components/ui/splite'
 
-/* ── Scene URL ─────────────────────────────────────────────── */
-const SCENE_URL = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
-
-/* ── Layout constants ──────────────────────────────────────── */
 const NARRATIVE_START = 0.18
-const STEP_SIZE       = (1 - NARRATIVE_START) / 4   // ≈ 0.205
+const STEP_SIZE = (1 - NARRATIVE_START) / 4
 
-/* ── Narrative copy ────────────────────────────────────────── */
 const STEPS = [
   {
-    eyebrow: '00 / PUNTO DE PARTIDA',
-    title:   'Antes de Delta',
-    body:    'Hojas de cálculo. Mensajes de WhatsApp con cifras. Una decisión que debía tomarse hoy, tomada tres días tarde.',
+    eyebrow: '00 / EL PROBLEMA',
+    title: 'Tu equipo pierde horas en tareas que debería hacer una máquina',
+    body: 'Procesos manuales, datos dispersos, decisiones lentas. Cada hora perdida es dinero que no regresa.',
   },
   {
-    eyebrow: '01 / INGESTA',
-    title:   'Cada dato, en un solo lugar',
-    body:    'Conectamos las fuentes que antes vivían separadas. Sin copiar y pegar, sin perder nada en el camino.',
+    eyebrow: '01 / LA SOLUCIÓN',
+    title: 'Automatizamos lo repetitivo para que tu equipo haga lo que importa',
+    body: 'Conectamos tus procesos, integramos tus datos y construimos el sistema que opera por ti.',
   },
   {
-    eyebrow: '02 / ANÁLISIS',
-    title:   'La IA hace el trabajo pesado',
-    body:    'Modelos entrenados para leer patrones que a un humano le tomaría horas encontrar — en segundos.',
+    eyebrow: '02 / EL RESULTADO',
+    title: 'Menos costos. Más velocidad. Decisiones en tiempo real',
+    body: 'Nuestros clientes reducen horas de trabajo manual y obtienen información accionable al instante.',
   },
   {
-    eyebrow: '03 / EN VIVO',
-    title:   'Esto ya está corriendo',
-    body:    'No es una maqueta. Son 3 sistemas en producción, trabajando ahora mismo para quienes los usan.',
+    eyebrow: '03 / EN PRODUCCIÓN',
+    title: 'Ya está corriendo para empresas reales',
+    body: '4 sistemas activos hoy. No vendemos promesas — entregamos software que ya está generando resultados.',
   },
 ]
 
-/* ─────────────────────────────────────────────────────────── */
-/*  Particles canvas — identical to original Hero canvas       */
-/* ─────────────────────────────────────────────────────────── */
-function Particles() {
+function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const opacity = useTransform(progress, [0.16, 0.22], [0, 1])
+
+  // Map scroll progress (0.72 -> 1.0) to build progress (0 -> 1)
+  const buildProgress = useTransform(progress, [0.18, 0.92], [0, 1])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -76,218 +48,344 @@ function Particles() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const COUNT = 46
-    let w = 0, h = 0
-    let particles: Array<{ x: number; y: number; vx: number; vy: number; r: number; a: number }>
+    const W = 500, H = 500
+    canvas.width = W; canvas.height = H
+    const CX = W / 2, CY = H / 2
+    const CHIP = 110
+    const PIN_COUNT = 12
+    const PIN_LEN = 18
+    const PIN_GAP = (CHIP * 2) / (PIN_COUNT + 1)
+
+    // Pre-build all trace paths
+    type Trace = {
+      pts: [number,number][]
+      color: string
+      hasEndDot: boolean
+    }
+    const traces: Trace[] = []
+
+    function makeTraces(side: 'top'|'bottom'|'left'|'right') {
+      for (let i = 1; i <= PIN_COUNT; i++) {
+        const offset = -CHIP + i * PIN_GAP
+        let sx: number, sy: number
+        if (side === 'top')    { sx = CX + offset; sy = CY - CHIP - PIN_LEN }
+        else if (side === 'bottom') { sx = CX + offset; sy = CY + CHIP + PIN_LEN }
+        else if (side === 'left')   { sx = CX - CHIP - PIN_LEN; sy = CY + offset }
+        else                        { sx = CX + CHIP + PIN_LEN; sy = CY + offset }
+
+        const ext1 = 20 + Math.random() * 50
+        const ext2 = 10 + Math.random() * 40
+        const isAccent = Math.random() > 0.55
+        const pts: [number,number][] = [[sx, sy]]
+
+        if (side === 'top') {
+          const mx = sx, my = sy - ext1
+          pts.push([mx, my])
+          if (Math.random() > 0.4) pts.push([mx + (Math.random()-0.5)*ext2*2, my])
+          if (Math.random() > 0.5) {
+            const lx = pts[pts.length-1][0], ly = pts[pts.length-1][1]
+            pts.push([lx, ly - ext2 * 0.5])
+          }
+        } else if (side === 'bottom') {
+          const mx = sx, my = sy + ext1
+          pts.push([mx, my])
+          if (Math.random() > 0.4) pts.push([mx + (Math.random()-0.5)*ext2*2, my])
+          if (Math.random() > 0.5) {
+            const lx = pts[pts.length-1][0], ly = pts[pts.length-1][1]
+            pts.push([lx, ly + ext2 * 0.5])
+          }
+        } else if (side === 'left') {
+          const mx = sx - ext1, my = sy
+          pts.push([mx, my])
+          if (Math.random() > 0.4) pts.push([mx, my + (Math.random()-0.5)*ext2*2])
+          if (Math.random() > 0.5) {
+            const lx = pts[pts.length-1][0], ly = pts[pts.length-1][1]
+            pts.push([lx - ext2*0.5, ly])
+          }
+        } else {
+          const mx = sx + ext1, my = sy
+          pts.push([mx, my])
+          if (Math.random() > 0.4) pts.push([mx, my + (Math.random()-0.5)*ext2*2])
+          if (Math.random() > 0.5) {
+            const lx = pts[pts.length-1][0], ly = pts[pts.length-1][1]
+            pts.push([lx + ext2*0.5, ly])
+          }
+        }
+
+        traces.push({ pts, color: isAccent ? '#7CF5D4' : '#5B8DFF', hasEndDot: Math.random() > 0.3 })
+      }
+    }
+
+    makeTraces('top'); makeTraces('bottom'); makeTraces('left'); makeTraces('right')
+    // Shuffle for random build order
+    traces.sort(() => Math.random() - 0.5)
+
+    let currentBuild = 0
     let animId: number
 
-    function resize() {
-      w = canvas!.width  = canvas!.offsetWidth
-      h = canvas!.height = canvas!.offsetHeight
-    }
-
-    function makeParticles() {
-      particles = Array.from({ length: COUNT }, () => ({
-        x:  Math.random() * w,
-        y:  Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        r:  Math.random() * 1.6 + 0.6,
-        a:  Math.random() * 0.5 + 0.2,
-      }))
-    }
-
     function draw() {
-      ctx!.clearRect(0, 0, w, h)
+      ctx!.clearRect(0, 0, W, H)
 
-      /* dots */
-      for (const p of particles) {
-        p.x += p.vx;  p.y += p.vy
-        if (p.x < 0) p.x = w;  if (p.x > w) p.x = 0
-        if (p.y < 0) p.y = h;  if (p.y > h) p.y = 0
+      // ── Chip body ──────────────────────────────────────────
+      // Outer ambient glow
+      const grd = ctx!.createRadialGradient(CX, CY, 0, CX, CY, CHIP * 2.2)
+      grd.addColorStop(0, `rgba(91,141,255,${0.12 * Math.min(1, currentBuild * 3)})`)
+      grd.addColorStop(1, 'rgba(91,141,255,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, W, H)
+
+      // Body fill
+      const bodyAlpha = Math.min(1, currentBuild * 4)
+      ctx!.save()
+      ctx!.globalAlpha = bodyAlpha
+      ctx!.fillStyle = '#060C24'
+      ctx!.strokeStyle = `rgba(91,141,255,0.85)`
+      ctx!.lineWidth = 2.5
+      ctx!.beginPath()
+      ctx!.roundRect(CX - CHIP, CY - CHIP, CHIP*2, CHIP*2, 10)
+      ctx!.fill()
+      ctx!.stroke()
+
+      // Inner subtle grid
+      ctx!.strokeStyle = 'rgba(91,141,255,0.08)'
+      ctx!.lineWidth = 1
+      for (let i = 1; i < 6; i++) {
+        const t = (CHIP*2/6)*i
+        ctx!.beginPath(); ctx!.moveTo(CX-CHIP+t, CY-CHIP); ctx!.lineTo(CX-CHIP+t, CY+CHIP); ctx!.stroke()
+        ctx!.beginPath(); ctx!.moveTo(CX-CHIP, CY-CHIP+t); ctx!.lineTo(CX+CHIP, CY-CHIP+t); ctx!.stroke()
+      }
+
+      // Corner capacitors
+      const corners: [number,number][] = [[CX-CHIP+12,CY-CHIP+12],[CX+CHIP-12,CY-CHIP+12],[CX-CHIP+12,CY+CHIP-12],[CX+CHIP-12,CY+CHIP-12]]
+      for (const [cx2,cy2] of corners) {
+        ctx!.beginPath(); ctx!.arc(cx2, cy2, 5, 0, Math.PI*2)
+        ctx!.fillStyle = '#FF6B5B'
+        ctx!.fill()
+        ctx!.strokeStyle = 'rgba(255,107,91,0.5)'
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+      ctx!.restore()
+
+      // ── Pins ───────────────────────────────────────────────
+      ctx!.save()
+      ctx!.globalAlpha = Math.min(1, currentBuild * 3)
+      for (let i = 1; i <= PIN_COUNT; i++) {
+        const off = -CHIP + i * PIN_GAP
+        const pulse = 0.4 + Math.sin(Date.now()*0.003 + i*0.5)*0.3
+        ctx!.strokeStyle = `rgba(124,245,212,${pulse})`
+        ctx!.lineWidth = 2.5
+        ctx!.lineCap = 'round'
+        // top
+        ctx!.beginPath(); ctx!.moveTo(CX+off, CY-CHIP); ctx!.lineTo(CX+off, CY-CHIP-PIN_LEN); ctx!.stroke()
+        // bottom
+        ctx!.beginPath(); ctx!.moveTo(CX+off, CY+CHIP); ctx!.lineTo(CX+off, CY+CHIP+PIN_LEN); ctx!.stroke()
+        // left
+        ctx!.beginPath(); ctx!.moveTo(CX-CHIP, CY+off); ctx!.lineTo(CX-CHIP-PIN_LEN, CY+off); ctx!.stroke()
+        // right
+        ctx!.beginPath(); ctx!.moveTo(CX+CHIP, CY+off); ctx!.lineTo(CX+CHIP+PIN_LEN, CY+off); ctx!.stroke()
+      }
+      ctx!.restore()
+
+      // ── Traces (scroll-driven) ─────────────────────────────
+      const traceProgress = Math.max(0, (currentBuild - 0.1) / 0.7)
+      const tracesToShow = Math.floor(traceProgress * traces.length)
+
+      for (let ti = 0; ti < Math.min(tracesToShow, traces.length); ti++) {
+        const t = traces[ti]
+        if (!t) continue
+        // How far along this trace is drawn
+        const traceLocal = Math.min(1, (traceProgress * traces.length - ti))
+        const totalLen = t.pts.length - 1
+
+        ctx!.strokeStyle = t.color === '#7CF5D4' ? 'rgba(124,245,212,0.75)' : 'rgba(91,141,255,0.6)'
+        ctx!.lineWidth = 1.5
+        ctx!.lineCap = 'round'
+
+        for (let si = 0; si < totalLen; si++) {
+          const segProg = Math.min(1, Math.max(0, traceLocal * totalLen - si))
+          if (segProg <= 0) continue
+          const [ax,ay] = t.pts[si]
+          const [bx,by] = t.pts[si+1]
+          ctx!.beginPath()
+          ctx!.moveTo(ax, ay)
+          ctx!.lineTo(ax + (bx-ax)*segProg, ay + (by-ay)*segProg)
+          ctx!.stroke()
+          // Node at end
+          if (segProg >= 1 && si === totalLen - 1 && t.hasEndDot) {
+            ctx!.beginPath()
+            ctx!.arc(bx, by, 3, 0, Math.PI*2)
+            ctx!.fillStyle = t.color
+            ctx!.fill()
+          }
+        }
+        // Start node
         ctx!.beginPath()
-        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(124,245,212,${p.a})`
+        ctx!.arc(t.pts[0][0], t.pts[0][1], 2, 0, Math.PI*2)
+        ctx!.fillStyle = t.color
         ctx!.fill()
       }
 
-      /* connecting lines */
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j]
-          const dx = a.x - b.x, dy = a.y - b.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 110) {
-            ctx!.beginPath()
-            ctx!.moveTo(a.x, a.y)
-            ctx!.lineTo(b.x, b.y)
-            ctx!.strokeStyle = `rgba(91,141,255,${0.12 * (1 - dist / 110)})`
-            ctx!.lineWidth = 1
-            ctx!.stroke()
-          }
-        }
+      // ── Delta symbol ───────────────────────────────────────
+      const deltaAlpha = Math.max(0, (currentBuild - 0.82) / 0.18)
+      if (deltaAlpha > 0) {
+        ctx!.save()
+        ctx!.globalAlpha = deltaAlpha
+        ctx!.font = `bold 80px "Space Grotesk", sans-serif`
+        ctx!.textAlign = 'center'
+        ctx!.textBaseline = 'middle'
+        ctx!.fillStyle = '#7CF5D4'
+        ctx!.shadowColor = 'rgba(124,245,212,0.95)'
+        ctx!.shadowBlur = 28 * deltaAlpha
+        ctx!.fillText('Δ', CX, CY)
+        ctx!.restore()
       }
 
       animId = requestAnimationFrame(draw)
     }
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const ro = new ResizeObserver(() => { resize(); makeParticles() })
-    ro.observe(canvas)
-    resize()
-    makeParticles()
-    if (!reduced) animId = requestAnimationFrame(draw)
+    // Subscribe to scroll progress
+    const unsub = buildProgress.on('change', (v) => {
+      currentBuild = Math.max(0, Math.min(1, v))
+    })
 
+    animId = requestAnimationFrame(draw)
     return () => {
       cancelAnimationFrame(animId)
-      ro.disconnect()
+      unsub()
     }
-  }, [])
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" aria-hidden />
-}
-
-/* ─────────────────────────────────────────────────────────── */
-/*  Step text — fades in/out per scroll window                 */
-/* ─────────────────────────────────────────────────────────── */
-function StepText({
-  step,
-  index,
-  progress,
-}: {
-  step: (typeof STEPS)[0]
-  index: number
-  progress: MotionValue<number>
-}) {
-  const start = NARRATIVE_START + index * STEP_SIZE
-  const end   = start + STEP_SIZE
-  const pad   = 0.04
-
-  const opacity = useTransform(
-    progress,
-    [start - pad, start + pad, end - pad, end + pad],
-    [0, 1, 1, 0],
-  )
-  const y = useTransform(progress, [start - pad, start + pad], [14, 0])
+  }, [buildProgress])
 
   return (
     <motion.div
-      className="absolute inset-0 flex flex-col justify-center"
-      style={{ opacity, y }}
-      aria-hidden={index !== 0}
+      className="absolute pointer-events-none select-none"
+      style={{ zIndex: 4, right: '8%', top: '50%', translateY: '-50%', opacity }}
+      aria-hidden
     >
-      <span className="eyebrow mb-2">{step.eyebrow}</span>
-      <h3
-        className="font-display font-semibold text-foreground mb-3 leading-tight"
-        style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
-      >
-        {step.title}
-      </h3>
-      <p className="text-muted text-base leading-relaxed max-w-[340px]">{step.body}</p>
+      <canvas ref={canvasRef} style={{ width: 500, height: 500, transform: 'perspective(900px) rotateY(-12deg) rotateX(6deg)', filter: 'drop-shadow(0 0 40px rgba(91,141,255,0.35)) drop-shadow(0 0 80px rgba(124,245,212,0.15))' }} />
     </motion.div>
   )
 }
 
-/* ─────────────────────────────────────────────────────────── */
-/*  Progress dot                                               */
-/* ─────────────────────────────────────────────────────────── */
+
+function Particles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    const COUNT = 55
+    let w = 0, h = 0
+    let particles: Array<{ x: number; y: number; vx: number; vy: number; r: number; a: number }>
+    let animId: number
+    function resize() {
+      w = canvas!.width = canvas!.offsetWidth
+      h = canvas!.height = canvas!.offsetHeight
+    }
+    function makeParticles() {
+      particles = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+        r: Math.random() * 1.8 + 0.5, a: Math.random() * 0.5 + 0.15,
+      }))
+    }
+    function draw() {
+      ctx!.clearRect(0, 0, w, h)
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
+        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
+        ctx!.beginPath()
+        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(124,245,212,${p.a})`
+        ctx!.fill()
+      }
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j]
+          const dx = a.x - b.x, dy = a.y - b.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 120) {
+            ctx!.beginPath()
+            ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y)
+            ctx!.strokeStyle = `rgba(91,141,255,${0.13 * (1 - dist / 120)})`
+            ctx!.lineWidth = 1; ctx!.stroke()
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw)
+    }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const ro = new ResizeObserver(() => { resize(); makeParticles() })
+    ro.observe(canvas)
+    resize(); makeParticles()
+    if (!reduced) animId = requestAnimationFrame(draw)
+    return () => { cancelAnimationFrame(animId); ro.disconnect() }
+  }, [])
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" aria-hidden />
+}
+
+function StepText({ step, index, progress }: { step: (typeof STEPS)[0]; index: number; progress: MotionValue<number> }) {
+  const start = NARRATIVE_START + index * STEP_SIZE
+  const end = start + STEP_SIZE
+  const pad = 0.045
+  const opacity = useTransform(progress, [start - pad, start + pad, end - pad, end + pad], [0, 1, 1, 0])
+  const y = useTransform(progress, [start - pad, start + pad], [20, 0])
+  return (
+    <motion.div className="absolute inset-0 flex flex-col justify-center" style={{ opacity, y }}>
+      <span className="eyebrow mb-3">{step.eyebrow}</span>
+      <h3 className="font-display font-bold text-foreground mb-4 leading-tight" style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', letterSpacing: '-0.02em' }}>
+        {step.title}
+      </h3>
+      <p className="text-muted text-[1.05rem] leading-relaxed max-w-[360px]">{step.body}</p>
+    </motion.div>
+  )
+}
+
 function Dot({ index, progress }: { index: number; progress: MotionValue<number> }) {
-  const isActive = useTransform(progress, (v) => {
+  const active = useTransform(progress, (v) => {
     if (v < NARRATIVE_START) return 0
     const step = Math.min(Math.floor((v - NARRATIVE_START) / STEP_SIZE), STEPS.length - 1)
     return step === index ? 1 : 0
   })
-
   return (
     <motion.span
-      className="block w-[6px] h-[6px] rounded-full"
+      className="block rounded-full"
       style={{
-        backgroundColor: useTransform(
-          isActive,
-          (a) => (a === 1 ? '#7CF5D4' : 'rgba(232,234,242,0.16)'),
-        ),
-        scale: useTransform(isActive, [0, 1], [1, 1.5]),
+        width: '6px',
+        height: useTransform(active, [0, 1], ['6px', '20px']),
+        backgroundColor: useTransform(active, (a) => a === 1 ? '#7CF5D4' : 'rgba(232,234,242,0.18)'),
+        transition: 'height 0.3s ease, background-color 0.3s ease',
       }}
     />
   )
 }
 
-/* ─────────────────────────────────────────────────────────── */
-/*  HeroAssembly                                               */
-/* ─────────────────────────────────────────────────────────── */
 export function HeroAssembly() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
+  const progress = useSpring(scrollYProgress, { stiffness: 75, damping: 26 })
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  })
-  const progress = useSpring(scrollYProgress, { stiffness: 80, damping: 28 })
-
-  /* ── Hero content ─────────────────────────────────────────── */
-  const heroOpacity       = useTransform(progress, [0, 0.06, 0.15], [1, 1, 0])
-  const gridOpacity       = useTransform(progress, [0, 0.06, 0.16], [1, 1, 0])
+  const heroOpacity = useTransform(progress, [0, 0.06, 0.16], [1, 1, 0])
+  const gridOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
   const scrollHintOpacity = useTransform(progress, [0, 0.04, 0.10], [1, 1, 0])
-
-  /* ── Robot (Spline scene) ─────────────────────────────────── */
-  // Opacity: barely there at hero phase → fully visible at stage 03
-  const robotOpacity = useTransform(
-    progress,
-    [0,    0.18,  0.385, 0.59,  0.795, 1.0],
-    [0.10, 0.13,  0.40,  0.68,  0.88,  1.0],
-  )
-
-  // CSS filter: quick blur-in at start + progressive brightness as robot "emerges"
-  // Framer Motion interpolates filter strings when the function signature is identical.
-  const robotFilter = useTransform(
-    progress,
-    [0,     0.10,   0.18,   0.385,  0.59,   0.795,  1.0],
-    [
-      'blur(8px) brightness(0.28)',
-      'blur(0px) brightness(0.30)',
-      'blur(0px) brightness(0.33)',
-      'blur(0px) brightness(0.60)',
-      'blur(0px) brightness(0.88)',
-      'blur(0px) brightness(1.18)',
-      'blur(0px) brightness(1.38)',
-    ],
-  )
-
-  /* ── Rim-light glow behind robot ─────────────────────────── */
-  const rimOpacity = useTransform(
-    progress,
-    [NARRATIVE_START, 0.385, 0.59,  0.795, 1.0],
-    [0,               0.18,  0.45,  0.72,  1.0],
-  )
-
-  /* ── Δ symbol (stage 03 "En vivo") ───────────────────────── */
-  const deltaOpacity = useTransform(progress, [0.78, 0.88], [0, 1])
-  const deltaScale   = useTransform(progress, [0.78, 0.90], [0.72, 1.0])
-
-  /* ── Narrative panel + dots ───────────────────────────────── */
-  const narrativeOpacity = useTransform(progress, [0.12, 0.22], [0, 1])
+  const narrativeOpacity = useTransform(progress, [0.13, 0.22], [0, 1])
+  const orb1Opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0.15, 0.4, 0.7, 1])
+  const orb2Opacity = useTransform(progress, [0, 0.4, 0.8, 1], [0.08, 0.25, 0.55, 0.85])
 
   return (
-    <section
-      ref={containerRef}
-      id="top"
-      className="relative"
-      style={{ height: '550vh' }}
-    >
-      {/* ── Sticky viewport ──────────────────────────────────── */}
+    <section ref={containerRef} id="top" className="relative" style={{ height: '550vh' }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
 
-        {/* 0 — Particle field (always animating) */}
         <Particles />
 
-        {/* 1 — Drifting grid (fades with hero) */}
+        {/* Drifting grid */}
         <motion.div
           className="absolute inset-[-20%] pointer-events-none"
           style={{
-            zIndex: 1,
-            opacity: gridOpacity,
-            backgroundImage:
-              'linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)',
+            zIndex: 1, opacity: gridOpacity,
+            backgroundImage: 'linear-gradient(rgba(232,234,242,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(232,234,242,0.06) 1px, transparent 1px)',
             backgroundSize: '56px 56px',
             maskImage: 'radial-gradient(circle at 50% 40%, black 10%, transparent 65%)',
             animation: 'grid-drift 40s linear infinite',
@@ -295,172 +393,100 @@ export function HeroAssembly() {
           aria-hidden
         />
 
-        {/* 2 — Rim-light glow (intensifies through narrative stages) */}
+        {/* Orb 1 */}
         <motion.div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute pointer-events-none"
           style={{
-            zIndex: 2,
-            opacity: rimOpacity,
-            background:
-              'radial-gradient(ellipse 48% 62% at 66% 44%, rgba(91,141,255,0.32), rgba(124,245,212,0.20) 42%, transparent 68%)',
+            zIndex: 2, opacity: orb1Opacity,
+            top: '15%', right: '10%', width: '50vw', height: '60vh',
+            background: 'radial-gradient(ellipse, rgba(91,141,255,0.28) 0%, rgba(91,141,255,0.08) 45%, transparent 70%)',
+            filter: 'blur(2px)',
           }}
           aria-hidden
         />
 
-        {/* 3 — Spline robot (dims → illuminates) */}
+        {/* Orb 2 */}
         <motion.div
-          className="absolute inset-0"
-          style={{ zIndex: 3, opacity: robotOpacity, filter: robotFilter }}
-        >
-          {/* Left fade + bottom fade so robot bleeds naturally into page bg */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              zIndex: 10,
-              background:
-                'linear-gradient(90deg, #070A14 18%, rgba(7,10,20,0.42) 50%, transparent 76%),' +
-                'linear-gradient(0deg, #070A14 0%, transparent 18%)',
-            }}
-          />
-          <SplineScene scene={SCENE_URL} className="w-full h-full" />
-        </motion.div>
-
-        {/* 4 — Δ overlay (stage 03 "En vivo") */}
-        {/* Outer div handles CSS positioning; inner motion.span handles animation */}
-        <div
-          className="absolute pointer-events-none select-none"
-          style={{ zIndex: 4, left: '44%', top: '60%', transform: 'translate(-50%, -50%)' }}
+          className="absolute pointer-events-none"
+          style={{
+            zIndex: 2, opacity: orb2Opacity,
+            bottom: '10%', right: '20%', width: '32vw', height: '38vh',
+            background: 'radial-gradient(ellipse, rgba(124,245,212,0.22) 0%, transparent 65%)',
+          }}
           aria-hidden
-        >
-          <motion.span
-            style={{ opacity: deltaOpacity, scale: deltaScale, display: 'block' }}
-          >
-            <span
-              style={{
-                fontFamily:   'var(--font-display)',
-                fontSize:     'clamp(2.5rem, 4.5vw, 4rem)',
-                fontWeight:   700,
-                color:        '#7CF5D4',
-                textShadow:
-                  '0 0 18px #7CF5D4, ' +
-                  '0 0 45px rgba(124,245,212,0.6), ' +
-                  '0 0 80px rgba(91,141,255,0.7), ' +
-                  '0 0 120px rgba(91,141,255,0.3)',
-                letterSpacing: '-0.02em',
-                lineHeight:    1,
-              }}
-            >
-              Δ
-            </span>
-          </motion.span>
-        </div>
+        />
 
-        {/* 10 — Hero content (fades out as scroll starts) */}
+        {/* Chip animation — stage 03 */}
+        <ChipAnimation progress={progress} />
+
+        {/* Hero copy */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center text-center px-8 pt-32 pb-16"
+          className="absolute inset-0 flex items-center justify-center text-center px-8 pt-28 pb-16"
           style={{ zIndex: 10, opacity: heroOpacity }}
         >
-          <div className="max-w-[760px]">
-            <motion.p
-              className="eyebrow"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+          <div className="max-w-[780px]">
+            <motion.p className="eyebrow" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               Delta Analytics
             </motion.p>
-
             <motion.h1
-              className="font-display font-bold leading-[1.08] tracking-tight mb-6"
+              className="font-display font-bold leading-[1.06] tracking-tight mb-6"
               style={{
-                fontSize:             'clamp(2.4rem, 6vw, 4.2rem)',
-                background:           'linear-gradient(180deg, #fff, #E8EAF2 70%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor:  'transparent',
-                backgroundClip:       'text',
-                letterSpacing:        '-0.02em',
+                fontSize: 'clamp(2.6rem, 6.5vw, 4.6rem)',
+                background: 'linear-gradient(160deg, #fff 30%, #7CF5D4 75%, #5B8DFF 100%)',
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                letterSpacing: '-0.025em',
               }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
             >
-              Construimos la inteligencia<br />detrás de tus decisiones
+              Tu empresa opera más rápido,<br />con más inteligencia y mejores decisiones
             </motion.h1>
-
             <motion.p
-              className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10 leading-relaxed"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.22 }}
             >
-              Ya tenemos 3 sistemas en producción, eliminando horas de trabajo
-              manual y convirtiendo información dispersa en respuestas al instante.
+              Automatizamos procesos, reducimos costos operativos y convertimos datos en decisiones — para que tu empresa opere a una escala imposible para humanos solos.
             </motion.p>
-
-            <motion.a
-              href="#contacto"
-              className="
-                inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem]
-                px-7 py-[0.85rem] rounded-full text-white cursor-pointer
-                bg-gradient-to-br from-accent to-[#4373E8]
-                hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)]
-                hover:-translate-y-0.5 transition-all duration-200
-              "
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
+            <motion.div
+              className="flex items-center justify-center gap-4 flex-wrap"
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.36 }}
             >
-              Hablemos de tu proyecto
-            </motion.a>
+              <a href="#contacto" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.65)] hover:-translate-y-0.5 transition-all duration-200">
+                Hablemos de tu proyecto
+              </a>
+              <a href="#productos" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-muted border border-[var(--line-strong)] hover:border-accent-2 hover:text-foreground transition-all duration-200">
+                Ver productos ↓
+              </a>
+            </motion.div>
           </div>
-
-          {/* Scroll hint */}
           <motion.div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[0.7rem] tracking-widest uppercase text-dim"
-            style={{ opacity: scrollHintOpacity }}
-            aria-hidden
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[0.68rem] tracking-widest uppercase text-dim"
+            style={{ opacity: scrollHintOpacity }} aria-hidden
           >
             <span>scroll para ver cómo construimos</span>
-            <div
-              className="w-px h-8"
-              style={{
-                background: 'linear-gradient(#5B8DFF, transparent)',
-                animation: 'scroll-pulse 1.8s ease-in-out infinite',
-              }}
-            />
+            <div className="w-px h-8" style={{ background: 'linear-gradient(#5B8DFF, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
           </motion.div>
         </motion.div>
 
-        {/* 20 — Narrative steps (fade in after hero fades) */}
+        {/* Narrative */}
         <motion.div
-          className="absolute inset-0 flex items-center px-[6vw] md:px-[8vw]"
+          className="absolute inset-0 flex items-center px-[7vw] md:px-[9vw]"
           style={{ zIndex: 20, opacity: narrativeOpacity }}
         >
-          <div className="relative h-40 w-full max-w-sm">
-            {STEPS.map((step, i) => (
-              <StepText key={i} step={step} index={i} progress={progress} />
-            ))}
+          <div className="relative w-full max-w-[420px]" style={{ height: '220px' }}>
+            {STEPS.map((step, i) => <StepText key={i} step={step} index={i} progress={progress} />)}
           </div>
         </motion.div>
 
-        {/* 30 — Progress dots */}
+        {/* Dots */}
         <motion.div
-          className="absolute left-9 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-[0.9rem]"
+          className="absolute left-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-3 items-center"
           style={{ zIndex: 30, opacity: narrativeOpacity }}
         >
-          {STEPS.map((_, i) => (
-            <Dot key={i} index={i} progress={progress} />
-          ))}
+          {STEPS.map((_, i) => <Dot key={i} index={i} progress={progress} />)}
         </motion.div>
 
-        {/* Bottom gradient — fade into next section */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-          style={{
-            zIndex: 20,
-            background: 'linear-gradient(transparent, #070A14)',
-          }}
-        />
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ zIndex: 25, background: 'linear-gradient(transparent, #070A14)' }} />
       </div>
     </section>
   )

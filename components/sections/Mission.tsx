@@ -9,11 +9,11 @@ export function Mission() {
           {[
             {
               label: 'Misión',
-              body:  'Diseñar e implementar soluciones de inteligencia artificial y análisis de datos que resuelvan problemas concretos de personas y empresas, sin complejidad innecesaria.',
+              body:  'Reducir el costo operativo de las empresas mediante automatización con IA — entregando software que funciona desde el primer día, sin proyectos eternos ni consultoras de relleno.',
             },
             {
               label: 'Visión',
-              body:  'Ser el equipo de referencia en Latinoamérica para construir productos de IA que pasan de la idea al uso real, en sectores donde la tecnología todavía no ha llegado bien.',
+              body:  'Ser la empresa que demuestra que tres personas con las herramientas correctas pueden hacer lo que antes requería un departamento entero — y vender ese modelo a quien lo necesite.',
             },
           ].map(({ label, body }) => (
             <div key={label} className="bg-surface p-12 md:p-12">

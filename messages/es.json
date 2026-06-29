@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "about": "Quiénes somos",
+    "mission": "Misión",
+    "products": "Productos",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "eyebrow": "Delta Analytics",
+    "title": "Tu empresa opera más rápido, con más inteligencia y mejores decisiones",
+    "subtitle": "Automatizamos procesos, reducimos costos operativos y convertimos datos en decisiones — para que tu empresa opere a una escala imposible para humanos solos.",
+    "cta": "Hablemos de tu proyecto",
+    "cta2": "Ver productos ↓",
+    "scroll": "scroll para ver cómo construimos"
+  },
+  "steps": {
+    "s0_eyebrow": "00 / EL PROBLEMA",
+    "s0_title": "Tu equipo pierde horas en tareas que debería hacer una máquina",
+    "s0_body": "Procesos manuales, datos dispersos, decisiones lentas. Cada hora perdida es dinero que no regresa.",
+    "s1_eyebrow": "01 / LA SOLUCIÓN",
+    "s1_title": "Automatizamos lo repetitivo para que tu equipo haga lo que importa",
+    "s1_body": "Conectamos tus procesos, integramos tus datos y construimos el sistema que opera por ti.",
+    "s2_eyebrow": "02 / EL RESULTADO",
+    "s2_title": "Menos costos. Más velocidad. Decisiones en tiempo real",
+    "s2_body": "Nuestros clientes reducen horas de trabajo manual y obtienen información accionable al instante.",
+    "s3_eyebrow": "03 / EN PRODUCCIÓN",
+    "s3_title": "Ya está corriendo para empresas reales",
+    "s3_body": "4 sistemas activos hoy. No vendemos promesas — entregamos software que ya está generando resultados."
+  },
+  "about": {
+    "eyebrow": "Quiénes somos",
+    "title": "Un equipo que construye donde otros solo automatizan.",
+    "body": "Delta Analytics es una empresa de tecnología fundada por un equipo de estudiantes y desarrolladores que decidió convertir problemas reales en software que funciona. No partimos de una idea abstracta de \"innovación\": partimos de procesos que vimos fallar de cerca —análisis financiero lento, gestión clínica desordenada— y construimos la herramienta que faltaba.",
+    "stat1": "sistemas en producción",
+    "stat2": "desarrollo propio",
+    "stat3": "IA aplicada a problemas reales"
+  },
+  "mission": {
+    "mission_label": "Misión",
+    "mission_body": "Reducir el costo operativo de las empresas mediante automatización con IA — entregando software que funciona desde el primer día, sin proyectos eternos ni consultoras de relleno.",
+    "vision_label": "Visión",
+    "vision_body": "Ser la empresa que demuestra que tres personas con las herramientas correctas pueden hacer lo que antes requería un departamento entero — y vender ese modelo a quien lo necesite."
+  },
+  "products": {
+    "eyebrow": "Lo que construimos",
+    "title": "Cuatro productos. Un mismo enfoque.",
+    "subtitle": "Cada uno resuelve un problema real. Ninguno es una maqueta.",
+    "available": "Disponible para clientes",
+    "tradeiq_desc": "Plataforma de análisis de trading potenciada por IA. Señales estructuradas con entry, stop-loss y take-profit, scoring de confianza en múltiples temporalidades y chat con IA para validar setups en tiempo real.",
+    "odonto_desc": "Automatización completa para clínicas dentales: agente de voz para citas, WhatsApp inteligente para seguimiento de pacientes y CRM sencillo para que el consultorio funcione sin fricción.",
+    "atum_desc": "Sistema operativo de inteligencia para empresas. Dashboards de analítica, inteligencia de mercado, Google Analytics integrado y automatización de decisiones operativas en tiempo real.",
+    "sales_desc": "Pipeline de ventas autónomo. Scraping de leads, agente de voz outbound, seguimiento por WhatsApp y CRM integrado — todo conectado para cerrar clientes sin intervención manual."
+  },
+  "contact": {
+    "eyebrow": "Contacto",
+    "title": "¿Tienes un problema que vale la pena resolver con IA?",
+    "subtitle": "Cuéntanos qué necesitas. Respondemos personalmente — sin formularios automáticos de relleno.",
+    "name": "Nombre",
+    "email": "Correo",
+    "company": "Empresa",
+    "company_optional": "(opcional)",
+    "message": "Mensaje",
+    "name_placeholder": "Tu nombre",
+    "email_placeholder": "tucorreo@ejemplo.com",
+    "company_placeholder": "Nombre de tu empresa",
+    "message_placeholder": "Cuéntanos sobre tu proyecto o necesidad...",
+    "send": "Enviar mensaje",
+    "sending": "Enviando",
+    "sent": "✓ Mensaje enviado",
+    "thanks": "Gracias. Te respondemos en menos de 24 horas.",
+    "location_label": "Ubicación",
+    "location": "Guadalajara, Jalisco · México",
+    "follow_label": "Síguenos",
+    "products_label": "Productos"
+  },
+  "footer": {
+    "tagline": "Construido con datos, IA y café."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "about": "About us",
+    "mission": "Mission",
+    "products": "Products",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Delta Analytics",
+    "title": "Your company moves faster, with more intelligence and better decisions",
+    "subtitle": "We automate processes, reduce operating costs and turn data into decisions — so your company operates at a scale impossible for humans alone.",
+    "cta": "Let's talk about your project",
+    "cta2": "See products ↓",
+    "scroll": "scroll to see how we build"
+  },
+  "steps": {
+    "s0_eyebrow": "00 / THE PROBLEM",
+    "s0_title": "Your team wastes hours on tasks a machine should handle",
+    "s0_body": "Manual processes, scattered data, slow decisions. Every lost hour is money that doesn't come back.",
+    "s1_eyebrow": "01 / THE SOLUTION",
+    "s1_title": "We automate the repetitive so your team does what matters",
+    "s1_body": "We connect your processes, integrate your data sources and build the system that runs for you.",
+    "s2_eyebrow": "02 / THE RESULT",
+    "s2_title": "Lower costs. More speed. Real-time decisions",
+    "s2_body": "Our clients cut hours of manual work and get actionable information instantly.",
+    "s3_eyebrow": "03 / IN PRODUCTION",
+    "s3_title": "Already running for real companies",
+    "s3_body": "4 active systems today. We don't sell promises — we deliver software that is already generating results."
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "A team that builds where others just automate.",
+    "body": "Delta Analytics is a technology company founded by a team of students and developers who decided to turn real problems into software that works. We didn't start from an abstract idea of 'innovation' — we started from processes we saw fail up close: slow financial analysis, disorganized clinic management. And we built the tool that was missing.",
+    "stat1": "systems in production",
+    "stat2": "in-house development",
+    "stat3": "AI applied to real problems"
+  },
+  "mission": {
+    "mission_label": "Mission",
+    "mission_body": "Reduce the operational cost of companies through AI automation — delivering software that works from day one, without endless projects or filler consultants.",
+    "vision_label": "Vision",
+    "vision_body": "Be the company that proves three people with the right tools can do what used to require an entire department — and sell that model to whoever needs it."
+  },
+  "products": {
+    "eyebrow": "What we build",
+    "title": "Four products. One approach.",
+    "subtitle": "Each one solves a real problem. None of them is a mockup.",
+    "available": "Available for clients",
+    "tradeiq_desc": "AI-powered trading analysis platform. Structured signals with entry, stop-loss and take-profit, confidence scoring across multiple timeframes and AI chat to validate setups in real time.",
+    "odonto_desc": "Full automation for dental clinics: voice agent for appointments, smart WhatsApp for patient follow-up and a simple CRM so the office runs without friction.",
+    "atum_desc": "Intelligence operating system for companies. Analytics dashboards, market intelligence, Google Analytics integrated and real-time operational decision automation.",
+    "sales_desc": "Autonomous sales pipeline. Lead scraping, outbound voice agent, WhatsApp follow-up and integrated CRM — all connected to close clients without manual intervention."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Do you have a problem worth solving with AI?",
+    "subtitle": "Tell us what you need. We respond personally — no automated filler forms.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "company_optional": "(optional)",
+    "message": "Message",
+    "name_placeholder": "Your name",
+    "email_placeholder": "youremail@example.com",
+    "company_placeholder": "Your company name",
+    "message_placeholder": "Tell us about your project or need...",
+    "send": "Send message",
+    "sending": "Sending",
+    "sent": "✓ Message sent",
+    "thanks": "Thanks. We'll get back to you within 24 hours.",
+    "location_label": "Location",
+    "location": "Guadalajara, Jalisco · Mexico",
+    "follow_label": "Follow us",
+    "products_label": "Products"
+  },
+  "footer": {
+    "tagline": "Built with data, AI and coffee."
+  }
+}

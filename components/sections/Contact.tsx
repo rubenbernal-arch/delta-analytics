@@ -1,146 +1,149 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { motion } from 'framer-motion'
 
 const inputClass = `
-  w-full bg-surface border border-[var(--line-strong)] rounded-lg
+  w-full bg-[#0F1429] border border-[var(--line-strong)] rounded-xl
   px-4 py-[0.85rem] text-foreground text-[0.95rem] placeholder:text-dim
-  focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,141,255,0.15)]
+  focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,141,255,0.12)]
   transition-all duration-200
 `
 
 export function Contact() {
-  const [status, setStatus] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
-    const name = (form.elements.namedItem('name') as HTMLInputElement).value
-    setLoading(true)
-    // Placeholder — wire to Formspree or a real backend when ready
-    setTimeout(() => {
-      setLoading(false)
-      setStatus(`Gracias${name ? ', ' + name : ''}. Tu mensaje fue registrado — te responderemos pronto.`)
+    const data = Object.fromEntries(new FormData(form))
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) {
+        setStatus('done')
+        form.reset()
+      } else {
+        throw new Error()
+      }
+    } catch {
+      const subject = encodeURIComponent(`Proyecto de ${data.name || 'cliente'}`)
+      const body = encodeURIComponent(`Nombre: ${data.name}\nCorreo: ${data.email}\nEmpresa: ${data.company || '-'}\n\n${data.message}`)
+      window.open(`mailto:contacto@deltaanalytics.io?subject=${subject}&body=${body}`)
+      setStatus('done')
       form.reset()
-    }, 1200)
+    }
   }
 
   return (
     <section id="contacto" className="relative border-t border-[var(--line)] overflow-hidden">
-      {/* Background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(91,141,255,0.12), transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,141,255,0.10), transparent 65%)' }}
         aria-hidden
       />
-
       <div className="section-inner relative z-10">
         <p className="eyebrow">Contacto</p>
         <h2
-          className="font-display font-semibold leading-[1.15] tracking-tight mb-4"
-          style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', maxWidth: 800, letterSpacing: '-0.01em' }}
+          className="font-display font-semibold leading-[1.12] tracking-tight mb-4"
+          style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', maxWidth: 700, letterSpacing: '-0.015em' }}
         >
           ¿Tienes un problema que vale<br />la pena resolver con IA?
         </h2>
-        <p className="text-muted max-w-[480px] mb-12 text-[1.05rem]">
-          Cuéntanos qué necesitas. Respondemos personalmente, sin formularios automatizados de relleno.
+        <p className="text-muted max-w-[480px] mb-14 text-[1.05rem] leading-relaxed">
+          Cuéntanos qué necesitas. Respondemos personalmente — sin formularios automáticos de relleno.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12">
-          {/* Form */}
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-16">
+          <motion.form
+            onSubmit={handleSubmit}
+            noValidate
+            className="flex flex-col gap-5"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="name" className="text-[0.80rem] text-muted font-mono tracking-wide">
+                  Nombre <span className="text-warm">*</span>
+                </label>
+                <input id="name" name="name" type="text" required placeholder="Tu nombre" autoComplete="name" className={inputClass} />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-[0.80rem] text-muted font-mono tracking-wide">
+                  Correo <span className="text-warm">*</span>
+                </label>
+                <input id="email" name="email" type="email" required placeholder="tucorreo@ejemplo.com" autoComplete="email" className={inputClass} />
+              </div>
+            </div>
+
             <div className="flex flex-col gap-2">
-              <label htmlFor="name" className="text-[0.82rem] text-muted">
-                Nombre <span className="text-warm">*</span>
+              <label htmlFor="company" className="text-[0.80rem] text-muted font-mono tracking-wide">
+                Empresa <span className="text-dim">(opcional)</span>
               </label>
-              <input
-                id="name" name="name" type="text" required
-                placeholder="Tu nombre" autoComplete="name"
-                className={inputClass}
-              />
+              <input id="company" name="company" type="text" placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-[0.82rem] text-muted">
-                Correo <span className="text-warm">*</span>
-              </label>
-              <input
-                id="email" name="email" type="email" required
-                placeholder="tucorreo@ejemplo.com" autoComplete="email"
-                className={inputClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="company" className="text-[0.82rem] text-muted">Empresa (opcional)</label>
-              <input
-                id="company" name="company" type="text"
-                placeholder="Nombre de tu empresa" autoComplete="organization"
-                className={inputClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="message" className="text-[0.82rem] text-muted">
+              <label htmlFor="message" className="text-[0.80rem] text-muted font-mono tracking-wide">
                 Mensaje <span className="text-warm">*</span>
               </label>
-              <textarea
-                id="message" name="message" required rows={5}
-                placeholder="Cuéntanos sobre tu proyecto o necesidad..."
-                className={`${inputClass} resize-vertical min-h-[120px]`}
-              />
+              <textarea id="message" name="message" required rows={5} placeholder="Cuéntanos sobre tu proyecto o necesidad..." className={`${inputClass} resize-none min-h-[130px]`} />
             </div>
 
             <button
               type="submit"
-              disabled={loading}
-              className="
-                w-full inline-flex items-center justify-center gap-2
-                font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full
-                text-white bg-gradient-to-br from-accent to-[#4373E8]
-                hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)]
-                hover:-translate-y-0.5 transition-all duration-200
-                disabled:opacity-70 disabled:pointer-events-none
-              "
+              disabled={status === 'loading' || status === 'done'}
+              className="mt-1 w-full inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.9rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:pointer-events-none"
             >
-              {loading ? (
-                <>
-                  Enviando
-                  <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                </>
-              ) : 'Enviar mensaje'}
+              {status === 'loading' && (<>Enviando <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" /></>)}
+              {status === 'done' && '✓ Mensaje enviado'}
+              {status === 'idle' && 'Enviar mensaje'}
             </button>
 
-            {status && (
-              <p className="font-mono text-[0.85rem] text-accent-2 min-h-[1.2em]" aria-live="polite" role="status">
-                {status}
-              </p>
+            {status === 'done' && (
+              <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-[0.85rem] text-accent-2" role="status">
+                Gracias. Te respondemos en menos de 24 horas.
+              </motion.p>
             )}
-          </form>
+          </motion.form>
 
-          {/* Contact info */}
-          <div className="flex flex-col gap-8 pt-2">
-            <div className="flex flex-col gap-1.5">
-              <span className="font-mono text-[0.75rem] tracking-widest text-dim uppercase">Correo</span>
-              <a href="mailto:contacto@deltaanalytics.io" className="text-[1.05rem] hover:text-accent-2 transition-colors">
+          <motion.div
+            className="flex flex-col gap-10 pt-1"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Correo</span>
+              <a href="mailto:contacto@deltaanalytics.io" className="text-[1rem] hover:text-accent-2 transition-colors">
                 contacto@deltaanalytics.io
               </a>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <span className="font-mono text-[0.75rem] tracking-widest text-dim uppercase">Síguenos</span>
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Ubicación</span>
+              <span className="text-[1rem] text-muted">Guadalajara, Jalisco · México</span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Síguenos</span>
               <div className="flex gap-5">
-                <a href="#" target="_blank" rel="noopener" className="hover:text-accent-2 transition-colors">Instagram</a>
-                <a href="#" target="_blank" rel="noopener" className="hover:text-accent-2 transition-colors">LinkedIn</a>
+                <a href="https://instagram.com/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">Instagram</a>
+                <a href="https://linkedin.com/company/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">LinkedIn</a>
               </div>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <span className="font-mono text-[0.75rem] tracking-widest text-dim uppercase">Productos</span>
-              <a href="https://tradeiqpro.com" target="_blank" rel="noopener" className="text-[1.05rem] hover:text-accent-2 transition-colors">
-                TradeIQ Pro ↗
-              </a>
+            <div className="flex flex-col gap-3">
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Productos</span>
+              <a href="https://tradeiqpro.com" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">TradeIQ Pro ↗</a>
+              <a href="https://odontobot-demo.vercel.app" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">OdontoBot demo ↗</a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
