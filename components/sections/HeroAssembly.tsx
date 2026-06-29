@@ -347,9 +347,9 @@ export function HeroAssembly() {
   const STEPS = t.steps
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
-  const progress = useSpring(scrollYProgress, { stiffness: 75, damping: 26 })
+  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 })
 
-  const heroOpacity = useTransform(progress, [0, 0.06, 0.16], [1, 1, 0])
+  const heroOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
   const gridOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
   const scrollHintOpacity = useTransform(progress, [0, 0.04, 0.10], [1, 1, 0])
   const narrativeOpacity = useTransform(progress, [0.13, 0.22], [0, 1])
