@@ -447,7 +447,7 @@ export function HeroAssembly() {
               className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10 leading-relaxed"
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.22 }}
             >
-              Automatizamos procesos, reducimos costos operativos y convertimos datos en decisiones — para que tu empresa opere a una escala imposible para humanos solos.
+              {t.hero.subtitle}
             </motion.p>
             <motion.div
               className="flex items-center justify-center gap-4 flex-wrap"
