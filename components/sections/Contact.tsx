@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
+import { useI18n } from '@/lib/i18n'
 
 const inputClass = `
   w-full bg-[#0F1429] border border-[var(--line-strong)] rounded-xl
@@ -11,6 +12,7 @@ const inputClass = `
 `
 
 export function Contact() {
+  const { t } = useI18n()
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle')
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -47,15 +49,15 @@ export function Contact() {
         aria-hidden
       />
       <div className="section-inner relative z-10">
-        <p className="eyebrow">Contacto</p>
+        <p className="eyebrow">{t.contact.eyebrow}</p>
         <h2
           className="font-display font-semibold leading-[1.12] tracking-tight mb-4"
           style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', maxWidth: 700, letterSpacing: '-0.015em' }}
         >
-          ¿Tienes un problema que vale<br />la pena resolver con IA?
+          {t.contact.title}
         </h2>
         <p className="text-muted max-w-[480px] mb-14 text-[1.05rem] leading-relaxed">
-          Cuéntanos qué necesitas. Respondemos personalmente — sin formularios automáticos de relleno.
+          {t.contact.subtitle}
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-16">
@@ -73,28 +75,28 @@ export function Contact() {
                 <label htmlFor="name" className="text-[0.80rem] text-muted font-mono tracking-wide">
                   Nombre <span className="text-warm">*</span>
                 </label>
-                <input id="name" name="name" type="text" required placeholder="Tu nombre" autoComplete="name" className={inputClass} />
+                <input id="name" name="name" type="text" required {...{placeholder: t.contact.namePlaceholder}} autoComplete="name" className={inputClass} />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="text-[0.80rem] text-muted font-mono tracking-wide">
                   Correo <span className="text-warm">*</span>
                 </label>
-                <input id="email" name="email" type="email" required placeholder="tucorreo@ejemplo.com" autoComplete="email" className={inputClass} />
+                <input id="email" name="email" type="email" required {...{placeholder: t.contact.emailPlaceholder}} autoComplete="email" className={inputClass} />
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="company" className="text-[0.80rem] text-muted font-mono tracking-wide">
-                Empresa <span className="text-dim">(opcional)</span>
+                Empresa <span className="text-dim">{t.contact.companyOptional}</span>
               </label>
-              <input id="company" name="company" type="text" placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} />
+              <input id="company" name="company" type="text" {...{placeholder: t.contact.companyPlaceholder}} autoComplete="organization" className={inputClass} />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="message" className="text-[0.80rem] text-muted font-mono tracking-wide">
                 Mensaje <span className="text-warm">*</span>
               </label>
-              <textarea id="message" name="message" required rows={5} placeholder="Cuéntanos sobre tu proyecto o necesidad..." className={`${inputClass} resize-none min-h-[130px]`} />
+              <textarea id="message" name="message" required rows={5} {...{placeholder: t.contact.messagePlaceholder}} className={`${inputClass} resize-none min-h-[130px]`} />
             </div>
 
             <button
@@ -103,13 +105,13 @@ export function Contact() {
               className="mt-1 w-full inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.9rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:pointer-events-none"
             >
               {status === 'loading' && (<>Enviando <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" /></>)}
-              {status === 'done' && '✓ Mensaje enviado'}
-              {status === 'idle' && 'Enviar mensaje'}
+              {status === 'done' && t.contact.sent}
+              {status === 'idle' && t.contact.send}
             </button>
 
             {status === 'done' && (
               <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-[0.85rem] text-accent-2" role="status">
-                Gracias. Te respondemos en menos de 24 horas.
+                {t.contact.thanks}
               </motion.p>
             )}
           </motion.form>
@@ -128,8 +130,8 @@ export function Contact() {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Ubicación</span>
-              <span className="text-[1rem] text-muted">Guadalajara, Jalisco · México</span>
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.locationLabel}</span>
+              <span className="text-[1rem] text-muted">{t.contact.location}</span>
             </div>
             <div className="flex flex-col gap-2">
               <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Síguenos</span>

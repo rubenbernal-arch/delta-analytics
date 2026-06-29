@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { SpotlightCard } from '@/components/ui/spotlight'
+import { useI18n } from '@/lib/i18n'
 
 const products = [
   {
@@ -51,18 +52,20 @@ const products = [
 ]
 
 export function Products() {
+  const { t } = useI18n()
+  const products = t.products.items
   return (
     <section id="productos" className="border-t border-[var(--line)]">
       <div className="section-inner">
-        <p className="eyebrow">Lo que construimos</p>
+        <p className="eyebrow">{t.products.eyebrow}</p>
         <h2
           className="font-display font-semibold leading-[1.12] tracking-tight mb-4"
           style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', maxWidth: 700, letterSpacing: '-0.015em' }}
         >
-          Cuatro productos.<br />Un mismo enfoque.
+          {t.products.title}<br />{t.products.title2}
         </h2>
         <p className="text-muted text-[1.05rem] mb-12 max-w-[500px]">
-          Cada uno resuelve un problema real. Ninguno es una maqueta.
+          {t.products.subtitle}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

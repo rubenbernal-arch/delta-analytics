@@ -1,4 +1,9 @@
+'use client'
+
+import { useI18n } from '@/lib/i18n'
+
 export function Mission() {
+  const { t } = useI18n()
   return (
     <section id="mision" className="border-t border-[var(--line)]">
       <div className="section-inner">
