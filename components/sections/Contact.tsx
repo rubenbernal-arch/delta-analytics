@@ -134,14 +134,14 @@ export function Contact() {
               <span className="text-[1rem] text-muted">{t.contact.location}</span>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Síguenos</span>
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.followLabel}</span>
               <div className="flex gap-5">
                 <a href="https://instagram.com/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">Instagram</a>
                 <a href="https://linkedin.com/company/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">LinkedIn</a>
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Productos</span>
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.productsLabel}</span>
               <a href="https://tradeiqpro.com" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">TradeIQ Pro ↗</a>
               <a href="https://odontobot-demo.vercel.app" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">OdontoBot demo ↗</a>
             </div>
