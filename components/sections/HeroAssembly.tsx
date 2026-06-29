@@ -357,8 +357,8 @@ export function HeroAssembly() {
   const orb2Opacity = useTransform(progress, [0, 0.4, 0.8, 1], [0.08, 0.25, 0.55, 0.85])
 
   return (
-    <section ref={containerRef} id="top" className="relative" style={{ height: '100vh' }}>
-      <div className="relative h-screen w-full overflow-hidden">
+    <section ref={containerRef} id="top" className="relative" style={{ height: '550vh' }}>
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
 
         <Particles />
 
