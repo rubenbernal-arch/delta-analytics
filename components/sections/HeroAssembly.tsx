@@ -13,7 +13,28 @@ import { useI18n } from '@/lib/i18n'
 const NARRATIVE_START = 0.18
 const STEP_SIZE = (1 - NARRATIVE_START) / 4
 
-// STEPS now come from i18n context
+const STEPS = [
+  {
+    eyebrow: '00 / EL PROBLEMA',
+    title: 'Tu equipo pierde horas en tareas que debería hacer una máquina',
+    body: 'Procesos manuales, datos dispersos, decisiones lentas. Cada hora perdida es dinero que no regresa.',
+  },
+  {
+    eyebrow: '01 / LA SOLUCIÓN',
+    title: 'Automatizamos lo repetitivo para que tu equipo haga lo que importa',
+    body: 'Conectamos tus procesos, integramos tus datos y construimos el sistema que opera por ti.',
+  },
+  {
+    eyebrow: '02 / EL RESULTADO',
+    title: 'Menos costos. Más velocidad. Decisiones en tiempo real',
+    body: 'Nuestros clientes reducen horas de trabajo manual y obtienen información accionable al instante.',
+  },
+  {
+    eyebrow: '03 / EN PRODUCCIÓN',
+    title: 'Ya está corriendo para empresas reales',
+    body: '4 sistemas activos hoy. No vendemos promesas — entregamos software que ya está generando resultados.',
+  },
+]
 
 function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -347,12 +368,12 @@ export function HeroAssembly() {
   const STEPS = t.steps
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
-  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 })
+  const progress = useSpring(scrollYProgress, { stiffness: 75, damping: 26 })
 
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [1, 1, 0])
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [1, 1, 0])
-  const scrollHintOpacity = useTransform(scrollYProgress, [0, 0.04, 0.10], [1, 1, 0])
-  const narrativeOpacity = useTransform(scrollYProgress, [0.13, 0.22], [0, 1])
+  const heroOpacity = useTransform(progress, [0, 0.06, 0.16], [1, 1, 0])
+  const gridOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
+  const scrollHintOpacity = useTransform(progress, [0, 0.04, 0.10], [1, 1, 0])
+  const narrativeOpacity = useTransform(progress, [0.13, 0.22], [0, 1])
   const orb1Opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0.15, 0.4, 0.7, 1])
   const orb2Opacity = useTransform(progress, [0, 0.4, 0.8, 1], [0.08, 0.25, 0.55, 0.85])
 
@@ -408,7 +429,7 @@ export function HeroAssembly() {
         >
           <div className="max-w-[780px]">
             <motion.p className="eyebrow" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              {t.hero.eyebrow}
+              Delta Analytics
             </motion.p>
             <motion.h1
               className="font-display font-bold leading-[1.06] tracking-tight mb-6"
@@ -420,7 +441,7 @@ export function HeroAssembly() {
               }}
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
             >
-              {t.hero.title.split('\n')[0]}<br />{t.hero.title.split('\n')[1]}
+              Tu empresa opera más rápido,<br />con más inteligencia y mejores decisiones
             </motion.h1>
             <motion.p
               className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10 leading-relaxed"
@@ -444,7 +465,7 @@ export function HeroAssembly() {
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[0.68rem] tracking-widest uppercase text-dim"
             style={{ opacity: scrollHintOpacity }} aria-hidden
           >
-            <span>{t.hero.scroll}</span>
+            <span>scroll para ver cómo construimos</span>
             <div className="w-px h-8" style={{ background: 'linear-gradient(#5B8DFF, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
           </motion.div>
         </motion.div>
