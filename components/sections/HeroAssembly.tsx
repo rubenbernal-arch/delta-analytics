@@ -349,10 +349,10 @@ export function HeroAssembly() {
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
   const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 })
 
-  const heroOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
-  const gridOpacity = useTransform(progress, [0, 0.08, 0.18], [1, 1, 0])
-  const scrollHintOpacity = useTransform(progress, [0, 0.04, 0.10], [1, 1, 0])
-  const narrativeOpacity = useTransform(progress, [0.13, 0.22], [0, 1])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [1, 1, 0])
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [1, 1, 0])
+  const scrollHintOpacity = useTransform(scrollYProgress, [0, 0.04, 0.10], [1, 1, 0])
+  const narrativeOpacity = useTransform(scrollYProgress, [0.13, 0.22], [0, 1])
   const orb1Opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0.15, 0.4, 0.7, 1])
   const orb2Opacity = useTransform(progress, [0, 0.4, 0.8, 1], [0.08, 0.25, 0.55, 0.85])
 
