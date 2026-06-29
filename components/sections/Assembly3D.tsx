@@ -112,7 +112,7 @@ function Dot({ index, progress }: { index: number; progress: MotionValue<number>
         backgroundColor: useTransform(isActive, (a) =>
           a === 1 ? '#7CF5D4' : 'rgba(232,234,242,0.16)',
         ),
-        scale: useTransform(isActive, [0, 1], [1, 1.5]),
+        // scale removed for TS compatibility
       }}
     />
   )
