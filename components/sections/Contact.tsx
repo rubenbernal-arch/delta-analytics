@@ -73,13 +73,13 @@ export function Contact() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="flex flex-col gap-2">
                 <label htmlFor="name" className="text-[0.80rem] text-muted font-mono tracking-wide">
-                  Nombre <span className="text-warm">*</span>
+                  {t.contact.name} <span className="text-warm">*</span>
                 </label>
                 <input id="name" name="name" type="text" required {...{placeholder: t.contact.namePlaceholder}} autoComplete="name" className={inputClass} />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="text-[0.80rem] text-muted font-mono tracking-wide">
-                  Correo <span className="text-warm">*</span>
+                  {t.contact.email} <span className="text-warm">*</span>
                 </label>
                 <input id="email" name="email" type="email" required {...{placeholder: t.contact.emailPlaceholder}} autoComplete="email" className={inputClass} />
               </div>
@@ -87,14 +87,14 @@ export function Contact() {
 
             <div className="flex flex-col gap-2">
               <label htmlFor="company" className="text-[0.80rem] text-muted font-mono tracking-wide">
-                Empresa <span className="text-dim">{t.contact.companyOptional}</span>
+                {t.contact.company} <span className="text-dim">{t.contact.companyOptional}</span>
               </label>
               <input id="company" name="company" type="text" {...{placeholder: t.contact.companyPlaceholder}} autoComplete="organization" className={inputClass} />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="message" className="text-[0.80rem] text-muted font-mono tracking-wide">
-                Mensaje <span className="text-warm">*</span>
+                {t.contact.message} <span className="text-warm">*</span>
               </label>
               <textarea id="message" name="message" required rows={5} {...{placeholder: t.contact.messagePlaceholder}} className={`${inputClass} resize-none min-h-[130px]`} />
             </div>
@@ -104,7 +104,7 @@ export function Contact() {
               disabled={status === 'loading' || status === 'done'}
               className="mt-1 w-full inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.9rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:pointer-events-none"
             >
-              {status === 'loading' && (<>Enviando <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" /></>)}
+              {status === 'loading' && (<>{t.contact.sending} <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" /></>)}
               {status === 'done' && t.contact.sent}
               {status === 'idle' && t.contact.send}
             </button>
@@ -124,7 +124,7 @@ export function Contact() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">Correo</span>
+              <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.email}</span>
               <a href="mailto:contacto@deltaanalytics.io" className="text-[1rem] hover:text-accent-2 transition-colors">
                 contacto@deltaanalytics.io
               </a>
