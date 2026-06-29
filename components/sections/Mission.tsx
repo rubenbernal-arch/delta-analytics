@@ -13,12 +13,12 @@ export function Mission() {
         >
           {[
             {
-              label: 'Misión',
-              body:  'Reducir el costo operativo de las empresas mediante automatización con IA — entregando software que funciona desde el primer día, sin proyectos eternos ni consultoras de relleno.',
+              label: t.mission.missionLabel,
+              body:  t.mission.missionBody,
             },
             {
-              label: 'Visión',
-              body:  'Ser la empresa que demuestra que tres personas con las herramientas correctas pueden hacer lo que antes requería un departamento entero — y vender ese modelo a quien lo necesite.',
+              label: t.mission.visionLabel,
+              body:  t.mission.visionBody,
             },
           ].map(({ label, body }) => (
             <div key={label} className="bg-surface p-12 md:p-12">

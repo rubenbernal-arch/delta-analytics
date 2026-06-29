@@ -465,7 +465,7 @@ export function HeroAssembly() {
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[0.68rem] tracking-widest uppercase text-dim"
             style={{ opacity: scrollHintOpacity }} aria-hidden
           >
-            <span>scroll para ver cómo construimos</span>
+            <span>{t.hero.scroll}</span>
             <div className="w-px h-8" style={{ background: 'linear-gradient(#5B8DFF, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
           </motion.div>
         </motion.div>
