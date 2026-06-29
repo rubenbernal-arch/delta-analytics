@@ -441,7 +441,7 @@ export function HeroAssembly() {
               }}
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
             >
-              Tu empresa opera más rápido,<br />con más inteligencia y mejores decisiones
+              {t.hero.title.split('\n')[0]}<br />{t.hero.title.split('\n')[1]}
             </motion.h1>
             <motion.p
               className="text-muted text-[1.1rem] max-w-[560px] mx-auto mb-10 leading-relaxed"
@@ -454,10 +454,10 @@ export function HeroAssembly() {
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.36 }}
             >
               <a href="#contacto" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.65)] hover:-translate-y-0.5 transition-all duration-200">
-                Hablemos de tu proyecto
+                {t.hero.cta}
               </a>
               <a href="#productos" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-muted border border-[var(--line-strong)] hover:border-accent-2 hover:text-foreground transition-all duration-200">
-                Ver productos ↓
+                {t.hero.cta2}
               </a>
             </motion.div>
           </div>
