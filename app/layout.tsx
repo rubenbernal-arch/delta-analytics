@@ -10,6 +10,23 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jet
 export const metadata: Metadata = {
   title: 'Delta Analytics — Inteligencia que construye decisiones',
   description: 'Automatizamos procesos, reducimos costos operativos y convertimos datos en decisiones.',
+  metadataBase: new URL('https://www.deltaanalytics.com.mx'),
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'Delta Analytics — Inteligencia que construye decisiones',
+    description: 'Automatizamos procesos, reducimos costos operativos y convertimos datos en decisiones.',
+    url: 'https://www.deltaanalytics.com.mx',
+    siteName: 'Delta Analytics',
+    locale: 'es_MX',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
