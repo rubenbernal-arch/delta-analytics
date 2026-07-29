@@ -17,13 +17,13 @@ const translations = {
       { eyebrow: '00 / EL PROBLEMA', title: 'Tu equipo pierde horas en tareas que debería hacer una máquina', body: 'Procesos manuales, datos dispersos, decisiones lentas. Cada hora perdida es dinero que no regresa.' },
       { eyebrow: '01 / LA SOLUCIÓN', title: 'Automatizamos lo repetitivo para que tu equipo haga lo que importa', body: 'Conectamos tus procesos, integramos tus datos y construimos el sistema que opera por ti.' },
       { eyebrow: '02 / EL RESULTADO', title: 'Menos costos. Más velocidad. Decisiones en tiempo real', body: 'Nuestros clientes reducen horas de trabajo manual y obtienen información accionable al instante.' },
-      { eyebrow: '03 / EN PRODUCCIÓN', title: 'Ya está corriendo para empresas reales', body: '5 proyectos activos hoy. No vendemos promesas — entregamos software que ya está generando resultados.' },
+      { eyebrow: '03 / EN PRODUCCIÓN', title: 'Ya está corriendo para empresas reales', body: 'Proyectos activos hoy, cada uno resolviendo un problema real. No vendemos promesas — entregamos software que ya está generando resultados.' },
     ],
     about: {
       eyebrow: 'Quiénes somos',
       title: 'Un equipo que construye donde otros solo automatizan.',
       body: 'Delta Analytics es una empresa de tecnología fundada por un equipo de estudiantes y desarrolladores que decidió convertir problemas reales en software que funciona. No partimos de una idea abstracta de "innovación": partimos de procesos que vimos fallar de cerca —análisis financiero lento, gestión clínica desordenada— y construimos la herramienta que faltaba.',
-      stats: [{ num: '5', label: 'proyectos en portafolio' }, { num: '100%', label: 'desarrollo propio' }, { num: 'Δ', label: 'IA aplicada a problemas reales' }],
+      stats: [{ num: '+', label: 'proyectos en portafolio' }, { num: '100%', label: 'desarrollo propio' }, { num: 'Δ', label: 'IA aplicada a problemas reales' }],
     },
     mission: {
       missionLabel: 'Misión', missionBody: 'Reducir el costo operativo de las empresas mediante automatización con IA — entregando software que funciona desde el primer día, sin proyectos eternos ni consultoras de relleno.',
@@ -62,13 +62,13 @@ const translations = {
       { eyebrow: '00 / THE PROBLEM', title: 'Your team wastes hours on tasks a machine should handle', body: 'Manual processes, scattered data, slow decisions. Every lost hour is money that does not come back.' },
       { eyebrow: '01 / THE SOLUTION', title: 'We automate the repetitive so your team does what matters', body: 'We connect your processes, integrate your data and build the system that runs for you.' },
       { eyebrow: '02 / THE RESULT', title: 'Lower costs. More speed. Real-time decisions', body: 'Our clients cut hours of manual work and get actionable information instantly.' },
-      { eyebrow: '03 / IN PRODUCTION', title: 'Already running for real companies', body: '5 active projects today. We do not sell promises — we deliver software that is already generating results.' },
+      { eyebrow: '03 / IN PRODUCTION', title: 'Already running for real companies', body: 'Active projects today, each one solving a real problem. We do not sell promises — we deliver software that is already generating results.' },
     ],
     about: {
       eyebrow: 'About us',
       title: 'A team that builds where others just automate.',
       body: 'Delta Analytics is a technology company founded by a team of students and developers who decided to turn real problems into software that works. We did not start from an abstract idea of innovation — we started from processes we saw fail up close: slow financial analysis, disorganized clinic management. And we built the tool that was missing.',
-      stats: [{ num: '5', label: 'projects in portfolio' }, { num: '100%', label: 'in-house development' }, { num: 'Δ', label: 'AI applied to real problems' }],
+      stats: [{ num: '+', label: 'projects in portfolio' }, { num: '100%', label: 'in-house development' }, { num: 'Δ', label: 'AI applied to real problems' }],
     },
     mission: {
       missionLabel: 'Mission', missionBody: 'Reduce the operational cost of companies through AI automation — delivering software that works from day one, without endless projects or filler consultants.',
