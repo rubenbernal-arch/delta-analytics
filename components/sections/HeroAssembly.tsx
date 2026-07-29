@@ -76,7 +76,7 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
 
         const ext1 = 20 + Math.random() * 50
         const ext2 = 10 + Math.random() * 40
-        const isAccent = Math.random() > 0.55
+        const isAccent = Math.random() > 0.9
         const pts: [number,number][] = [[sx, sy]]
 
         if (side === 'top') {
@@ -113,7 +113,7 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
           }
         }
 
-        traces.push({ pts, color: isAccent ? '#7CF5D4' : '#5B8DFF', hasEndDot: Math.random() > 0.3 })
+        traces.push({ pts, color: isAccent ? '#FF8000' : '#63635C', hasEndDot: Math.random() > 0.3 })
       }
     }
 
@@ -139,8 +139,8 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
       const bodyAlpha = Math.min(1, currentBuild * 4)
       ctx!.save()
       ctx!.globalAlpha = bodyAlpha
-      ctx!.fillStyle = '#060C24'
-      ctx!.strokeStyle = `rgba(91,141,255,0.85)`
+      ctx!.fillStyle = '#0D1B3E'
+      ctx!.strokeStyle = `rgba(255,128,0,0.6)`
       ctx!.lineWidth = 2.5
       ctx!.beginPath()
       ctx!.roundRect(CX - CHIP, CY - CHIP, CHIP*2, CHIP*2, 10)
@@ -148,7 +148,7 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
       ctx!.stroke()
 
       // Inner subtle grid
-      ctx!.strokeStyle = 'rgba(91,141,255,0.08)'
+      ctx!.strokeStyle = 'rgba(255,128,0,0.08)'
       ctx!.lineWidth = 1
       for (let i = 1; i < 6; i++) {
         const t = (CHIP*2/6)*i
@@ -160,9 +160,9 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
       const corners: [number,number][] = [[CX-CHIP+12,CY-CHIP+12],[CX+CHIP-12,CY-CHIP+12],[CX-CHIP+12,CY+CHIP-12],[CX+CHIP-12,CY+CHIP-12]]
       for (const [cx2,cy2] of corners) {
         ctx!.beginPath(); ctx!.arc(cx2, cy2, 5, 0, Math.PI*2)
-        ctx!.fillStyle = '#FF6B5B'
+        ctx!.fillStyle = '#85857D'
         ctx!.fill()
-        ctx!.strokeStyle = 'rgba(255,107,91,0.5)'
+        ctx!.strokeStyle = 'rgba(133,133,125,0.5)'
         ctx!.lineWidth = 1
         ctx!.stroke()
       }
@@ -174,7 +174,7 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
       for (let i = 1; i <= PIN_COUNT; i++) {
         const off = -CHIP + i * PIN_GAP
         const pulse = 0.4 + Math.sin(Date.now()*0.003 + i*0.5)*0.3
-        ctx!.strokeStyle = `rgba(124,245,212,${pulse})`
+        ctx!.strokeStyle = `rgba(255,128,0,${pulse})`
         ctx!.lineWidth = 2.5
         ctx!.lineCap = 'round'
         // top
@@ -199,7 +199,7 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
         const traceLocal = Math.min(1, (traceProgress * traces.length - ti))
         const totalLen = t.pts.length - 1
 
-        ctx!.strokeStyle = t.color === '#7CF5D4' ? 'rgba(124,245,212,0.75)' : 'rgba(91,141,255,0.6)'
+        ctx!.strokeStyle = t.color === '#FF8000' ? 'rgba(255,128,0,0.75)' : 'rgba(99,99,92,0.6)'
         ctx!.lineWidth = 1.5
         ctx!.lineCap = 'round'
 
@@ -232,11 +232,11 @@ function ChipAnimation({ progress }: { progress: MotionValue<number> }) {
       if (deltaAlpha > 0) {
         ctx!.save()
         ctx!.globalAlpha = deltaAlpha
-        ctx!.font = `bold 80px "Space Grotesk", sans-serif`
+        ctx!.font = `bold 80px "Archivo", sans-serif`
         ctx!.textAlign = 'center'
         ctx!.textBaseline = 'middle'
-        ctx!.fillStyle = '#7CF5D4'
-        ctx!.shadowColor = 'rgba(124,245,212,0.95)'
+        ctx!.fillStyle = '#FF8000'
+        ctx!.shadowColor = 'rgba(255,128,0,0.9)'
         ctx!.shadowBlur = 28 * deltaAlpha
         ctx!.fillText('Δ', CX, CY)
         ctx!.restore()
@@ -299,7 +299,7 @@ function Particles() {
         if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
         ctx!.beginPath()
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(124,245,212,${p.a})`
+        ctx!.fillStyle = `rgba(171,171,164,${p.a})`
         ctx!.fill()
       }
       for (let i = 0; i < particles.length; i++) {
@@ -310,7 +310,7 @@ function Particles() {
           if (dist < 120) {
             ctx!.beginPath()
             ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y)
-            ctx!.strokeStyle = `rgba(91,141,255,${0.13 * (1 - dist / 120)})`
+            ctx!.strokeStyle = `rgba(171,171,164,${0.13 * (1 - dist / 120)})`
             ctx!.lineWidth = 1; ctx!.stroke()
           }
         }
@@ -356,7 +356,7 @@ function Dot({ index, progress }: { index: number; progress: MotionValue<number>
       style={{
         width: '6px',
         height: useTransform(active, [0, 1], ['6px', '20px']),
-        backgroundColor: useTransform(active, (a) => a === 1 ? '#7CF5D4' : 'rgba(232,234,242,0.18)'),
+        backgroundColor: useTransform(active, (a) => a === 1 ? '#FF8000' : 'rgba(255,255,255,0.18)'),
         transition: 'height 0.3s ease, background-color 0.3s ease',
       }}
     />
@@ -402,7 +402,7 @@ export function HeroAssembly() {
           style={{
             zIndex: 2, opacity: orb1Opacity,
             top: '15%', right: '10%', width: '50vw', height: '60vh',
-            background: 'radial-gradient(ellipse, rgba(91,141,255,0.28) 0%, rgba(91,141,255,0.08) 45%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(13,27,62,0.35) 0%, rgba(13,27,62,0.1) 45%, transparent 70%)',
             filter: 'blur(2px)',
           }}
           aria-hidden
@@ -414,7 +414,7 @@ export function HeroAssembly() {
           style={{
             zIndex: 2, opacity: orb2Opacity,
             bottom: '10%', right: '20%', width: '32vw', height: '38vh',
-            background: 'radial-gradient(ellipse, rgba(124,245,212,0.22) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse, rgba(255,128,0,0.15) 0%, transparent 65%)',
           }}
           aria-hidden
         />
@@ -435,7 +435,7 @@ export function HeroAssembly() {
               className="font-display font-bold leading-[1.06] tracking-tight mb-6"
               style={{
                 fontSize: 'clamp(2.6rem, 6.5vw, 4.6rem)',
-                background: 'linear-gradient(160deg, #fff 30%, #7CF5D4 75%, #5B8DFF 100%)',
+                background: 'linear-gradient(160deg, #fff 40%, #FF8000 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 letterSpacing: '-0.025em',
               }}
@@ -453,7 +453,7 @@ export function HeroAssembly() {
               className="flex items-center justify-center gap-4 flex-wrap"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.36 }}
             >
-              <a href="#contacto" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.65)] hover:-translate-y-0.5 transition-all duration-200">
+              <a href="#contacto" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-white bg-gradient-to-br from-accent to-[#C25A00] hover:shadow-[0_8px_30px_-6px_rgba(255,128,0,0.5)] hover:-translate-y-0.5 transition-all duration-200">
                 {t.hero.cta}
               </a>
               <a href="#productos" className="inline-flex items-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.85rem] rounded-full text-muted border border-[var(--line-strong)] hover:border-accent-2 hover:text-foreground transition-all duration-200">
@@ -466,7 +466,7 @@ export function HeroAssembly() {
             style={{ opacity: scrollHintOpacity }} aria-hidden
           >
             <span>{t.hero.scroll}</span>
-            <div className="w-px h-8" style={{ background: 'linear-gradient(#5B8DFF, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
+            <div className="w-px h-8" style={{ background: 'linear-gradient(#FF8000, transparent)', animation: 'scroll-pulse 1.8s ease-in-out infinite' }} />
           </motion.div>
         </motion.div>
 
@@ -489,7 +489,7 @@ export function HeroAssembly() {
         </motion.div>
 
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ zIndex: 25, background: 'linear-gradient(transparent, #070A14)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ zIndex: 25, background: 'linear-gradient(transparent, #14161A)' }} />
       </div>
     </section>
   )

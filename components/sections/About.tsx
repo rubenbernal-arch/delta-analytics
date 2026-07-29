@@ -8,7 +8,7 @@ export function About() {
     <section
       id="quienes"
       className="border-t border-[var(--line)]"
-      style={{ background: 'linear-gradient(180deg, #070A14, #0F1429 140%)' }}
+      style={{ background: 'linear-gradient(180deg, #14161A, #1F2226 140%)' }}
     >
       <div className="section-inner">
         <p className="eyebrow">{t.about.eyebrow}</p>

@@ -5,7 +5,7 @@
  * "lens" / spotlight effect on dark surfaces.
  *
  * Wrap any dark card/section with <SpotlightCard> to activate.
- * The highlight color defaults to the brand accent blue.
+ * The highlight color defaults to the brand accent papaya.
  */
 
 import { useRef, useState, useCallback, type ReactNode, type MouseEvent } from 'react'
@@ -13,7 +13,7 @@ import { useRef, useState, useCallback, type ReactNode, type MouseEvent } from '
 interface SpotlightCardProps {
   children: ReactNode
   className?: string
-  /** Accent color for the spotlight (defaults to accent blue) */
+  /** Accent color for the spotlight (defaults to accent papaya) */
   color?: string
   /** Spotlight radius in px (default 480) */
   radius?: number
@@ -22,7 +22,7 @@ interface SpotlightCardProps {
 export function SpotlightCard({
   children,
   className = '',
-  color = 'rgba(91,141,255,0.13)',
+  color = 'rgba(255,128,0,0.10)',
   radius = 480,
 }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null)

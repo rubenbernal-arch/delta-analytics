@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import { useI18n } from '@/lib/i18n'
 
 const inputClass = `
-  w-full bg-[#0F1429] border border-[var(--line-strong)] rounded-xl
+  w-full bg-[#1F2226] border border-[var(--line-strong)] rounded-xl
   px-4 py-[0.85rem] text-foreground text-[0.95rem] placeholder:text-dim
-  focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,141,255,0.12)]
+  focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(255,128,0,0.12)]
   transition-all duration-200
 `
 
@@ -45,7 +45,7 @@ export function Contact() {
     <section id="contacto" className="relative border-t border-[var(--line)] overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,141,255,0.10), transparent 65%)' }}
+        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,128,0,0.08), transparent 65%)' }}
         aria-hidden
       />
       <div className="section-inner relative z-10">
@@ -102,7 +102,7 @@ export function Contact() {
             <button
               type="submit"
               disabled={status === 'loading' || status === 'done'}
-              className="mt-1 w-full inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.9rem] rounded-full text-white bg-gradient-to-br from-accent to-[#4373E8] hover:shadow-[0_8px_30px_-6px_rgba(91,141,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:pointer-events-none"
+              className="mt-1 w-full inline-flex items-center justify-center gap-2 font-semibold text-[0.95rem] px-7 py-[0.9rem] rounded-full text-white bg-gradient-to-br from-accent to-[#C25A00] hover:shadow-[0_8px_30px_-6px_rgba(255,128,0,0.45)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:pointer-events-none"
             >
               {status === 'loading' && (<>{t.contact.sending} <span className="inline-block w-[14px] h-[14px] border-2 border-white/40 border-t-white rounded-full animate-spin" /></>)}
               {status === 'done' && t.contact.sent}

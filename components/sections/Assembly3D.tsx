@@ -110,7 +110,7 @@ function Dot({ index, progress }: { index: number; progress: MotionValue<number>
       className="block w-[6px] h-[6px] rounded-full bg-[var(--line-strong)]"
       style={{
         backgroundColor: useTransform(isActive, (a) =>
-          a === 1 ? '#7CF5D4' : 'rgba(232,234,242,0.16)',
+          a === 1 ? '#FF8000' : 'rgba(232,234,242,0.16)',
         ),
         // scale removed for TS compatibility
       }}
@@ -156,7 +156,7 @@ export function Assembly3D() {
             className="absolute inset-0 z-10 pointer-events-none"
             style={{
               background:
-                'linear-gradient(90deg, #070A14 22%, rgba(7,10,20,0.5) 55%, transparent 80%), linear-gradient(0deg, #070A14 0%, transparent 15%)',
+                'linear-gradient(90deg, #14161A 22%, rgba(7,10,20,0.5) 55%, transparent 80%), linear-gradient(0deg, #14161A 0%, transparent 15%)',
             }}
           />
           <SplineScene scene={SCENE_URL} className="w-full h-full" />
@@ -181,7 +181,7 @@ export function Assembly3D() {
         {/* Bottom gradient fade into next section */}
         <div
           className="absolute bottom-0 left-0 right-0 z-20 h-40 pointer-events-none"
-          style={{ background: 'linear-gradient(transparent, #070A14)' }}
+          style={{ background: 'linear-gradient(transparent, #14161A)' }}
         />
       </div>
     </section>

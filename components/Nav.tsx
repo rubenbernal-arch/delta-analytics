@@ -45,7 +45,7 @@ export function Nav() {
         className={`
           fixed top-0 left-0 right-0 z-[100]
           transition-all duration-300
-          ${scrolled ? 'bg-[rgba(7,10,20,0.85)] backdrop-blur-xl border-b border-[var(--line)]' : 'bg-transparent'}
+          ${scrolled ? 'bg-[rgba(20,22,26,0.85)] backdrop-blur-xl border-b border-[var(--line)]' : 'bg-transparent'}
         `}
       >
         <div className="max-w-[1140px] mx-auto px-8 py-[1.1rem] flex items-center justify-between">
@@ -89,7 +89,7 @@ export function Nav() {
       <div
         role="dialog"
         aria-label="Menú de navegación"
-        className={`md:hidden fixed inset-0 z-[99] bg-[rgba(7,10,20,0.97)] backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`md:hidden fixed inset-0 z-[99] bg-[rgba(20,22,26,0.97)] backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       >
         {links.map((l) => (
           <button key={l.href} onClick={() => scrollTo(l.href)}
