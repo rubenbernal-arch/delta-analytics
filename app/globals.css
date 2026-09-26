@@ -71,3 +71,7 @@
   0%, 100% { opacity: 0.25; }
   50%       { opacity: 1; }
 }
+@keyframes logo-marquee {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}

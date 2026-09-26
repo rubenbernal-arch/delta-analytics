@@ -34,9 +34,10 @@ export function Nav() {
   }
 
   const links = [
-    { href: '#quienes', label: t.nav.about },
-    { href: '#mision', label: t.nav.mission },
+    { href: '#soluciones', label: t.nav.solutions },
     { href: '#productos', label: t.nav.products },
+    { href: '#seguridad', label: t.nav.security },
+    { href: '#quienes', label: t.nav.about },
   ]
 
   return (
@@ -62,7 +63,7 @@ export function Nav() {
               </button>
             ))}
             <button onClick={() => scrollTo('#contacto')}
-              className="text-foreground px-[1.1rem] py-[0.5rem] border border-[var(--line-strong)] rounded-full hover:border-accent hover:bg-accent/10 transition-all duration-200 cursor-pointer bg-transparent">
+              className="text-white font-semibold px-[1.2rem] py-[0.55rem] rounded-full bg-accent hover:shadow-[0_6px_20px_-4px_rgba(255,128,0,0.5)] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer">
               {t.nav.contact}
             </button>
             <button
@@ -98,7 +99,7 @@ export function Nav() {
           </button>
         ))}
         <button onClick={() => scrollTo('#contacto')}
-          className="font-display text-[1rem] font-semibold text-foreground px-6 py-3 border border-[var(--line-strong)] rounded-full mt-2 hover:border-accent transition-all bg-transparent cursor-pointer">
+          className="font-display text-[1rem] font-semibold text-white px-6 py-3 rounded-full mt-2 bg-accent transition-all cursor-pointer">
           {t.nav.contact}
         </button>
         <button

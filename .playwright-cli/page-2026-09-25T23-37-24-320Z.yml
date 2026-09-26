@@ -1,0 +1,187 @@
+- generic [ref=f2e1]:
+  - link "Saltar al contenido" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - link "Δ Delta Analytics" [ref=f2e5] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=f2e6]: Δ
+        - generic [ref=f2e7]: Delta Analytics
+      - button "Cerrar menú" [expanded] [active] [ref=f2e353]
+  - dialog "Menú de navegación" [ref=f2e356]:
+    - button "Soluciones" [ref=f2e357] [cursor=pointer]
+    - button "Portafolio" [ref=f2e358] [cursor=pointer]
+    - button "Nosotros" [ref=f2e359] [cursor=pointer]
+    - button "Hablemos" [ref=f2e360] [cursor=pointer]
+    - button "EN" [ref=f2e361] [cursor=pointer]
+  - main [ref=f2e14]:
+    - generic [ref=f2e17]:
+      - paragraph [ref=f2e18]: Software · Automatización · IA
+      - heading "Menos tareas manuales. Más posibilidades." [level=1] [ref=f2e19]: Menos tareas manuales.Más posibilidades.
+      - paragraph [ref=f2e20]: Desarrollamos software e integramos tus procesos para que tu empresa avance.
+      - generic [ref=f2e21]:
+        - link "Hablemos de tu proyecto →" [ref=f2e22] [cursor=pointer]:
+          - /url: "#contacto"
+        - link "Explorar portafolio" [ref=f2e23] [cursor=pointer]:
+          - /url: "#productos"
+    - generic [ref=f2e165]:
+      - paragraph [ref=f2e166]: Quiénes somos
+      - heading "Un equipo que resuelve, no que promete." [level=2] [ref=f2e167]
+      - generic [ref=f2e168]:
+        - paragraph [ref=f2e169]: "Delta Analytics nació de ver procesos fallar de cerca: análisis financiero que llegaba tarde, facturación hecha a mano, operaciones repartidas en diez hojas de Excel. En lugar de hablar de \"innovación\", construimos la herramienta que faltaba."
+        - generic [ref=f2e170]:
+          - generic [ref=f2e171]:
+            - generic [ref=f2e172]: 6+
+            - generic [ref=f2e173]: proyectos en portafolio
+          - generic [ref=f2e174]:
+            - generic [ref=f2e175]: 100%
+            - generic [ref=f2e176]: desarrollo propio
+    - generic [ref=f2e179]:
+      - generic [ref=f2e180]:
+        - paragraph [ref=f2e181]: Misión
+        - paragraph [ref=f2e182]: "Reducir el costo operativo de las empresas con automatización e IA: software que resuelve un problema concreto, en semanas y no en años, sin proyectos eternos."
+      - generic [ref=f2e183]:
+        - paragraph [ref=f2e184]: Visión
+        - paragraph [ref=f2e185]: Que cualquier empresa, sin importar su tamaño, opere con la eficiencia de una mucho más grande, con equipos pequeños y herramientas que trabajan por ellos.
+    - generic [ref=f2e187]:
+      - generic [ref=f2e188]: Empresas que nos respaldan
+      - generic [ref=f2e189]:
+        - generic [ref=f2e190]: LOGO 01
+        - generic [ref=f2e191]: LOGO 02
+        - generic [ref=f2e192]: LOGO 03
+        - generic [ref=f2e193]: LOGO 04
+    - generic [ref=f2e195]:
+      - generic [ref=f2e196]:
+        - generic [ref=f2e197]:
+          - paragraph [ref=f2e198]: Portafolio
+          - heading "De una necesidad real a software que funciona." [level=2] [ref=f2e199]: De una necesidad reala software que funciona.
+        - link "Ver todos los proyectos ↗" [ref=f2e200] [cursor=pointer]:
+          - /url: "#productos"
+      - generic [ref=f2e201]:
+        - generic [ref=f2e203]:
+          - generic [ref=f2e204]:
+            - generic [ref=f2e205]:
+              - generic [ref=f2e206]: Δ
+              - generic [ref=f2e208]:
+                - heading "ATUM" [level=3] [ref=f2e209]
+                - generic [ref=f2e210]: Inteligencia para tu operación.
+            - paragraph [ref=f2e211]: Inventario, clientes, ventas y facturación en un solo panel, con un agente de IA al que le preguntas cómo va tu operación.
+            - generic [ref=f2e212]:
+              - generic [ref=f2e213]: Operaciones
+              - generic [ref=f2e214]: Inventario
+              - generic [ref=f2e215]: Facturación
+          - img "ATUM" [ref=f2e218]
+        - generic [ref=f2e219]:
+          - link "TradeIQ Pro Análisis financiero con IA. ↗ Indicadores técnicos, señales y contexto de mercado resumidos por IA, para que analices en minutos lo que antes te tomaba horas. Datos financieros IA Reportes TradeIQ Pro" [ref=f2e221] [cursor=pointer]:
+            - /url: https://tradeiqpro.com
+            - generic [ref=f2e222]:
+              - generic [ref=f2e227]:
+                - heading "TradeIQ Pro" [level=3] [ref=f2e228]
+                - generic [ref=f2e229]: Análisis financiero con IA. ↗
+              - paragraph [ref=f2e230]: Indicadores técnicos, señales y contexto de mercado resumidos por IA, para que analices en minutos lo que antes te tomaba horas.
+              - generic [ref=f2e231]:
+                - generic [ref=f2e232]: Datos financieros
+                - generic [ref=f2e233]: IA
+                - generic [ref=f2e234]: Reportes
+            - img "TradeIQ Pro" [ref=f2e237]
+          - link "Shubati Facturación desde WhatsApp. ↗ Mándale una foto de tu ticket por WhatsApp y recibe tu factura timbrada, PDF y XML, en segundos. WhatsApp Facturación Clientes Shubati" [ref=f2e239] [cursor=pointer]:
+            - /url: https://www.shubati.mx/
+            - generic [ref=f2e240]:
+              - generic [ref=f2e246]:
+                - heading "Shubati" [level=3] [ref=f2e247]
+                - generic [ref=f2e248]: Facturación desde WhatsApp. ↗
+              - paragraph [ref=f2e249]: Mándale una foto de tu ticket por WhatsApp y recibe tu factura timbrada, PDF y XML, en segundos.
+              - generic [ref=f2e250]:
+                - generic [ref=f2e251]: WhatsApp
+                - generic [ref=f2e252]: Facturación
+                - generic [ref=f2e253]: Clientes
+            - img "Shubati" [ref=f2e256]
+    - generic [ref=f2e258]:
+      - generic [ref=f2e259]:
+        - paragraph [ref=f2e260]: Cómo trabajamos
+        - heading "Tecnología que conecta tu negocio." [level=2] [ref=f2e261]: Tecnología queconecta tu negocio.
+      - generic [ref=f2e262]:
+        - generic [ref=f2e263]:
+          - heading "Automatización" [level=3] [ref=f2e268]
+          - paragraph [ref=f2e269]: Conecta tus herramientas y elimina tareas manuales.
+        - generic [ref=f2e270]:
+          - heading "Software a medida" [level=3] [ref=f2e276]
+          - paragraph [ref=f2e277]: Soluciones diseñadas para tus procesos.
+        - generic [ref=f2e278]:
+          - heading "Analítica e IA" [level=3] [ref=f2e282]
+          - paragraph [ref=f2e283]: Convierte tus datos en mejores decisiones.
+    - generic [ref=f2e285]:
+      - generic [ref=f2e286]:
+        - heading "Hablemos de lo que sigue." [level=2] [ref=f2e287]
+        - paragraph [ref=f2e288]: Cuéntanos sobre tu proyecto y encontremos la mejor forma de hacerlo realidad.
+      - link "Cuéntanos tu proyecto ↗" [ref=f2e289] [cursor=pointer]:
+        - /url: "#contacto"
+    - generic [ref=f2e291]:
+      - paragraph [ref=f2e292]: Contacto
+      - heading "¿Tienes un problema que vale la pena resolver con IA?" [level=2] [ref=f2e293]
+      - paragraph [ref=f2e294]: Cuéntanos qué necesitas. Respondemos personalmente — sin formularios automáticos de relleno.
+      - generic [ref=f2e295]:
+        - generic [ref=f2e296]:
+          - generic [ref=f2e297]:
+            - generic [ref=f2e298]:
+              - generic [ref=f2e299]: Nombre *
+              - textbox "Nombre *" [ref=f2e300]:
+                - /placeholder: Tu nombre
+            - generic [ref=f2e301]:
+              - generic [ref=f2e302]: Correo *
+              - textbox "Correo *" [ref=f2e303]:
+                - /placeholder: tucorreo@ejemplo.com
+          - generic [ref=f2e304]:
+            - generic [ref=f2e305]: Empresa (opcional)
+            - textbox "Empresa (opcional)" [ref=f2e306]:
+              - /placeholder: Nombre de tu empresa
+          - generic [ref=f2e307]:
+            - generic [ref=f2e308]: Mensaje *
+            - textbox "Mensaje *" [ref=f2e309]:
+              - /placeholder: Cuéntanos sobre tu proyecto o necesidad...
+          - button "Enviar mensaje" [ref=f2e310]
+        - generic [ref=f2e311]:
+          - generic [ref=f2e312]:
+            - generic [ref=f2e313]: Correo
+            - link "contacto@deltaanalytics.io" [ref=f2e314] [cursor=pointer]:
+              - /url: mailto:contacto@deltaanalytics.io
+          - generic [ref=f2e315]:
+            - generic [ref=f2e316]: Ubicación
+            - generic [ref=f2e317]: Guadalajara, Jalisco · México
+          - generic [ref=f2e318]:
+            - generic [ref=f2e319]: Síguenos
+            - generic [ref=f2e320]:
+              - link "Instagram" [ref=f2e321] [cursor=pointer]:
+                - /url: https://instagram.com/deltaanalytics
+              - link "LinkedIn" [ref=f2e322] [cursor=pointer]:
+                - /url: https://linkedin.com/company/deltaanalytics
+          - generic [ref=f2e323]:
+            - generic [ref=f2e324]: Productos
+            - link "TradeIQ Pro ↗" [ref=f2e325] [cursor=pointer]:
+              - /url: https://tradeiqpro.com
+            - link "Shubati ↗" [ref=f2e326] [cursor=pointer]:
+              - /url: https://www.shubati.mx/
+  - contentinfo [ref=f2e327]:
+    - generic [ref=f2e328]:
+      - generic [ref=f2e329]:
+        - generic [ref=f2e330]:
+          - generic [ref=f2e331]: Δ
+          - generic [ref=f2e332]: Delta Analytics
+        - generic [ref=f2e333]: "|"
+        - generic [ref=f2e334]: Guadalajara, Jalisco · México
+      - generic [ref=f2e335]:
+        - navigation [ref=f2e336]:
+          - link "Soluciones" [ref=f2e337] [cursor=pointer]:
+            - /url: "#soluciones"
+          - link "Portafolio" [ref=f2e338] [cursor=pointer]:
+            - /url: "#productos"
+          - link "Nosotros" [ref=f2e339] [cursor=pointer]:
+            - /url: "#quienes"
+        - generic [ref=f2e340]:
+          - link "LinkedIn" [ref=f2e341] [cursor=pointer]:
+            - /url: https://linkedin.com/company/deltaanalytics
+          - link "Instagram" [ref=f2e342] [cursor=pointer]:
+            - /url: https://instagram.com/deltaanalytics
+    - generic [ref=f2e343]: Δ Delta Analytics — 2026 · Construido con datos, IA y café.
+  - button "Open Next.js Dev Tools" [ref=f2e349] [cursor=pointer]
+  - alert [ref=f2e362]

@@ -1,0 +1,186 @@
+- generic [ref=f1e1]:
+  - link "Saltar al contenido" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "Δ Delta Analytics" [ref=f1e5] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=f1e6]: Δ
+        - generic [ref=f1e7]: Delta Analytics
+      - navigation "Navegación principal" [ref=f1e8]:
+        - button "Solutions" [ref=f1e354] [cursor=pointer]
+        - button "Portfolio" [ref=f1e355] [cursor=pointer]
+        - button "About us" [ref=f1e356] [cursor=pointer]
+        - button "Let's talk" [ref=f1e357] [cursor=pointer]
+        - button "ES" [active] [ref=f1e358] [cursor=pointer]
+  - main [ref=f1e14]:
+    - generic [ref=f1e17]:
+      - paragraph [ref=f1e18]: Software · Automation · AI
+      - heading "Fewer manual tasks. More possibilities." [level=1] [ref=f1e359]: Fewer manual tasks.More possibilities.
+      - paragraph [ref=f1e20]: We build software and integrate your processes so your company moves forward.
+      - generic [ref=f1e21]:
+        - link "Let's talk about your project →" [ref=f1e360] [cursor=pointer]:
+          - /url: "#contacto"
+        - link "Explore portfolio" [ref=f1e361] [cursor=pointer]:
+          - /url: "#productos"
+    - generic [ref=f1e165]:
+      - paragraph [ref=f1e166]: About us
+      - heading "A team that solves, not just promises." [level=2] [ref=f1e362]
+      - generic [ref=f1e168]:
+        - paragraph [ref=f1e169]: "Delta Analytics was born from watching processes fail up close: financial analysis that arrived too late, invoicing done by hand, operations scattered across ten spreadsheets. Instead of talking about \"innovation,\" we built the tool that was missing."
+        - generic [ref=f1e170]:
+          - generic [ref=f1e363]:
+            - generic [ref=f1e364]: 6+
+            - generic [ref=f1e365]: projects in portfolio
+          - generic [ref=f1e366]:
+            - generic [ref=f1e367]: 100%
+            - generic [ref=f1e368]: in-house development
+    - generic [ref=f1e179]:
+      - generic [ref=f1e369]:
+        - paragraph [ref=f1e370]: Mission
+        - paragraph [ref=f1e371]: "Reduce companies' operating costs with automation and AI: software that solves a specific problem in weeks, not years, without endless projects."
+      - generic [ref=f1e372]:
+        - paragraph [ref=f1e373]: Vision
+        - paragraph [ref=f1e374]: That any company, regardless of size, can operate with the efficiency of a much bigger one, using small teams and tools that work for them.
+    - generic [ref=f1e187]:
+      - generic [ref=f1e188]: Companies that back us
+      - generic [ref=f1e189]:
+        - generic [ref=f1e190]: LOGO 01
+        - generic [ref=f1e191]: LOGO 02
+        - generic [ref=f1e192]: LOGO 03
+        - generic [ref=f1e193]: LOGO 04
+    - generic [ref=f1e195]:
+      - generic [ref=f1e196]:
+        - generic [ref=f1e197]:
+          - paragraph [ref=f1e198]: Portfolio
+          - heading "From a real need to software that works." [level=2] [ref=f1e375]: From a real needto software that works.
+        - link "View all projects ↗" [ref=f1e376] [cursor=pointer]:
+          - /url: "#productos"
+      - generic [ref=f1e201]:
+        - generic [ref=f1e203]:
+          - generic [ref=f1e204]:
+            - generic [ref=f1e205]:
+              - generic [ref=f1e206]: Δ
+              - generic [ref=f1e208]:
+                - heading "ATUM" [level=3] [ref=f1e209]
+                - generic [ref=f1e210]: Intelligence for your operation.
+            - paragraph [ref=f1e211]: Inventory, clients, sales and invoicing in one panel, with an AI agent you can simply ask how your operation is doing.
+            - generic [ref=f1e212]:
+              - generic [ref=f1e377]: Operations
+              - generic [ref=f1e378]: Inventory
+              - generic [ref=f1e379]: Invoicing
+          - img "ATUM" [ref=f1e218]
+        - generic [ref=f1e219]:
+          - link "TradeIQ Pro Financial analysis with AI. ↗ Technical indicators, signals and market context summarized by AI, so you analyze in minutes what used to take hours. Financial data AI Reports TradeIQ Pro" [ref=f1e380] [cursor=pointer]:
+            - /url: https://tradeiqpro.com
+            - generic [ref=f1e222]:
+              - generic [ref=f1e227]:
+                - heading "TradeIQ Pro" [level=3] [ref=f1e228]
+                - generic [ref=f1e229]: Financial analysis with AI. ↗
+              - paragraph [ref=f1e230]: Technical indicators, signals and market context summarized by AI, so you analyze in minutes what used to take hours.
+              - generic [ref=f1e231]:
+                - generic [ref=f1e381]: Financial data
+                - generic [ref=f1e382]: AI
+                - generic [ref=f1e383]: Reports
+            - img "TradeIQ Pro" [ref=f1e237]
+          - link "Shubati Invoicing from WhatsApp. ↗ Send a photo of your receipt over WhatsApp and get your stamped invoice, PDF and XML, in seconds. WhatsApp Invoicing Clients Shubati" [ref=f1e384] [cursor=pointer]:
+            - /url: https://www.shubati.mx/
+            - generic [ref=f1e240]:
+              - generic [ref=f1e246]:
+                - heading "Shubati" [level=3] [ref=f1e247]
+                - generic [ref=f1e248]: Invoicing from WhatsApp. ↗
+              - paragraph [ref=f1e249]: Send a photo of your receipt over WhatsApp and get your stamped invoice, PDF and XML, in seconds.
+              - generic [ref=f1e250]:
+                - generic [ref=f1e251]: WhatsApp
+                - generic [ref=f1e385]: Invoicing
+                - generic [ref=f1e386]: Clients
+            - img "Shubati" [ref=f1e256]
+    - generic [ref=f1e258]:
+      - generic [ref=f1e259]:
+        - paragraph [ref=f1e260]: How we work
+        - heading "Technology that connects your business." [level=2] [ref=f1e387]: Technology thatconnects your business.
+      - generic [ref=f1e262]:
+        - generic [ref=f1e388]:
+          - heading "Automation" [level=3] [ref=f1e393]
+          - paragraph [ref=f1e394]: Connect your tools and remove manual tasks.
+        - generic [ref=f1e395]:
+          - heading "Custom software" [level=3] [ref=f1e401]
+          - paragraph [ref=f1e402]: Solutions designed for your processes.
+        - generic [ref=f1e403]:
+          - heading "Analytics & AI" [level=3] [ref=f1e407]
+          - paragraph [ref=f1e408]: Turn your data into better decisions.
+    - generic [ref=f1e285]:
+      - generic [ref=f1e286]:
+        - heading "Let's talk about what's next." [level=2] [ref=f1e409]
+        - paragraph [ref=f1e288]: Tell us about your project and let's find the best way to make it real.
+      - link "Tell us about your project ↗" [ref=f1e410] [cursor=pointer]:
+        - /url: "#contacto"
+    - generic [ref=f1e291]:
+      - paragraph [ref=f1e292]: Contact
+      - heading "Do you have a problem worth solving with AI?" [level=2] [ref=f1e411]
+      - paragraph [ref=f1e294]: Tell us what you need. We respond personally — no automated filler forms.
+      - generic [ref=f1e295]:
+        - generic [ref=f1e296]:
+          - generic [ref=f1e297]:
+            - generic [ref=f1e298]:
+              - generic [ref=f1e299]: Name *
+              - textbox "Name *" [ref=f1e412]:
+                - /placeholder: Your name
+            - generic [ref=f1e301]:
+              - generic [ref=f1e302]: Email *
+              - textbox "Email *" [ref=f1e413]:
+                - /placeholder: youremail@example.com
+          - generic [ref=f1e304]:
+            - generic [ref=f1e305]: Company (optional)
+            - textbox "Company (optional)" [ref=f1e414]:
+              - /placeholder: Your company name
+          - generic [ref=f1e307]:
+            - generic [ref=f1e308]: Message *
+            - textbox "Message *" [ref=f1e415]:
+              - /placeholder: Tell us about your project or need...
+          - button "Send message" [ref=f1e416]
+        - generic [ref=f1e311]:
+          - generic [ref=f1e312]:
+            - generic [ref=f1e313]: Email
+            - link "contacto@deltaanalytics.io" [ref=f1e314] [cursor=pointer]:
+              - /url: mailto:contacto@deltaanalytics.io
+          - generic [ref=f1e315]:
+            - generic [ref=f1e316]: Location
+            - generic [ref=f1e317]: Guadalajara, Jalisco · Mexico
+          - generic [ref=f1e318]:
+            - generic [ref=f1e319]: Follow us
+            - generic [ref=f1e320]:
+              - link "Instagram" [ref=f1e321] [cursor=pointer]:
+                - /url: https://instagram.com/deltaanalytics
+              - link "LinkedIn" [ref=f1e322] [cursor=pointer]:
+                - /url: https://linkedin.com/company/deltaanalytics
+          - generic [ref=f1e323]:
+            - generic [ref=f1e324]: Products
+            - link "TradeIQ Pro ↗" [ref=f1e325] [cursor=pointer]:
+              - /url: https://tradeiqpro.com
+            - link "Shubati ↗" [ref=f1e326] [cursor=pointer]:
+              - /url: https://www.shubati.mx/
+  - contentinfo [ref=f1e327]:
+    - generic [ref=f1e328]:
+      - generic [ref=f1e329]:
+        - generic [ref=f1e330]:
+          - generic [ref=f1e331]: Δ
+          - generic [ref=f1e332]: Delta Analytics
+        - generic [ref=f1e333]: "|"
+        - generic [ref=f1e334]: Guadalajara, Jalisco · Mexico
+      - generic [ref=f1e335]:
+        - navigation [ref=f1e336]:
+          - link "Solutions" [ref=f1e417] [cursor=pointer]:
+            - /url: "#soluciones"
+          - link "Portfolio" [ref=f1e418] [cursor=pointer]:
+            - /url: "#productos"
+          - link "About us" [ref=f1e419] [cursor=pointer]:
+            - /url: "#quienes"
+        - generic [ref=f1e340]:
+          - link "LinkedIn" [ref=f1e341] [cursor=pointer]:
+            - /url: https://linkedin.com/company/deltaanalytics
+          - link "Instagram" [ref=f1e342] [cursor=pointer]:
+            - /url: https://instagram.com/deltaanalytics
+    - generic [ref=f1e343]: Δ Delta Analytics — 2026 · Built with data, AI and coffee.
+  - button "Open Next.js Dev Tools" [ref=f1e349] [cursor=pointer]
+  - alert [ref=f1e353]

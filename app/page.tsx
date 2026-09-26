@@ -1,8 +1,12 @@
 import { Nav }           from '@/components/Nav'
-import { HeroAssembly }  from '@/components/sections/HeroAssembly'
+import { Hero }          from '@/components/sections/Hero'
 import { About }         from '@/components/sections/About'
 import { Mission }       from '@/components/sections/Mission'
+import { Logos }         from '@/components/sections/Logos'
 import { Products }      from '@/components/sections/Products'
+import { Security }      from '@/components/sections/Security'
+import { Features }      from '@/components/sections/Features'
+import { CtaBand }       from '@/components/sections/CtaBand'
 import { Contact }       from '@/components/sections/Contact'
 import { Footer }        from '@/components/Footer'
 
@@ -18,10 +22,14 @@ export default function Page() {
       <Nav />
       <span id="main" aria-hidden="true" className="absolute top-0 outline-none" />
       <main>
-        <HeroAssembly />
+        <Hero />
         <About />
         <Mission />
+        <Logos />
         <Products />
+        <Security />
+        <Features />
+        <CtaBand />
         <Contact />
       </main>
       <Footer />

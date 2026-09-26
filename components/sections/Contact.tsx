@@ -35,7 +35,7 @@ export function Contact() {
     } catch {
       const subject = encodeURIComponent(`Proyecto de ${data.name || 'cliente'}`)
       const body = encodeURIComponent(`Nombre: ${data.name}\nCorreo: ${data.email}\nEmpresa: ${data.company || '-'}\n\n${data.message}`)
-      window.open(`mailto:contacto@deltaanalytics.io?subject=${subject}&body=${body}`)
+      window.open(`mailto:contacto@deltaanalytics.com.mx?subject=${subject}&body=${body}`)
       setStatus('done')
       form.reset()
     }
@@ -125,8 +125,8 @@ export function Contact() {
           >
             <div className="flex flex-col gap-2">
               <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.email}</span>
-              <a href="mailto:contacto@deltaanalytics.io" className="text-[1rem] hover:text-accent-2 transition-colors">
-                contacto@deltaanalytics.io
+              <a href="mailto:contacto@deltaanalytics.com.mx" className="text-[1rem] hover:text-accent-2 transition-colors">
+                contacto@deltaanalytics.com.mx
               </a>
             </div>
             <div className="flex flex-col gap-2">
@@ -136,14 +136,17 @@ export function Contact() {
             <div className="flex flex-col gap-2">
               <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.followLabel}</span>
               <div className="flex gap-5">
-                <a href="https://instagram.com/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">Instagram</a>
-                <a href="https://linkedin.com/company/deltaanalytics" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">LinkedIn</a>
+                <a href="https://www.instagram.com/deltaanalytics.mx/" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">Instagram</a>
+                <a href="https://www.linkedin.com/company/delta-analytics-mx" target="_blank" rel="noopener" className="text-[1rem] hover:text-accent-2 transition-colors">LinkedIn</a>
               </div>
             </div>
             <div className="flex flex-col gap-3">
               <span className="font-mono text-[0.70rem] tracking-widest text-dim uppercase">{t.contact.productsLabel}</span>
-              <a href="https://tradeiqpro.com" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">TradeIQ Pro ↗</a>
-              <a href="https://odontobot-demo.vercel.app" target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">OdontoBot demo ↗</a>
+              {t.products.items.filter((p) => p.link).map((p) => (
+                <a key={p.id} href={p.link!} target="_blank" rel="noopener" className="text-[0.95rem] hover:text-accent-2 transition-colors">
+                  {p.name} ↗
+                </a>
+              ))}
             </div>
           </motion.div>
         </div>

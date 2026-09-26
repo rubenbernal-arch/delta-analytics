@@ -1,0 +1,246 @@
+- generic [active] [ref=e1]:
+  - link "Saltar al contenido" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Δ Delta Analytics" [ref=e5] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e6]: Δ
+        - generic [ref=e7]: Delta Analytics
+      - navigation "Navegación principal" [ref=e8]:
+        - button "Soluciones" [ref=e9] [cursor=pointer]
+        - button "Portafolio" [ref=e10] [cursor=pointer]
+        - button "Seguridad" [ref=e11] [cursor=pointer]
+        - button "Nosotros" [ref=e12] [cursor=pointer]
+        - button "Hablemos" [ref=e13] [cursor=pointer]
+        - button "EN" [ref=e14] [cursor=pointer]
+  - main [ref=e15]:
+    - generic [ref=e18]:
+      - paragraph [ref=e19]: Software · Automatización · IA
+      - heading "Menos tareas manuales. Más posibilidades." [level=1] [ref=e20]: Menos tareas manuales.Más posibilidades.
+      - paragraph [ref=e21]: Desarrollamos software e integramos tus procesos para que tu empresa avance.
+      - generic [ref=e22]:
+        - link "Hablemos de tu proyecto →" [ref=e23] [cursor=pointer]:
+          - /url: "#contacto"
+        - link "Explorar portafolio" [ref=e24] [cursor=pointer]:
+          - /url: "#productos"
+    - generic [ref=e166]:
+      - paragraph [ref=e167]: Quiénes somos
+      - heading "Un equipo que resuelve, no que promete." [level=2] [ref=e168]
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: "Delta Analytics nació de ver procesos fallar de cerca: análisis financiero que llegaba tarde, facturación hecha a mano, operaciones repartidas en diez hojas de Excel. En lugar de hablar de \"innovación\", construimos la herramienta que faltaba."
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: 6+
+            - generic [ref=e174]: proyectos en portafolio
+          - generic [ref=e175]:
+            - generic [ref=e176]: 100%
+            - generic [ref=e177]: desarrollo propio
+    - generic [ref=e180]:
+      - generic [ref=e181]:
+        - paragraph [ref=e182]: Misión
+        - paragraph [ref=e183]: "Reducir el costo operativo de las empresas con automatización e IA: software que resuelve un problema concreto, en semanas y no en años, sin proyectos eternos."
+      - generic [ref=e184]:
+        - paragraph [ref=e185]: Visión
+        - paragraph [ref=e186]: Que cualquier empresa, sin importar su tamaño, opere con la eficiencia de una mucho más grande, con equipos pequeños y herramientas que trabajan por ellos.
+    - generic [ref=e187]:
+      - generic [ref=e188]: Empresas que nos respaldan
+      - generic [ref=e190]:
+        - img "TLA" [ref=e191]
+        - img "La Herencia" [ref=e192]
+        - img "La Puerta" [ref=e193]
+        - img "Josefinos" [ref=e194]
+        - img "Awasa" [ref=e195]
+        - img "TLA" [ref=e196]
+        - img "La Herencia" [ref=e197]
+        - img "La Puerta" [ref=e198]
+        - img "Josefinos" [ref=e199]
+        - img "Awasa" [ref=e200]
+    - generic [ref=e202]:
+      - generic [ref=e203]:
+        - generic [ref=e204]:
+          - paragraph [ref=e205]: Portafolio
+          - heading "De una necesidad real a software que funciona." [level=2] [ref=e206]: De una necesidad reala software que funciona.
+        - link "Ver todos los proyectos ↗" [ref=e207] [cursor=pointer]:
+          - /url: "#productos"
+      - generic [ref=e208]:
+        - generic [ref=e210]:
+          - generic [ref=e211]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: Δ
+              - generic [ref=e215]:
+                - heading "ATUM" [level=3] [ref=e216]
+                - generic [ref=e217]: Inteligencia para tu operación.
+            - paragraph [ref=e218]: Inventario, clientes, ventas y facturación en un solo panel, con un agente de IA al que le preguntas cómo va tu operación.
+            - generic [ref=e219]:
+              - generic [ref=e220]: Operaciones
+              - generic [ref=e221]: Inventario
+              - generic [ref=e222]: Facturación
+          - img "ATUM" [ref=e225]
+        - generic [ref=e226]:
+          - link "TradeIQ Pro Análisis financiero con IA. ↗ Indicadores técnicos, señales y contexto de mercado resumidos por IA, para que analices en minutos lo que antes te tomaba horas. Datos financieros IA Reportes TradeIQ Pro" [ref=e228] [cursor=pointer]:
+            - /url: https://tradeiqpro.com
+            - generic [ref=e229]:
+              - generic [ref=e234]:
+                - heading "TradeIQ Pro" [level=3] [ref=e235]
+                - generic [ref=e236]: Análisis financiero con IA. ↗
+              - paragraph [ref=e237]: Indicadores técnicos, señales y contexto de mercado resumidos por IA, para que analices en minutos lo que antes te tomaba horas.
+              - generic [ref=e238]:
+                - generic [ref=e239]: Datos financieros
+                - generic [ref=e240]: IA
+                - generic [ref=e241]: Reportes
+            - img "TradeIQ Pro" [ref=e244]
+          - link "Shubati Facturación desde WhatsApp. ↗ Mándale una foto de tu ticket por WhatsApp y recibe tu factura timbrada, PDF y XML, en segundos. WhatsApp Facturación Clientes Shubati" [ref=e246] [cursor=pointer]:
+            - /url: https://www.shubati.mx/
+            - generic [ref=e247]:
+              - generic [ref=e253]:
+                - heading "Shubati" [level=3] [ref=e254]
+                - generic [ref=e255]: Facturación desde WhatsApp. ↗
+              - paragraph [ref=e256]: Mándale una foto de tu ticket por WhatsApp y recibe tu factura timbrada, PDF y XML, en segundos.
+              - generic [ref=e257]:
+                - generic [ref=e258]: WhatsApp
+                - generic [ref=e259]: Facturación
+                - generic [ref=e260]: Clientes
+            - img "Shubati" [ref=e263]
+    - generic [ref=e265]:
+      - generic [ref=e266]:
+        - paragraph [ref=e267]: Ciberseguridad
+        - heading "Atacamos tus sistemas antes que alguien más lo haga." [level=2] [ref=e268]: Atacamos tus sistemasantes que alguien más lo haga.
+        - paragraph [ref=e269]: Sabemos cómo atacan porque llevamos años defendiendo — combinamos experiencia en SOC con pentesting certificado.
+      - generic [ref=e270]:
+        - generic [ref=e273]:
+          - generic [ref=e274]: Ofensiva
+          - heading "Ofensiva" [level=3] [ref=e275]
+          - paragraph [ref=e276]: Pentesting en modalidad black box, gray box y white box, red team y análisis de vulnerabilidades en aplicaciones web, redes e infraestructura.
+          - generic [ref=e277]:
+            - generic [ref=e278]: Black box
+            - generic [ref=e279]: Gray box
+            - generic [ref=e280]: White box
+            - generic [ref=e281]: Red team
+        - generic [ref=e284]:
+          - generic [ref=e285]: Defensiva
+          - heading "Defensiva" [level=3] [ref=e286]
+          - paragraph [ref=e287]: Blue team, monitoreo y detección, y respuesta a incidentes.
+          - generic [ref=e288]:
+            - generic [ref=e289]: Blue team
+            - generic [ref=e290]: Monitoreo
+            - generic [ref=e291]: Detección
+            - generic [ref=e292]: Respuesta a incidentes
+      - generic [ref=e293]:
+        - generic [ref=e294]:
+          - paragraph [ref=e295]: Experiencia
+          - paragraph [ref=e296]: "Años de experiencia en operaciones de SOC: monitoreo, detección y respuesta a incidentes."
+        - generic [ref=e297]:
+          - paragraph [ref=e298]: Certificación
+          - paragraph [ref=e299]: Pentester certificado eJPT.
+        - generic [ref=e300]:
+          - paragraph [ref=e301]: Metodología
+          - paragraph [ref=e302]: OWASP, PTES y MITRE ATT&CK como marco de referencia.
+      - paragraph [ref=e303]: Reporte ejecutivo y reporte técnico con evidencias y severidad de cada hallazgo, más un retest después de las correcciones. Todo el trabajo se realiza bajo NDA.
+      - generic [ref=e304]:
+        - generic [ref=e305]:
+          - generic [ref=e306]: "01"
+          - heading "Alcance" [level=4] [ref=e307]
+          - paragraph [ref=e308]: Definimos qué se evalúa y bajo qué modalidad (black, gray o white box).
+        - generic [ref=e309]:
+          - generic [ref=e310]: "02"
+          - heading "Pruebas" [level=4] [ref=e311]
+          - paragraph [ref=e312]: Ejecutamos las pruebas siguiendo OWASP, PTES y MITRE ATT&CK.
+        - generic [ref=e313]:
+          - generic [ref=e314]: "03"
+          - heading "Reporte" [level=4] [ref=e315]
+          - paragraph [ref=e316]: Reporte ejecutivo y técnico, con evidencias y severidad de cada hallazgo.
+        - generic [ref=e317]:
+          - generic [ref=e318]: "04"
+          - heading "Retest" [level=4] [ref=e319]
+          - paragraph [ref=e320]: Verificamos que las correcciones cierren las vulnerabilidades encontradas.
+      - link "Agenda una evaluación de seguridad" [ref=e321] [cursor=pointer]:
+        - /url: "#contacto"
+    - generic [ref=e323]:
+      - generic [ref=e324]:
+        - paragraph [ref=e325]: Cómo trabajamos
+        - heading "Tecnología que conecta tu negocio." [level=2] [ref=e326]: Tecnología queconecta tu negocio.
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - heading "Automatización" [level=3] [ref=e333]
+          - paragraph [ref=e334]: Conecta tus herramientas y elimina tareas manuales.
+        - generic [ref=e335]:
+          - heading "Software a medida" [level=3] [ref=e341]
+          - paragraph [ref=e342]: Soluciones diseñadas para tus procesos.
+        - generic [ref=e343]:
+          - heading "Analítica e IA" [level=3] [ref=e347]
+          - paragraph [ref=e348]: Convierte tus datos en mejores decisiones.
+    - generic [ref=e350]:
+      - generic [ref=e351]:
+        - heading "Hablemos de lo que sigue." [level=2] [ref=e352]
+        - paragraph [ref=e353]: Cuéntanos sobre tu proyecto y encontremos la mejor forma de hacerlo realidad.
+      - link "Cuéntanos tu proyecto ↗" [ref=e354] [cursor=pointer]:
+        - /url: "#contacto"
+    - generic [ref=e356]:
+      - paragraph [ref=e357]: Contacto
+      - heading "¿Tienes un problema que vale la pena resolver con IA?" [level=2] [ref=e358]
+      - paragraph [ref=e359]: Cuéntanos qué necesitas. Respondemos personalmente — sin formularios automáticos de relleno.
+      - generic [ref=e360]:
+        - generic [ref=e361]:
+          - generic [ref=e362]:
+            - generic [ref=e363]:
+              - generic [ref=e364]: Nombre *
+              - textbox "Nombre *" [ref=e365]:
+                - /placeholder: Tu nombre
+            - generic [ref=e366]:
+              - generic [ref=e367]: Correo *
+              - textbox "Correo *" [ref=e368]:
+                - /placeholder: tucorreo@ejemplo.com
+          - generic [ref=e369]:
+            - generic [ref=e370]: Empresa (opcional)
+            - textbox "Empresa (opcional)" [ref=e371]:
+              - /placeholder: Nombre de tu empresa
+          - generic [ref=e372]:
+            - generic [ref=e373]: Mensaje *
+            - textbox "Mensaje *" [ref=e374]:
+              - /placeholder: Cuéntanos sobre tu proyecto o necesidad...
+          - button "Enviar mensaje" [ref=e375]
+        - generic [ref=e376]:
+          - generic [ref=e377]:
+            - generic [ref=e378]: Correo
+            - link "contacto@deltaanalytics.io" [ref=e379] [cursor=pointer]:
+              - /url: mailto:contacto@deltaanalytics.io
+          - generic [ref=e380]:
+            - generic [ref=e381]: Ubicación
+            - generic [ref=e382]: Guadalajara, Jalisco · México
+          - generic [ref=e383]:
+            - generic [ref=e384]: Síguenos
+            - generic [ref=e385]:
+              - link "Instagram" [ref=e386] [cursor=pointer]:
+                - /url: https://instagram.com/deltaanalytics
+              - link "LinkedIn" [ref=e387] [cursor=pointer]:
+                - /url: https://linkedin.com/company/deltaanalytics
+          - generic [ref=e388]:
+            - generic [ref=e389]: Productos
+            - link "TradeIQ Pro ↗" [ref=e390] [cursor=pointer]:
+              - /url: https://tradeiqpro.com
+            - link "Shubati ↗" [ref=e391] [cursor=pointer]:
+              - /url: https://www.shubati.mx/
+  - contentinfo [ref=e392]:
+    - generic [ref=e393]:
+      - generic [ref=e394]:
+        - generic [ref=e395]:
+          - generic [ref=e396]: Δ
+          - generic [ref=e397]: Delta Analytics
+        - generic [ref=e398]: "|"
+        - generic [ref=e399]: Guadalajara, Jalisco · México
+      - generic [ref=e400]:
+        - navigation [ref=e401]:
+          - link "Soluciones" [ref=e402] [cursor=pointer]:
+            - /url: "#soluciones"
+          - link "Portafolio" [ref=e403] [cursor=pointer]:
+            - /url: "#productos"
+          - link "Nosotros" [ref=e404] [cursor=pointer]:
+            - /url: "#quienes"
+        - generic [ref=e405]:
+          - link "LinkedIn" [ref=e406] [cursor=pointer]:
+            - /url: https://linkedin.com/company/deltaanalytics
+          - link "Instagram" [ref=e407] [cursor=pointer]:
+            - /url: https://instagram.com/deltaanalytics
+    - generic [ref=e408]: Δ Delta Analytics — 2026 · Construido con datos, IA y café.
+  - button "Open Next.js Dev Tools" [ref=e414] [cursor=pointer]
