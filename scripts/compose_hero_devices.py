@@ -8,26 +8,35 @@ Setup (one-time, outside the repo):
 
 Run:
     source ~/.venvs/delta-paginas-web-cv/bin/activate
-    python3 scripts/compose_hero_devices.py
+    python3 scripts/compose_hero_devices.py [site]   # site: lapuerta (default) | tla
 
 Inputs:
-    _ref/devices-hero.png                   - green-screen laptop+phone render
-    _ref/casos-source/lapuerta-laptop.png   - 1440x900 desktop screenshot (2x = 2880x1800)
-    _ref/casos-source/lapuerta-mobile.png   - 390x844 mobile screenshot (2x = 780x1688)
+    _ref/devices-hero.png                 - green-screen laptop+phone render
+    _ref/casos-source/{site}-laptop.png   - 1440x900 desktop screenshot (2x = 2880x1800)
+    _ref/casos-source/{site}-mobile.png   - 390x844 mobile screenshot (2x = 780x1688)
 
 Outputs:
-    _ref/devices-debug-corners.png   - corner/quad overlay for visual verification
-    public/paginas-web/devices-hero.webp - final composed RGBA image used by the Hero
+    _ref/devices-debug-corners.png        - corner/quad overlay for visual verification
+    _ref/hero-{puerta|tla}.png            - composed preview for that site
+    public/paginas-web/devices-hero.webp  - published asset, only written for `lapuerta`
+                                             (the current live site) until a choice is made
 """
+import sys
 import cv2
 import numpy as np
 from PIL import Image
 
+SITE = sys.argv[1] if len(sys.argv) > 1 else "lapuerta"
+OUTPUT_NAME = {"lapuerta": "puerta", "tla": "tla"}.get(SITE, SITE)
+# the live site asset stays on lapuerta until a choice is made; other sites only
+# produce the _ref comparison PNG, they don't touch the published webp
+WRITE_PUBLIC_WEBP = SITE == "lapuerta"
+
 SRC = "_ref/devices-hero.png"
-DESKTOP_SHOT = "_ref/casos-source/lapuerta-laptop.png"
-MOBILE_SHOT = "_ref/casos-source/lapuerta-mobile.png"
+DESKTOP_SHOT = f"_ref/casos-source/{SITE}-laptop.png"
+MOBILE_SHOT = f"_ref/casos-source/{SITE}-mobile.png"
 DEBUG_OUT = "_ref/devices-debug-corners.png"
-FINAL_PNG = "_ref/devices-composed.png"
+FINAL_PNG = f"_ref/hero-{OUTPUT_NAME}.png"
 FINAL_WEBP = "public/paginas-web/devices-hero.webp"
 
 GREEN_LOWER = np.array([35, 90, 90])
@@ -121,9 +130,11 @@ def warp_into(src_img, dst_quad, canvas_shape):
     h, w = src_img.shape[:2]
     src_quad = np.array([[0, 0], [w, 0], [w, h], [0, h]], dtype=np.float32)
     M = cv2.getPerspectiveTransform(src_quad, dst_quad.astype(np.float32))
+    # LANCZOS4 keeps text/edges crisp when shrinking a ~2x screenshot down into
+    # the device quad; INTER_LINEAR was visibly softer on the screen content.
     warped = cv2.warpPerspective(
         src_img, M, (canvas_shape[1], canvas_shape[0]),
-        flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0),
+        flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0),
     )
     return warped
 
@@ -244,17 +255,21 @@ def main():
     composed = composed * (1 - phone_alpha) + warped_phone.astype(np.float32) * phone_alpha
     composed = np.clip(composed, 0, 255).astype(np.uint8)
 
-    # --- 3) subtle diagonal sheen over each screen ---
-    composed = add_sheen(composed, laptop_mask, strength=0.08)
-    composed = add_sheen(composed, phone_mask, strength=0.06)
+    # --- 3) near-invisible diagonal sheen: the screen must keep the site's
+    #     real contrast, not look brightened/washed out ---
+    composed = add_sheen(composed, laptop_mask, strength=0.02)
+    composed = add_sheen(composed, phone_mask, strength=0.015)
 
-    # --- 4) soft halo around the laptop silhouette ---
+    # --- 4) soft halo around the laptop silhouette (bezel/background only --
+    #     excluded from both screens so it never washes out the site content) ---
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     x_limit = int(phone_quad[:, 0].min()) + 10
     body = laptop_body_mask(gray, laptop_mask, x_limit)
     halo_src = cv2.dilate(body, np.ones((25, 25), np.uint8), iterations=1)
     halo = cv2.GaussianBlur(halo_src, (0, 0), sigmaX=35)
     halo_f = (halo.astype(np.float32) / 255.0) * 0.16
+    screens = cv2.bitwise_or(laptop_mask, phone_mask) > 0
+    halo_f[screens] = 0.0
     warm = np.array([130, 170, 255], dtype=np.float32)  # BGR warm glow
     composed_f = composed.astype(np.float32)
     for c in range(3):
@@ -279,12 +294,13 @@ def main():
     print("wrote", DEBUG_OUT)
     print("wrote", FINAL_PNG)
 
-    # --- 6) export optimized WebP (RGBA) via Pillow ---
-    rgba = cv2.cvtColor(bgra, cv2.COLOR_BGRA2RGBA)
-    # q95 avoids visible banding in the dark gradient / beam area (q82 measurably
-    # reduced the number of distinct luminance levels there vs the lossless PNG)
-    Image.fromarray(rgba).save(FINAL_WEBP, "WEBP", quality=95, method=6)
-    print("wrote", FINAL_WEBP)
+    # --- 6) export optimized WebP (RGBA) via Pillow, only for the live site ---
+    if WRITE_PUBLIC_WEBP:
+        rgba = cv2.cvtColor(bgra, cv2.COLOR_BGRA2RGBA)
+        # q95 avoids visible banding in the dark gradient / beam area (q82 measurably
+        # reduced the number of distinct luminance levels there vs the lossless PNG)
+        Image.fromarray(rgba).save(FINAL_WEBP, "WEBP", quality=95, method=6)
+        print("wrote", FINAL_WEBP)
 
 
 if __name__ == "__main__":
