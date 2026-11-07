@@ -97,12 +97,13 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:top-0 lg:right-0 lg:bottom-[165px] lg:left-[38%] lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto">
+        <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:top-0 lg:right-0 lg:bottom-[110px] lg:left-[30%] lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_22%),linear-gradient(to_top,transparent_0%,#000_28%)] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_22%),linear-gradient(to_top,transparent_0%,#000_28%)] lg:[-webkit-mask-composite:source-in] lg:[mask-composite:intersect]">
           <Image
             src="/paginas-web/devices-hero.webp"
             alt="Captura del sitio de TLA Adventures en laptop y celular"
             fill
             priority
+            unoptimized
             sizes="100vw"
             className="object-contain object-right lg:object-cover lg:object-[right_bottom]"
           />

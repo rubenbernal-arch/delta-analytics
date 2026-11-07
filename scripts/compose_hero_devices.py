@@ -84,16 +84,24 @@ def quad_from_mask(mask):
 
 
 def warp_into(src_img, dst_quad, canvas_shape):
+    q = dst_quad.astype(np.float32)
     h, w = src_img.shape[:2]
+    # ancho real de la pantalla destino (borde mas largo, arriba o abajo)
+    target_w = max(np.linalg.norm(q[1] - q[0]), np.linalg.norm(q[2] - q[3]))
+    # 1) reducir primero con INTER_AREA (filtra de verdad, sin halos ni dientes)
+    scale = min(1.0, (target_w * 1.25) / w)
+    if scale < 1.0:
+        src_img = cv2.resize(
+            src_img, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA
+        )
+    h, w = src_img.shape[:2]
+    # 2) ya cerca del tamano final, aplicar la perspectiva con LINEAR
     src_quad = np.array([[0, 0], [w, 0], [w, h], [0, h]], dtype=np.float32)
-    M = cv2.getPerspectiveTransform(src_quad, dst_quad.astype(np.float32))
-    # LANCZOS4 keeps text/edges crisp when shrinking a ~2x screenshot down into
-    # the device quad; INTER_LINEAR was visibly softer on the screen content.
-    warped = cv2.warpPerspective(
+    M = cv2.getPerspectiveTransform(src_quad, q)
+    return cv2.warpPerspective(
         src_img, M, (canvas_shape[1], canvas_shape[0]),
-        flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE,
+        flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE,
     )
-    return warped
 
 
 def despill(img, mask=None, ring_px=None):
@@ -207,12 +215,13 @@ def main():
     composed = base.astype(np.float32)
     composed = composed * (1 - lap_alpha) + warped_laptop.astype(np.float32) * lap_alpha
     composed = composed * (1 - phone_alpha) + warped_phone.astype(np.float32) * phone_alpha
-    composed = np.clip(composed, 0, 255).astype(np.uint8)
+    composed = np.clip(composed, 0, 255).astype(np.uint8)   
+    cv2.imwrite("_ref/dbg-composed.png", composed)
 
     # --- 3) near-invisible diagonal sheen: the screen must keep the site's
     #     real contrast, not look brightened/washed out ---
-    composed = add_sheen(composed, laptop_mask, strength=0.02)
-    composed = add_sheen(composed, phone_mask, strength=0.015)
+    # composed = add_sheen(composed, laptop_mask, strength=0.02)
+    # composed = add_sheen(composed, phone_mask, strength=0.015)
 
     # --- 4) soft halo around the laptop silhouette (bezel/background only --
     #     excluded from both screens so it never washes out the site content) ---
