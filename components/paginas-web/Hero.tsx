@@ -60,13 +60,13 @@ export function Hero() {
           <div className="mb-4 flex flex-wrap items-center gap-[22px]">
             <a
               href="#cotiza"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-10 py-[1rem] text-[1.05rem] font-semibold text-[#14161A] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-8px_rgba(255,128,0,0.55)]"
+              className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-10 text-[1.05rem] font-semibold text-[#14161A] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-8px_rgba(255,128,0,0.55)]"
             >
               Solicitar diagnóstico gratuito <span aria-hidden="true">→</span>
             </a>
             <a
               href="#proyectos"
-              className="inline-flex items-center gap-2 rounded-full border border-white/80 px-[33px] py-[1rem] text-[1.05rem] font-semibold text-white transition-colors hover:bg-white/10"
+              className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full border border-white/80 px-[33px] text-[1.05rem] font-semibold text-white transition-colors hover:bg-white/10"
             >
               <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor" aria-hidden="true" className="shrink-0">
                 <path d="M0 0L12 7L0 14Z" />
@@ -79,11 +79,13 @@ export function Hero() {
             Desde $7,500 MXN + IVA · Entrega en 5 días hábiles · Dominio 1er año incluido
           </p>
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-0">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
             {benefits.map((b, i) => (
-              <div key={b.title} className="flex items-stretch">
-                {i > 0 && <div className="mr-7 hidden w-px self-stretch bg-white/15 lg:block" aria-hidden="true" />}
-                <div className="flex max-w-[280px] flex-col gap-2 lg:max-w-[200px]">
+              <div
+                key={b.title}
+                className={`flex items-stretch ${i > 0 ? 'lg:border-l lg:border-white/15 lg:pl-6' : ''}`}
+              >
+                <div className="flex max-w-[280px] flex-col gap-2 pr-4 lg:max-w-[200px]">
                   {b.icon}
                   <div>
                     <p className="font-display text-[1rem] font-semibold text-white">{b.title}</p>
@@ -98,13 +100,18 @@ export function Hero() {
         <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:inset-0 lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto">
           <Image
             src="/paginas-web/devices-hero.webp"
-            alt="Captura del sitio de La Puerta de Michoacán en laptop y celular"
+            alt="Captura del sitio de TLA Adventures en laptop y celular"
             fill
             priority
             sizes="100vw"
             className="object-contain object-right lg:object-cover lg:object-[right_bottom]"
           />
         </div>
+
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 z-[5] hidden h-[190px] w-[46%] bg-gradient-to-r from-base via-base/75 to-transparent lg:block"
+          aria-hidden="true"
+        />
       </div>
     </section>
   )

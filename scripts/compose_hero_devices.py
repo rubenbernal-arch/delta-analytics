@@ -26,11 +26,11 @@ import cv2
 import numpy as np
 from PIL import Image
 
-SITE = sys.argv[1] if len(sys.argv) > 1 else "lapuerta"
+SITE = sys.argv[1] if len(sys.argv) > 1 else "tla"
 OUTPUT_NAME = {"lapuerta": "puerta", "tla": "tla"}.get(SITE, SITE)
-# the live site asset stays on lapuerta until a choice is made; other sites only
+# tla is the published default until a choice is made; other sites only
 # produce the _ref comparison PNG, they don't touch the published webp
-WRITE_PUBLIC_WEBP = SITE == "lapuerta"
+WRITE_PUBLIC_WEBP = SITE == "tla"
 
 SRC = "_ref/devices-hero.png"
 DESKTOP_SHOT = f"_ref/casos-source/{SITE}-laptop.png"
@@ -237,6 +237,25 @@ def main():
     # darken screenshots ~10% before compositing
     warped_laptop = (warped_laptop.astype(np.float32) * 0.90).astype(np.uint8)
     warped_phone = (warped_phone.astype(np.float32) * 0.90).astype(np.uint8)
+
+    def bottom_vignette(img_bgr, mask, max_darken=0.3, start_frac=0.38):
+        """The bottom of the warped screen maps to content below the page's main
+        fold (a lighter next-section on both test sites), which reads as a hard
+        bright wedge against the richer hero content above it. Darken only the
+        lower portion, feathered, so the screen reads as one coherent surface
+        instead of raising brightness anywhere."""
+        ys, xs = np.where(mask > 0)
+        y0, y1 = ys.min(), ys.max()
+        h = y1 - y0 + 1
+        yy = (np.arange(img_bgr.shape[0], dtype=np.float32) - y0) / h
+        frac = np.clip((yy - start_frac) / (1 - start_frac), 0, 1)
+        frac = frac * frac * (3 - 2 * frac)  # smoothstep
+        factor = (1 - frac * max_darken)[:, None]
+        out = img_bgr.astype(np.float32) * factor[:, :, None]
+        return out.astype(np.uint8)
+
+    warped_laptop = bottom_vignette(warped_laptop, laptop_mask)
+    warped_phone = bottom_vignette(warped_phone, phone_mask)
 
     # smooth signed-distance alpha centered exactly on the mask boundary: no gap,
     # monotonic ramp 0->1 across `feather` px on each side of the edge.
