@@ -3,6 +3,7 @@
 ## Paleta (app/globals.css)
 - Base: #14161A · Surface: #1F2226 / #2E2E2A
 - Acento: #FF8000 (naranja) · Acento 2: #CFCFC9 · Warm/error: #C63F2E
+- Navy (manual de marca v2.0, oscuro secundario): #0D1B3E — uso exclusivo en franja de beneficios y CTA final de `/paginas-web`, no reemplaza la base grafito del resto del sitio
 - Texto: #FFFFFF / muted #ABABA4 / dim #63635C
 - Sección clara (portafolio/logos): #F2EEE7
 - Líneas: rgba(255,255,255,.07) / .14
