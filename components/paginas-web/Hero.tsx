@@ -57,7 +57,7 @@ export function Hero() {
             Diseñamos y desarrollamos páginas web enfocadas en generar resultados reales, ya sea que hoy no tengas una o quieras una que por fin funcione.
           </p>
 
-          <div className="mb-4 flex flex-wrap items-center gap-[22px]">
+          <div className="mb-6 flex flex-wrap items-center gap-[22px]">
             <a
               href="#cotiza"
               className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-10 text-[1.05rem] font-semibold text-[#14161A] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-8px_rgba(255,128,0,0.55)]"
@@ -75,7 +75,7 @@ export function Hero() {
             </a>
           </div>
 
-          <p className="mb-6 font-mono text-[0.78rem] tracking-wide text-dim">
+          <p className="mb-10 font-mono text-[0.78rem] tracking-wide text-dim">
             Desde $7,500 MXN + IVA · Entrega en 5 días hábiles · Dominio 1er año incluido
           </p>
 
@@ -85,7 +85,7 @@ export function Hero() {
                 key={b.title}
                 className={`flex items-stretch ${i > 0 ? 'lg:border-l lg:border-white/15 lg:pl-6' : ''}`}
               >
-                <div className="flex max-w-[280px] flex-col gap-2 pr-4 lg:max-w-[200px]">
+                <div className="flex max-w-[280px] flex-col gap-2 pr-4 lg:max-w-[235px]">
                   {b.icon}
                   <div>
                     <p className="font-display text-[1rem] font-semibold text-white">{b.title}</p>
@@ -97,7 +97,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:inset-0 lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto">
+        <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:top-0 lg:right-0 lg:bottom-[165px] lg:left-[38%] lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto">
           <Image
             src="/paginas-web/devices-hero.webp"
             alt="Captura del sitio de TLA Adventures en laptop y celular"

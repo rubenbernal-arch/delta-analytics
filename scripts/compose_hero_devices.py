@@ -52,78 +52,35 @@ def green_mask(img):
     return mask
 
 
-def extreme_point(contour, key):
-    pts = contour.reshape(-1, 2)
-    idx = np.argmax([key(p[0], p[1]) for p in pts])
-    return pts[idx].astype(np.float64)
-
-
-def fit_line_xy(points):
-    """Fit x = a*y + b from (y, x) samples via least squares."""
-    ys = points[:, 0]
-    xs = points[:, 1]
-    A = np.vstack([ys, np.ones_like(ys)]).T
-    a, b = np.linalg.lstsq(A, xs, rcond=None)[0]
-    return a, b  # x = a*y + b
-
-
-def laptop_corners(contour, mask):
-    pts = contour.reshape(-1, 2)
-    tl = extreme_point(contour, lambda x, y: -(x + y))
-    tr = extreme_point(contour, lambda x, y: (x - y))
-    bl = extreme_point(contour, lambda x, y: (y - x))
-
-    # Right edge profile: for each row y in the upper half (unoccluded by phone),
-    # take the max x of the mask in that row -> points on the true right edge.
-    y_top = int(tl[1])
-    y_bottom = int(bl[1])
-    y_mid = y_top + int(0.55 * (y_bottom - y_top))
-    right_pts = []
-    for y in range(y_top + 5, y_mid):
-        row = np.where(mask[y] > 0)[0]
-        if row.size:
-            right_pts.append((y, row.max()))
-    right_pts = np.array(right_pts, dtype=np.float64)
-    a_r, b_r = fit_line_xy(right_pts)  # x = a_r*y + b_r
-
-    # Bottom edge profile: for each column x in the left half (unoccluded by phone),
-    # take the max y of the mask in that column -> points on the true bottom edge.
-    x_left = int(tl[0])
-    x_right = int(tr[0])
-    x_mid = x_left + int(0.5 * (x_right - x_left))
-    bottom_pts = []
-    for x in range(x_left + 5, x_mid):
-        col = np.where(mask[:, x] > 0)[0]
-        if col.size:
-            bottom_pts.append((col.max(), x))
-    bottom_pts = np.array(bottom_pts, dtype=np.float64)
-    # fit x = c*y + d too (same form), but here we sampled (y=col.max(), x=x) i.e. (bottom_y, x)
-    # we want y as function of x: y = c*x + d
-    xs = bottom_pts[:, 1]
-    ys = bottom_pts[:, 0]
-    A = np.vstack([xs, np.ones_like(xs)]).T
-    c, d = np.linalg.lstsq(A, ys, rcond=None)[0]  # y = c*x + d
-
-    # Intersect: x = a_r*y + b_r  and y = c*x + d
-    # x = a_r*(c*x + d) + b_r  => x*(1 - a_r*c) = a_r*d + b_r
-    x_br = (a_r * d + b_r) / (1 - a_r * c)
-    y_br = c * x_br + d
-    br = np.array([x_br, y_br])
-
-    return tl, tr, bl, br
-
-
-def phone_corners(contour):
-    hull = cv2.convexHull(contour).reshape(-1, 2)
-    tl = hull[np.argmin(hull[:, 0] + hull[:, 1])].astype(np.float64)
-    tr = hull[np.argmax(hull[:, 0] - hull[:, 1])].astype(np.float64)
-    bl = hull[np.argmax(hull[:, 1] - hull[:, 0])].astype(np.float64)
-    br = hull[np.argmax(hull[:, 0] + hull[:, 1])].astype(np.float64)
-    return tl, tr, bl, br
-
-
-def order_quad(tl, tr, bl, br):
+def order_points(pts):
+    """Standard 4-point ordering: TL (min sum), BR (max sum), TR (min y-x),
+    BL (max y-x)."""
+    s = pts.sum(axis=1)
+    d = (pts[:, 1] - pts[:, 0])  # y - x
+    tl = pts[np.argmin(s)]
+    br = pts[np.argmax(s)]
+    tr = pts[np.argmin(d)]
+    bl = pts[np.argmax(d)]
     return np.array([tl, tr, br, bl], dtype=np.float32)
+
+
+def quad_from_mask(mask):
+    """4 corners straight from the green mask: largest contour -> convex hull ->
+    approxPolyDP down to 4 points (falls back to minAreaRect if that doesn't
+    land on exactly 4)."""
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnt = max(contours, key=cv2.contourArea)
+    hull = cv2.convexHull(cnt)
+    peri = cv2.arcLength(hull, True)
+    pts = None
+    for eps_frac in (0.02, 0.03, 0.05, 0.08):
+        approx = cv2.approxPolyDP(hull, eps_frac * peri, True)
+        if len(approx) == 4:
+            pts = approx.reshape(-1, 2).astype(np.float32)
+            break
+    if pts is None:
+        pts = cv2.boxPoints(cv2.minAreaRect(cnt))
+    return order_points(pts)
 
 
 def warp_into(src_img, dst_quad, canvas_shape):
@@ -134,7 +91,7 @@ def warp_into(src_img, dst_quad, canvas_shape):
     # the device quad; INTER_LINEAR was visibly softer on the screen content.
     warped = cv2.warpPerspective(
         src_img, M, (canvas_shape[1], canvas_shape[0]),
-        flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0),
+        flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE,
     )
     return warped
 
@@ -207,11 +164,8 @@ def main():
     phone_mask = np.zeros(mask.shape, np.uint8)
     cv2.drawContours(phone_mask, [phone_cnt], -1, 255, -1)
 
-    tl, tr, bl, br = laptop_corners(laptop_cnt, laptop_mask)
-    laptop_quad = order_quad(tl, tr, bl, br)
-
-    ptl, ptr, pbl, pbr = phone_corners(phone_cnt)
-    phone_quad = order_quad(ptl, ptr, pbl, pbr)
+    laptop_quad = quad_from_mask(laptop_mask)
+    phone_quad = quad_from_mask(phone_mask)
 
     debug = img.copy()
     draw_quad(debug, laptop_quad, (0, 0, 255))
@@ -237,25 +191,6 @@ def main():
     # darken screenshots ~10% before compositing
     warped_laptop = (warped_laptop.astype(np.float32) * 0.90).astype(np.uint8)
     warped_phone = (warped_phone.astype(np.float32) * 0.90).astype(np.uint8)
-
-    def bottom_vignette(img_bgr, mask, max_darken=0.3, start_frac=0.38):
-        """The bottom of the warped screen maps to content below the page's main
-        fold (a lighter next-section on both test sites), which reads as a hard
-        bright wedge against the richer hero content above it. Darken only the
-        lower portion, feathered, so the screen reads as one coherent surface
-        instead of raising brightness anywhere."""
-        ys, xs = np.where(mask > 0)
-        y0, y1 = ys.min(), ys.max()
-        h = y1 - y0 + 1
-        yy = (np.arange(img_bgr.shape[0], dtype=np.float32) - y0) / h
-        frac = np.clip((yy - start_frac) / (1 - start_frac), 0, 1)
-        frac = frac * frac * (3 - 2 * frac)  # smoothstep
-        factor = (1 - frac * max_darken)[:, None]
-        out = img_bgr.astype(np.float32) * factor[:, :, None]
-        return out.astype(np.uint8)
-
-    warped_laptop = bottom_vignette(warped_laptop, laptop_mask)
-    warped_phone = bottom_vignette(warped_phone, phone_mask)
 
     # smooth signed-distance alpha centered exactly on the mask boundary: no gap,
     # monotonic ramp 0->1 across `feather` px on each side of the edge.
