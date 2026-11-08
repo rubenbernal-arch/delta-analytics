@@ -4,7 +4,6 @@ import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, MotionConfig, type Variants } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { estilos, brillo, tamanos } from './Boton'
 import { serif } from './fuentes'
 
 const WHATSAPP = 'https://wa.me/523330163038?text=Hola%2C%20quiero%20cotizar%20una%20p%C3%A1gina%20web%20para%20mi%20negocio'
@@ -364,17 +363,9 @@ export function Formulario() {
                   )}
                 </div>
 
-                <motion.button
-                  type="submit"
-                  disabled={estado === 'enviando'}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className={`group relative inline-flex w-full items-center justify-center overflow-hidden whitespace-nowrap rounded-full font-semibold backdrop-blur-xl transition-shadow disabled:opacity-70 ${tamanos.normal} ${estilos.primario}`}
-                >
-                  <span aria-hidden="true" className={`pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b ${brillo.primario} to-transparent`} />
-                  <span className="relative z-10">{estado === 'enviando' ? 'Enviando...' : 'Quiero mi diagnóstico gratuito'}</span>
-                </motion.button>
+                <button type="submit" disabled={estado === 'enviando'} className="btn86 btn86-p btn86-full">
+                  <span>{estado === 'enviando' ? 'Enviando...' : 'Quiero mi diagnóstico gratuito'}</span>
+                </button>
 
                 {estado === 'error' && (
                   <div role="alert" className="rounded-lg border border-[#ff7a6b]/40 bg-[#ff7a6b]/10 p-4 text-[0.92rem] text-white">
