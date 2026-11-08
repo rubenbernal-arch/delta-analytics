@@ -75,7 +75,7 @@ export function Hero() {
           </div>
 
           <p className="mb-10 font-mono text-[0.78rem] tracking-wide text-dim">
-            Desde $7,500 MXN + IVA · Entrega en 5 días hábiles · Dominio 1er año incluido
+            Desde $8,700 MXN IVA incluido · Entrega en 5 días hábiles · Dominio 1er año incluido
           </p>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
