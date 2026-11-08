@@ -1,4 +1,3 @@
-import Image from 'next/image'
 
 const benefits = [
   {
@@ -98,15 +97,16 @@ export function Hero() {
         </div>
 
         <div className="pointer-events-none relative z-0 mt-10 aspect-[2700/1514] w-full lg:absolute lg:top-0 lg:right-0 lg:bottom-[110px] lg:left-[30%] lg:z-0 lg:mt-0 lg:aspect-auto lg:w-auto lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_22%),linear-gradient(to_top,transparent_0%,#000_28%)] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_22%),linear-gradient(to_top,transparent_0%,#000_28%)] lg:[-webkit-mask-composite:source-in] lg:[mask-composite:intersect]">
-          <Image
-            src="/paginas-web/devices-hero.webp"
-            alt="Captura del sitio de TLA Adventures en laptop y celular"
-            fill
-            priority
-            unoptimized
-            sizes="100vw"
-            className="object-contain object-right lg:object-cover lg:object-[right_bottom]"
-          />
+          <picture>
+            <source media="(min-width: 1024px)" srcSet="/paginas-web/devices-hero.webp" />
+            <img
+              src="/paginas-web/devices-hero-1200.webp"
+              alt="Laptop con el sitio de TLA Adventures y celular con el sitio de La Puerta de Michoacán, páginas web hechas por Delta Analytics"
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-contain object-right lg:object-cover lg:object-[right_bottom]"
+            />
+          </picture>
         </div>
 
         <div
