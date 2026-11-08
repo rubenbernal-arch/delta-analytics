@@ -1,3 +1,5 @@
+import { Boton } from './Boton'
+import { TituloHero } from './TituloHero'
 
 const benefits = [
   {
@@ -33,6 +35,15 @@ const benefits = [
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden bg-base">
+      <svg
+        className="pointer-events-none absolute -left-[8%] bottom-[-18%] hidden w-[620px] opacity-[0.07] lg:block"
+        viewBox="0 0 100 90"
+        fill="none"
+        aria-hidden="true"
+      >
+        <polygon points="50,3 97,87 3,87" stroke="#fff" strokeWidth="0.35" />
+        <polygon points="50,22 80,78 20,78" stroke="#FF8000" strokeWidth="0.3" />
+      </svg>
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-10 pt-8 lg:px-0 lg:pl-[72px] lg:pt-[44px]">
         <div className="relative z-10 max-w-[720px]">
           <div className="mb-5 flex items-center gap-3">
@@ -42,36 +53,20 @@ export function Hero() {
             </span>
           </div>
 
-          <h1 className="mb-5 font-display text-[32px] font-extrabold leading-[1.15] tracking-tight text-white sm:text-[42px] lg:text-[60px] lg:leading-[1.0]">
-            Consigue más clientes{' '}
-            <br className="hidden lg:block" />
-            y haz crecer tu negocio{' '}
-            <br className="hidden lg:block" />
-            con una <span className="text-accent">página web</span>{' '}
-            <br className="hidden lg:block" />
-            <span className="text-accent">profesional.</span>
-          </h1>
+          <TituloHero />
 
           <p className="mb-[12px] max-w-[590px] text-[1.4rem] leading-[1.5] text-muted">
             Diseñamos y desarrollamos páginas web enfocadas en generar resultados reales, ya sea que hoy no tengas una o quieras una que por fin funcione.
           </p>
 
           <div className="mb-6 flex flex-wrap items-center gap-[22px]">
-            <a
-              href="#cotiza"
-              className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-10 text-[1.05rem] font-semibold text-[#14161A] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-8px_rgba(255,128,0,0.55)]"
-            >
-              Solicitar diagnóstico gratuito <span aria-hidden="true">→</span>
-            </a>
-            <a
-              href="#proyectos"
-              className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full border border-white/80 px-[33px] text-[1.05rem] font-semibold text-white transition-colors hover:bg-white/10"
-            >
+            <Boton href="#cotiza">Solicitar diagnóstico gratuito</Boton>
+            <Boton href="#proyectos" variante="cristal" flecha={false}>
               <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor" aria-hidden="true" className="shrink-0">
                 <path d="M0 0L12 7L0 14Z" />
               </svg>
               Ver proyectos
-            </a>
+            </Boton>
           </div>
 
           <p className="mb-10 font-mono text-[0.78rem] tracking-wide text-dim">

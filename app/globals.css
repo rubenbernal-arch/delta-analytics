@@ -76,3 +76,23 @@
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
+
+/* Entrada de lineas del titulo del hero: solo CSS, no depende de JS para verse */
+@keyframes subir-linea {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+.linea-hero { animation: subir-linea 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .linea-hero { animation: none; }
+}
+
+/* Cinta de giros (marquee) */
+@keyframes cinta-giros {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.cinta-giros { animation: cinta-giros 38s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .cinta-giros { animation: none; }
+}
