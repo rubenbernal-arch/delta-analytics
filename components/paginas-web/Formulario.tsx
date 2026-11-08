@@ -3,12 +3,14 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, MotionConfig, type Variants } from 'framer-motion'
-import { ChevronDown, FileText, MessageSquare, Search } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { estilos, brillo, tamanos } from './Boton'
+import { serif } from './fuentes'
 
 const WHATSAPP = 'https://wa.me/523330163038?text=Hola%2C%20quiero%20cotizar%20una%20p%C3%A1gina%20web%20para%20mi%20negocio'
 const CLAVES_ATRIBUCION = ['gclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
 const ALMACEN = 'dw_atribucion'
+const CHAFLAN = 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 36px 100%, 0 calc(100% - 36px))'
 
 const giros = [
   'Restaurante o cafetería',
@@ -27,9 +29,9 @@ const situaciones = [
 ]
 
 const pasos = [
-  { titulo: 'Nos cuentas de tu negocio', texto: 'Dos minutos, solo lo básico.', Icono: MessageSquare },
-  { titulo: 'Te contactamos', texto: 'Por WhatsApp, para entender qué necesitas.', Icono: Search },
-  { titulo: 'Recibes tu cotización', texto: 'Precio claro, desde $8,700 MXN IVA incluido.', Icono: FileText },
+  { titulo: 'Nos cuentas de tu negocio', texto: 'Dos minutos, solo lo básico.' },
+  { titulo: 'Te contactamos', texto: 'Por WhatsApp, para entender qué necesitas.' },
+  { titulo: 'Recibes tu cotización', texto: 'Precio claro, desde $8,700 MXN IVA incluido.' },
 ]
 
 const subir: Variants = {
@@ -40,7 +42,7 @@ const lista: Variants = { hidden: {}, visible: { transition: { staggerChildren: 
 const visible = { once: true, amount: 0.2 } as const
 
 const entrada =
-  'h-12 w-full rounded-xl border border-white/15 bg-[#1a1d21] px-4 text-[1rem] text-white placeholder:text-dim outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30'
+  'h-12 w-full rounded-lg border border-white/15 bg-[#1a1d21] px-4 text-[1rem] text-white placeholder:text-dim outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30'
 
 type Errores = Partial<Record<'nombre' | 'whatsapp' | 'giro' | 'correo' | 'consentimiento', string>>
 
@@ -53,9 +55,9 @@ function soloDiez(valor: string) {
 function Campo({ id, etiqueta, error, opcional, children }: { id: string; etiqueta: string; error?: string; opcional?: boolean; children: ReactNode }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 flex items-baseline justify-between text-[0.9rem] font-medium text-white">
+      <label htmlFor={id} className="mb-2 flex items-baseline justify-between font-mono text-[0.72rem] uppercase tracking-[0.14em] text-white/80">
         {etiqueta}
-        {opcional && <span className="text-[0.78rem] font-normal text-dim">Opcional</span>}
+        {opcional && <span className="text-[0.68rem] font-normal text-dim">Opcional</span>}
       </label>
       {children}
       {error && (
@@ -165,50 +167,62 @@ export function Formulario() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_40%,rgba(255,128,0,0.16),transparent_55%)]"
           aria-hidden="true"
         />
+        <svg
+          className="pointer-events-none absolute -left-[10%] bottom-[-25%] w-[min(700px,70vw)] opacity-[0.07]"
+          viewBox="0 0 100 90"
+          fill="none"
+          aria-hidden="true"
+        >
+          <polygon points="50,3 97,87 3,87" stroke="#fff" strokeWidth="0.35" />
+          <polygon points="50,24 78,76 22,76" stroke="#FF8000" strokeWidth="0.3" />
+        </svg>
         <div className="relative z-10 mx-auto max-w-[1280px] px-6 py-16 lg:px-[72px] lg:py-24">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
             <motion.div variants={lista} initial="hidden" whileInView="visible" viewport={visible} className="lg:sticky lg:top-12">
               <motion.div variants={subir} className="mb-5 flex items-center gap-3">
-                <span className="h-[4px] w-[50px] bg-accent" aria-hidden="true" />
+                <span className="text-accent" aria-hidden="true">▲</span>
                 <span className="font-mono text-[0.8rem] font-medium uppercase tracking-[0.18em] text-white">
                   Diagnóstico gratuito
                 </span>
               </motion.div>
               <motion.h2
                 variants={subir}
-                className="mb-5 text-balance font-display text-[32px] font-extrabold leading-[1.08] tracking-tight text-white sm:text-[42px] lg:text-[52px]"
+                className="mb-4 font-display text-[clamp(36px,5vw,76px)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-white"
               >
-                Cuéntanos de tu negocio y te decimos <span className="text-accent">cómo lo haríamos.</span>
+                Cuéntanos de tu negocio
               </motion.h2>
+              <motion.p
+                variants={subir}
+                className={`${serif.className} mb-6 text-[clamp(30px,3.8vw,56px)] italic leading-[1] text-white/90`}
+              >
+                y te decimos cómo lo haríamos.
+              </motion.p>
               <motion.p variants={subir} className="mb-9 max-w-[520px] text-[1.15rem] leading-[1.5] text-muted">
                 Te damos un diagnóstico gratuito y una cotización clara de tu página web.
               </motion.p>
-              <motion.ol variants={lista} className="flex flex-col gap-5">
-                {pasos.map(({ titulo, texto, Icono }, i) => (
-                  <motion.li key={titulo} variants={subir} className="flex items-center gap-4">
-                    <span className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-xl border border-white/10 bg-surface">
-                      <Icono size={24} className="text-accent" aria-hidden="true" />
-                      <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-accent font-mono text-[0.72rem] font-bold text-[#14161A]">
-                        {i + 1}
-                      </span>
-                    </span>
+              <motion.ol variants={lista} className="border-b border-white/15">
+                {pasos.map(({ titulo, texto }, i) => (
+                  <motion.li key={titulo} variants={subir} className="flex items-baseline gap-5 border-t border-white/15 py-5">
+                    <span className="font-mono text-[0.75rem] tracking-[0.16em] text-accent">0{i + 1}</span>
                     <div>
-                      <p className="font-display text-[1.05rem] font-semibold text-white">{titulo}</p>
-                      <p className="text-[0.95rem] leading-snug text-muted">{texto}</p>
+                      <p className="font-display text-[1.1rem] font-extrabold uppercase tracking-tight text-white">{titulo}</p>
+                      <p className="mt-1 text-[0.95rem] leading-snug text-muted">{texto}</p>
                     </div>
                   </motion.li>
                 ))}
               </motion.ol>
             </motion.div>
 
+            <div style={{ clipPath: CHAFLAN }} className="bg-[rgba(255,160,60,0.45)] p-px">
             <motion.form
+              style={{ clipPath: CHAFLAN }}
               onSubmit={enviar}
               noValidate
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={visible}
               transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="rounded-3xl border border-[rgba(255,160,60,0.35)] bg-surface p-6 shadow-[0_30px_80px_-40px_rgba(255,128,0,0.5)] lg:p-10"
+              className="bg-surface p-6 lg:p-10"
             >
               <div className="flex flex-col gap-5">
                 <Campo id="nombre" etiqueta="Tu nombre" error={errores.nombre}>
@@ -264,14 +278,14 @@ export function Formulario() {
                 </Campo>
 
                 <fieldset>
-                  <legend className="mb-1.5 flex w-full items-baseline justify-between text-[0.9rem] font-medium text-white">
-                    ¿Cuál es tu situación? <span className="text-[0.78rem] font-normal text-dim">Opcional</span>
+                  <legend className="mb-2 flex w-full items-baseline justify-between font-mono text-[0.72rem] uppercase tracking-[0.14em] text-white/80">
+                    ¿Cuál es tu situación? <span className="text-[0.68rem] font-normal text-dim">Opcional</span>
                   </legend>
                   <div className="flex flex-col gap-2">
                     {situaciones.map((s) => (
                       <label
                         key={s}
-                        className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl border border-white/15 bg-[#1a1d21] px-4 text-[0.95rem] text-muted transition-colors hover:border-white/30 has-[:checked]:border-accent has-[:checked]:bg-accent/10 has-[:checked]:text-white has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent/40"
+                        className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border border-white/15 bg-[#1a1d21] px-4 text-[0.95rem] text-muted transition-colors hover:border-white/30 has-[:checked]:border-accent has-[:checked]:bg-accent/10 has-[:checked]:text-white has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent/40"
                       >
                         <input
                           type="radio"
@@ -363,7 +377,7 @@ export function Formulario() {
                 </motion.button>
 
                 {estado === 'error' && (
-                  <div role="alert" className="rounded-xl border border-[#ff7a6b]/40 bg-[#ff7a6b]/10 p-4 text-[0.92rem] text-white">
+                  <div role="alert" className="rounded-lg border border-[#ff7a6b]/40 bg-[#ff7a6b]/10 p-4 text-[0.92rem] text-white">
                     No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos directo por{' '}
                     <a href={WHATSAPP} target="_blank" rel="noopener" className="font-semibold text-accent underline underline-offset-2">
                       WhatsApp
@@ -373,6 +387,7 @@ export function Formulario() {
                 )}
               </div>
             </motion.form>
+            </div>
           </div>
         </div>
       </section>

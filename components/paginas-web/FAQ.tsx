@@ -16,8 +16,20 @@ const preguntas = [
     a: 'Se paga un anticipo del 50% para arrancar y el resto al entregar. El anticipo no es reembolsable.',
   },
   {
-    q: '¿Qué pasa después del primer mes?',
-    a: 'El mantenimiento mensual es de $890 + IVA al mes, a partir del segundo mes.',
+    q: '¿El mantenimiento es obligatorio?',
+    a: 'No, es opcional. El primer mes va incluido y después tú decides si lo continúas.',
+  },
+  {
+    q: '¿Qué incluye el mantenimiento y qué no?',
+    a: 'Son $696 MXN al mes, IVA incluido, unos $23 pesos al día. Tu página siempre en línea, segura y al día:',
+    lista: [
+      'Hosting de tu página',
+      'Certificado de seguridad (SSL) vigente',
+      'Respaldos y actualizaciones de seguridad',
+      'Hasta 3 cambios menores al mes (textos, fotos, horarios o precios)',
+      'Soporte por WhatsApp',
+    ],
+    aparte: 'Una función nueva, como un sistema de reservas, un carrito de compras o una sección nueva, es un proyecto aparte y se cotiza por separado.',
   },
   {
     q: '¿Puedo ver ejemplos antes de decidir?',
@@ -50,7 +62,20 @@ export function FAQ() {
                 </span>
                 <Plus className="h-5 w-5 shrink-0 text-accent transition-transform duration-300 group-open:rotate-45" aria-hidden="true" />
               </summary>
-              <p className="max-w-[60ch] pb-7 text-[1rem] leading-relaxed text-muted">{p.a}</p>
+              <div className="max-w-[60ch] pb-7 text-[1rem] leading-relaxed text-muted">
+                <p>{p.a}</p>
+                {p.lista && (
+                  <ul className="mt-4 space-y-2">
+                    {p.lista.map((x) => (
+                      <li key={x} className="flex gap-3">
+                        <span className="text-accent" aria-hidden="true">▲</span>
+                        {x}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {p.aparte && <p className="mt-4 text-white/85">{p.aparte}</p>}
+              </div>
             </details>
           ))}
         </div>

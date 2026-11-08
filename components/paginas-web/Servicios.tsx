@@ -11,7 +11,7 @@ const items: { n: string; icono: LucideIcon; t: string; d: string }[] = [
   { n: '03', icono: MessageCircle, t: 'Contacto directo', d: 'Botón de WhatsApp y formulario para que te escriban en un toque.' },
   { n: '04', icono: Globe, t: 'Dominio incluido', d: 'Tu dominio el primer año va incluido en el precio.' },
   { n: '05', icono: Rocket, t: 'En línea en 5 días', d: 'Del brief a la publicación en 5 días hábiles.' },
-  { n: '06', icono: Wrench, t: 'Mantenimiento mensual', d: 'Después del primer mes, mantenimiento por $890 + IVA al mes.' },
+  { n: '06', icono: Wrench, t: 'Mantenimiento opcional', d: 'Opcional desde el segundo mes: $696 MXN al mes, IVA incluido. Tu página al día, segura y con cambios menores.' },
 ]
 
 const lista: Variants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }
