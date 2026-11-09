@@ -43,6 +43,12 @@ export default function AvisoDePrivacidad() {
             </p>
           </section>
           <section>
+            <h2 className="font-display text-xl font-extrabold uppercase">Herramientas de medición</h2>
+            <p className="mt-2">
+              Usamos Microsoft Clarity para entender cómo se usa este sitio, con grabaciones de sesión y mapas de calor. Los campos del formulario de cotización quedan enmascarados, así que lo que escribes en ellos no se puede leer en esas grabaciones.
+            </p>
+          </section>
+          <section>
             <h2 className="font-display text-xl font-extrabold uppercase">Tus derechos</h2>
             <p className="mt-2">
               Puedes acceder, rectificar o cancelar tus datos, y oponerte a su tratamiento (derechos ARCO), escribiendo a contacto@deltaanalytics.com.mx. También puedes revocar tu consentimiento por el mismo medio.

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 const ID = process.env.NEXT_PUBLIC_GADS_ID
 const ETIQUETA_LEAD = process.env.NEXT_PUBLIC_GADS_LABEL_LEAD
 const ETIQUETA_WHATSAPP = process.env.NEXT_PUBLIC_GADS_LABEL_WHATSAPP
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID
 const GRACIAS = '/paginas-web/gracias'
 
 type Gtag = (...args: unknown[]) => void
@@ -44,13 +45,22 @@ export function Analitica() {
     return () => document.removeEventListener('click', alClic)
   }, [])
 
-  if (!ID) return null
+  if (!ID && !CLARITY_ID) return null
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${ID}`} strategy="afterInteractive" />
-      <Script id="gtag-init" strategy="afterInteractive">
-        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${ID}');`}
-      </Script>
+      {ID && (
+        <>
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=${ID}`} strategy="afterInteractive" />
+          <Script id="gtag-init" strategy="afterInteractive">
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${ID}');`}
+          </Script>
+        </>
+      )}
+      {CLARITY_ID && (
+        <Script id="clarity-init" strategy="lazyOnload">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${CLARITY_ID}");`}
+        </Script>
+      )}
     </>
   )
 }

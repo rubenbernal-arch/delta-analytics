@@ -344,7 +344,7 @@ export function Formulario() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section id="cotiza" className="relative overflow-hidden border-t border-[var(--line)] bg-base">
+      <section id="cotiza" data-clarity-mask="True" className="relative overflow-hidden border-t border-[var(--line)] bg-base">
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_40%,rgba(255,128,0,0.16),transparent_55%)]"
           aria-hidden="true"
