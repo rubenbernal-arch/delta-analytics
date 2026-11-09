@@ -24,7 +24,7 @@ create table if not exists public.leads_web (
   utm_content text
 );
 
--- Sin politicas: solo la llave de servicio (el servidor) puede leer y escribir.
+-- RLS activado. Las politicas estan en leads_web_politicas.sql: la llave anon solo puede insertar.
 alter table public.leads_web enable row level security;
 
 create index if not exists leads_web_created_idx on public.leads_web (created_at desc);

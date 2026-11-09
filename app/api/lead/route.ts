@@ -34,7 +34,7 @@ function prioridad(inversion: string, inicio: string): 'alta' | 'media' | 'baja'
 
 async function guardar(fila: Record<string, unknown>) {
   const url = process.env.SUPABASE_URL
-  const llave = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const llave = process.env.SUPABASE_ANON_KEY
   if (!url || !llave) return false
   const r = await fetch(`${url.replace(/\/$/, '')}/rest/v1/leads_web`, {
     method: 'POST',
