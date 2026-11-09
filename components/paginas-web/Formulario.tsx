@@ -12,7 +12,7 @@ const ALMACEN = 'dw_atribucion'
 const CHAFLAN = 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 36px 100%, 0 calc(100% - 36px))'
 
 // Escribe aqui lo que prometes de tiempo de respuesta (ej. "Te escribimos el mismo dia habil"). Vacio = no se muestra.
-const TIEMPO_RESPUESTA = ''
+const TIEMPO_RESPUESTA = 'te escribimos en menos de 4 horas hábiles'
 
 const giros = [
   'Restaurante o cafetería',
