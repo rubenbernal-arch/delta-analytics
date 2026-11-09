@@ -322,6 +322,11 @@ export function Formulario() {
         }),
       })
       if (!r.ok) throw new Error('fallo')
+      try {
+        sessionStorage.setItem('dw_lead_ok', '1')
+      } catch {
+        // sin almacenamiento: no se registra la conversion, pero el lead ya quedo guardado
+      }
       router.push('/paginas-web/gracias')
     } catch {
       setEstado('error')
