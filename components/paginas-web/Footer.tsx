@@ -18,7 +18,7 @@ export function Footer() {
             <span className="text-accent" aria-hidden="true">▲</span> Delta Analytics
           </p>
           <p className="mt-3 font-mono text-[0.72rem] uppercase leading-relaxed tracking-[0.14em] text-muted">
-            Delta Analytics S. de R.L. de C.V.<br />Zapopan, Jalisco, México
+            Delta Analytics S. de R.L. de C.V.<br />Hípico 6, C.P. 45017, Zapopan, Jalisco, México
           </p>
         </div>
         <nav aria-label="Pie de página" className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-white/70">

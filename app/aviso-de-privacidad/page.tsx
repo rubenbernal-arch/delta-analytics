@@ -21,7 +21,7 @@ export default function AvisoDePrivacidad() {
           <section>
             <h2 className="font-display text-xl font-extrabold uppercase">Responsable</h2>
             <p className="mt-2">
-              Delta Analytics S. de R.L. de C.V. (&ldquo;Delta Analytics&rdquo;), con domicilio en Zapopan, Jalisco, México, es responsable del tratamiento de tus datos personales.
+              Delta Analytics S. de R.L. de C.V. (&ldquo;Delta Analytics&rdquo;), con domicilio en Hípico 6, C.P. 45017, Zapopan, Jalisco, México, es responsable del tratamiento de tus datos personales.
             </p>
           </section>
           <section>
