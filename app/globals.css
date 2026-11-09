@@ -10,7 +10,7 @@
   --color-navy:      #0D1B3E;
   --color-foreground:#FFFFFF;
   --color-muted:     #ABABA4;
-  --color-dim:       #63635C;
+  --color-dim:       #8F8F88;
   --font-display: var(--font-archivo, 'Archivo', sans-serif);
   --font-sans:    var(--font-inter, 'Inter', sans-serif);
   --font-mono:    var(--font-jetbrains-mono, 'JetBrains Mono', monospace);

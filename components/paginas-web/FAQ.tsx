@@ -24,12 +24,17 @@ const preguntas = [
     a: 'Son $696 MXN al mes, IVA incluido, unos $23 pesos al día. Tu página siempre en línea, segura y al día:',
     lista: [
       'Hosting de tu página',
+      'Renovación de tu dominio',
       'Certificado de seguridad (SSL) vigente',
       'Respaldos y actualizaciones de seguridad',
       'Hasta 4 cambios menores al mes (textos, fotos, horarios o precios)',
       'Soporte por WhatsApp',
     ],
     aparte: 'Una función nueva, como un sistema de reservas, un carrito de compras o una sección nueva, es un proyecto aparte y se cotiza por separado.',
+  },
+  {
+    q: '¿Cuánto cuesta el hosting y el dominio?',
+    a: 'El dominio del primer año va incluido. El hosting va incluido si contratas el mantenimiento, junto con la renovación del dominio. Si no lo contratas, el hosting cuesta desde $1,740 MXN al año, IVA incluido, y el dominio se renueva al costo según su extensión.',
   },
   {
     q: '¿Puedo ver ejemplos antes de decidir?',

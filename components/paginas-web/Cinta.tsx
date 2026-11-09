@@ -14,7 +14,7 @@ const giros = [
 export function Cinta() {
   const fila = [...giros, ...giros]
   return (
-    <div className="overflow-hidden border-y border-[var(--line)] bg-surface py-5" aria-label="Giros de negocio para los que hacemos páginas web">
+    <div className="overflow-hidden border-y border-[var(--line)] bg-surface py-5" role="group" aria-label="Giros de negocio para los que hacemos páginas web">
       <div className="cinta-giros flex w-max items-center" aria-hidden="true">
         {fila.map((g, i) => (
           <span key={i} className="flex items-center font-mono text-[0.78rem] uppercase tracking-[0.18em] text-white/70">

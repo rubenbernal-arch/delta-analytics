@@ -45,7 +45,7 @@ export default function AvisoDePrivacidad() {
           <section>
             <h2 className="font-display text-xl font-extrabold uppercase">Tus derechos</h2>
             <p className="mt-2">
-              Puedes acceder, rectificar o cancelar tus datos, y oponerte a su tratamiento (derechos ARCO), escribiendo a [CORREO DE CONTACTO]. También puedes revocar tu consentimiento por el mismo medio.
+              Puedes acceder, rectificar o cancelar tus datos, y oponerte a su tratamiento (derechos ARCO), escribiendo a contacto@deltaanalytics.com.mx. También puedes revocar tu consentimiento por el mismo medio.
             </p>
           </section>
           <section>
