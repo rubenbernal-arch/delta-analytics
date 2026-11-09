@@ -382,7 +382,7 @@ export function Proyectos() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:shrink-0">
-                <Boton href="#cotiza">Cotizar mi página</Boton>
+                <Boton href="#cotiza">Solicitar diagnóstico gratuito</Boton>
                 <Boton href={WHATSAPP} externo variante="cristal" flecha={false}>
                   Hablar por WhatsApp
                 </Boton>

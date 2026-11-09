@@ -655,6 +655,12 @@ export function Formulario() {
                   )}
                 </div>
 
+                {paso === 3 && (
+                  <p className="mt-3 text-center text-[0.8rem] leading-snug text-dim">
+                    Se paga un anticipo del 50% para arrancar y el resto al entregar. El anticipo no es reembolsable.
+                  </p>
+                )}
+
                 <p className="mt-4 text-center font-mono text-[0.7rem] uppercase tracking-[0.12em] text-dim">
                   Gratis y sin compromiso{TIEMPO_RESPUESTA ? ` · ${TIEMPO_RESPUESTA}` : ''}
                 </p>

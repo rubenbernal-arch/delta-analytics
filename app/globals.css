@@ -168,6 +168,15 @@
 .btn86-mini::before {
   border-radius: 8px;
 }
+.btn86-barra {
+  height: 48px;
+  padding: 0 18px;
+  font-size: 14px;
+  gap: 8px;
+}
+.btn86-barra::before {
+  border-radius: 8px;
+}
 .btn86-full {
   display: flex;
   width: 100%;

@@ -129,7 +129,7 @@ export function Proceso() {
         </dl>
 
         <div className="mt-14 flex flex-col gap-5 sm:flex-row sm:items-center">
-          <Boton href="#cotiza">Empezar mi página</Boton>
+          <Boton href="#cotiza">Solicitar diagnóstico gratuito</Boton>
           <p className="font-mono text-[0.72rem] uppercase tracking-[0.14em] text-dim">
             <span className="text-accent" aria-hidden="true">▲</span> 50% de anticipo para arrancar
           </p>

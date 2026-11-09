@@ -7,7 +7,7 @@ import { motion, useInView } from 'framer-motion'
 export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.1 })
+    const lenis = new Lenis({ autoRaf: true, anchors: { duration: 0.8 }, lerp: 0.1 })
     return () => lenis.destroy()
   }, [])
   return null

@@ -37,9 +37,9 @@ export function BarraMovil() {
       className={`fixed inset-x-0 bottom-0 z-50 flex gap-3 border-t border-white/15 bg-base/95 px-4 py-3 backdrop-blur transition-transform duration-300 lg:hidden ${mostrar ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div className="flex-1">
-        <Boton href="#cotiza" tamano="mini" bloque>Cotizar mi página</Boton>
+        <Boton href="#cotiza" tamano="barra" bloque>Cotizar mi página</Boton>
       </div>
-      <Boton href={WHATSAPP} externo variante="cristal" flecha={false} tamano="mini">
+      <Boton href={WHATSAPP} externo variante="cristal" flecha={false} tamano="barra">
         WhatsApp
       </Boton>
     </div>

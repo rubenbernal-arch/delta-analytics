@@ -7,13 +7,13 @@ type Props = {
   variante?: 'primario' | 'cristal'
   externo?: boolean
   flecha?: boolean
-  tamano?: 'normal' | 'mini'
+  tamano?: 'normal' | 'mini' | 'barra'
   bloque?: boolean
   ariaLabel?: string
 }
 
 export function Boton({ href, children, variante = 'primario', externo = false, flecha = true, tamano = 'normal', bloque = false, ariaLabel }: Props) {
-  const clases = ['btn86', variante === 'primario' ? 'btn86-p' : 'btn86-s', tamano === 'mini' ? 'btn86-mini' : '', bloque ? 'btn86-full' : '']
+  const clases = ['btn86', variante === 'primario' ? 'btn86-p' : 'btn86-s', tamano === 'mini' ? 'btn86-mini' : tamano === 'barra' ? 'btn86-barra' : '', bloque ? 'btn86-full' : '']
     .filter(Boolean)
     .join(' ')
   return (

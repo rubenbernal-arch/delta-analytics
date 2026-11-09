@@ -1,6 +1,8 @@
 import { Boton } from './Boton'
 import { TituloHero } from './TituloHero'
 
+const WHATSAPP = 'https://wa.me/523330163038?text=Hola%2C%20quiero%20cotizar%20una%20p%C3%A1gina%20web%20para%20mi%20negocio'
+
 const benefits = [
   {
     title: 'Más clientes',
@@ -69,8 +71,17 @@ export function Hero() {
             </Boton>
           </div>
 
-          <p className="mb-10 font-mono text-[0.78rem] tracking-wide text-dim">
-            Desde $8,700 MXN IVA incluido · Entrega en 5 días hábiles · Dominio 1er año incluido
+          <a
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener"
+            className="mb-6 inline-block text-[0.85rem] text-muted underline underline-offset-2 transition-colors hover:text-white"
+          >
+            ¿Prefieres WhatsApp? Escríbenos
+          </a>
+
+          <p className="mb-10 font-mono text-[0.92rem] tracking-wide text-muted">
+            <span className="font-semibold text-white">Desde $8,700 MXN</span> IVA incluido · Entrega en 5 días hábiles · Dominio 1er año incluido
           </p>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
