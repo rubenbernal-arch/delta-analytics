@@ -209,9 +209,27 @@
   }
 }
 
-/* En pantallas tactiles no hay cursor: se quita el circulo de cristal */
-@media (hover: none) {
+/* El circulo de cristal solo existe con cursor real (mouse o trackpad) */
+.btn86::after {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
   .btn86::after {
-    display: none;
+    display: block;
+  }
+}
+
+/* Fila de botones del formulario: apilados en celular, en fila desde sm con Atras a la izquierda */
+.btn86-fila {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .btn86-fila {
+    flex-direction: row-reverse;
+  }
+  .btn86-fila .btn86-p {
+    flex: 1;
   }
 }

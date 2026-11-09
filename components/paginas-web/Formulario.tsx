@@ -272,6 +272,15 @@ export function Formulario() {
     return e
   }
 
+  function limpiar(campo: keyof Errores) {
+    setErrores((prev) => {
+      if (!prev[campo]) return prev
+      const siguiente = { ...prev }
+      delete siguiente[campo]
+      return siguiente
+    })
+  }
+
   function alternarNecesidad(o: string) {
     setNecesidades((prev) => (prev.includes(o) ? prev.filter((x) => x !== o) : [...prev, o]))
   }
@@ -434,7 +443,10 @@ export function Formulario() {
                           name="nombre"
                           autoComplete="name"
                           value={nombre}
-                          onChange={(e) => setNombre(e.target.value)}
+                          onChange={(e) => {
+ setNombre(e.target.value)
+ limpiar('nombre')
+ }}
                           aria-invalid={Boolean(errores.nombre)}
                           aria-describedby={errores.nombre ? 'nombre-error' : undefined}
                           className={entrada}
@@ -450,7 +462,10 @@ export function Formulario() {
                           inputMode="tel"
                           autoComplete="tel"
                           value={whatsapp}
-                          onChange={(e) => setWhatsapp(e.target.value)}
+                          onChange={(e) => {
+ setWhatsapp(e.target.value)
+ limpiar('whatsapp')
+ }}
                           aria-invalid={Boolean(errores.whatsapp)}
                           aria-describedby={errores.whatsapp ? 'whatsapp-error' : undefined}
                           className={entrada}
@@ -465,7 +480,10 @@ export function Formulario() {
                           type="email"
                           autoComplete="email"
                           value={correo}
-                          onChange={(e) => setCorreo(e.target.value)}
+                          onChange={(e) => {
+ setCorreo(e.target.value)
+ limpiar('correo')
+ }}
                           aria-invalid={Boolean(errores.correo)}
                           aria-describedby={errores.correo ? 'correo-error' : undefined}
                           className={entrada}
@@ -483,7 +501,10 @@ export function Formulario() {
                           name="negocio"
                           autoComplete="organization"
                           value={negocio}
-                          onChange={(e) => setNegocio(e.target.value)}
+                          onChange={(e) => {
+ setNegocio(e.target.value)
+ limpiar('negocio')
+ }}
                           aria-invalid={Boolean(errores.negocio)}
                           aria-describedby={errores.negocio ? 'negocio-error' : undefined}
                           className={entrada}
@@ -497,7 +518,10 @@ export function Formulario() {
                             id="giro"
                             name="giro"
                             value={giro}
-                            onChange={(e) => setGiro(e.target.value)}
+                            onChange={(e) => {
+ setGiro(e.target.value)
+ limpiar('giro')
+ }}
                             aria-invalid={Boolean(errores.giro)}
                             aria-describedby={errores.giro ? 'giro-error' : undefined}
                             className={`${entrada} appearance-none pr-10 ${giro ? '' : 'text-dim'}`}
@@ -513,7 +537,10 @@ export function Formulario() {
                         </div>
                       </Campo>
 
-                      <Chips id="situacion" leyenda="¿Cuál es tu situación?" opciones={situaciones} valor={situacion} onChange={setSituacion} error={errores.situacion} />
+                      <Chips id="situacion" leyenda="¿Cuál es tu situación?" opciones={situaciones} valor={situacion} onChange={(v) => {
+ setSituacion(v)
+ limpiar('situacion')
+ }} error={errores.situacion} />
 
                       {situacion && situacion !== situaciones[0] && (
                         <Campo id="url" etiqueta="Dirección de tu página actual" opcional error={errores.url}>
@@ -523,7 +550,10 @@ export function Formulario() {
                             inputMode="url"
                             autoComplete="url"
                             value={url}
-                            onChange={(e) => setUrl(e.target.value)}
+                            onChange={(e) => {
+ setUrl(e.target.value)
+ limpiar('url')
+ }}
                             aria-invalid={Boolean(errores.url)}
                             aria-describedby={errores.url ? 'url-error' : undefined}
                             className={entrada}
@@ -532,7 +562,10 @@ export function Formulario() {
                         </Campo>
                       )}
 
-                      <Chips id="objetivo" leyenda="¿Qué quieres lograr con tu página?" opciones={objetivos} valor={objetivo} onChange={setObjetivo} error={errores.objetivo} />
+                      <Chips id="objetivo" leyenda="¿Qué quieres lograr con tu página?" opciones={objetivos} valor={objetivo} onChange={(v) => {
+ setObjetivo(v)
+ limpiar('objetivo')
+ }} error={errores.objetivo} />
                     </>
                   )}
 
@@ -540,9 +573,15 @@ export function Formulario() {
                     <>
                       <ChipsMultiples id="necesidades" leyenda="¿Qué necesita tu página?" opciones={necesidadesOpciones} valor={necesidades} onToggle={alternarNecesidad} opcional />
 
-                      <Chips id="inicio" leyenda="¿Cuándo quieres arrancar?" opciones={inicios} valor={inicio} onChange={setInicio} error={errores.inicio} />
+                      <Chips id="inicio" leyenda="¿Cuándo quieres arrancar?" opciones={inicios} valor={inicio} onChange={(v) => {
+ setInicio(v)
+ limpiar('inicio')
+ }} error={errores.inicio} />
 
-                      <Chips id="inversion" leyenda="Inversión aproximada" opciones={inversiones} valor={inversion} onChange={setInversion} error={errores.inversion} />
+                      <Chips id="inversion" leyenda="Inversión aproximada" opciones={inversiones} valor={inversion} onChange={(v) => {
+ setInversion(v)
+ limpiar('inversion')
+ }} error={errores.inversion} />
 
                       <Campo id="referencias" etiqueta="Páginas que te gusten" opcional>
                         <input
@@ -551,7 +590,7 @@ export function Formulario() {
                           value={referencias}
                           onChange={(e) => setReferencias(e.target.value)}
                           className={entrada}
-                          placeholder="Pega uno o dos enlaces de referencia"
+                          placeholder="Pega uno o dos enlaces"
                         />
                       </Campo>
 
@@ -571,7 +610,10 @@ export function Formulario() {
                           <input
                             type="checkbox"
                             checked={consentimiento}
-                            onChange={(e) => setConsentimiento(e.target.checked)}
+                            onChange={(e) => {
+ setConsentimiento(e.target.checked)
+ limpiar('consentimiento')
+ }}
                             aria-invalid={Boolean(errores.consentimiento)}
                             aria-describedby={errores.consentimiento ? 'consentimiento-error' : undefined}
                             className="mt-0.5 h-5 w-5 shrink-0 accent-[#FF8000]"
@@ -596,21 +638,21 @@ export function Formulario() {
                   <input id="empresa_web" name="empresa_web" tabIndex={-1} autoComplete="off" value={trampa} onChange={(e) => setTrampa(e.target.value)} />
                 </div>
 
-                <div className="mt-7 flex gap-3">
+                <div className="btn86-fila mt-7">
+                  <button type="submit" disabled={estado === 'enviando'} className="btn86 btn86-p">
+                    <span>
+                      {estado === 'enviando' ? 'Enviando...' : paso < 3 ? 'Continuar' : 'Quiero mi diagnóstico gratuito'}
+                      {paso < 3 && <ArrowRight className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />}
+                    </span>
+                  </button>
                   {paso > 1 && (
-                    <button type="button" onClick={atras} className="btn86 btn86-s" style={{ padding: '0 22px' }}>
+                    <button type="button" onClick={atras} className="btn86 btn86-s">
                       <span>
                         <ArrowLeft className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
                         Atrás
                       </span>
                     </button>
                   )}
-                  <button type="submit" disabled={estado === 'enviando'} className="btn86 btn86-p" style={{ flex: 1 }}>
-                    <span>
-                      {estado === 'enviando' ? 'Enviando...' : paso < 3 ? 'Continuar' : 'Quiero mi diagnóstico gratuito'}
-                      {paso < 3 && <ArrowRight className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />}
-                    </span>
-                  </button>
                 </div>
 
                 <p className="mt-4 text-center font-mono text-[0.7rem] uppercase tracking-[0.12em] text-dim">
