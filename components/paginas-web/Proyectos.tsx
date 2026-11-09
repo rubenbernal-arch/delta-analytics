@@ -218,10 +218,10 @@ export function Proyectos() {
 
           <div className="mb-12 mt-10 lg:mb-10 lg:mt-14">
             <h2 className="font-display text-[clamp(44px,9.5vw,140px)] font-extrabold uppercase leading-[0.88] tracking-[-0.03em] text-white">
-              <Revelar>Páginas reales</Revelar>
+              <Revelar>Lo que ya hemos</Revelar>
             </h2>
             <p className={`${serif.className} mt-2 text-[clamp(34px,6.2vw,92px)] italic leading-[1] text-white/90`}>
-              <Revelar retraso={0.15}>de negocios reales.</Revelar>
+              <Revelar retraso={0.15}>construido.</Revelar>
             </p>
           </div>
 
@@ -234,13 +234,13 @@ export function Proyectos() {
               onFocusCapture={() => setPausado(true)}
               onBlurCapture={() => setPausado(false)}
             >
-              <div className="grid w-full items-center gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.3fr)] lg:gap-14">
+              <div className="grid w-full grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.3fr)] lg:gap-14">
                 <motion.div
                   variants={lista}
                   initial="hidden"
                   whileInView="visible"
                   viewport={visible}
-                  className="order-2 lg:order-1"
+                  className="order-2 min-w-0 lg:order-1"
                 >
                   {proyectos.map((p, i) => {
                     const esActivo = i === activo
@@ -296,7 +296,7 @@ export function Proyectos() {
                   transition={{ duration: 0.7, ease: 'easeOut' }}
                   onMouseMove={mover}
                   onMouseLeave={soltar}
-                  className="relative order-1 pb-8 lg:order-2"
+                  className="relative order-1 min-w-0 pb-8 lg:order-2"
                 >
                   <div className="pointer-events-none absolute inset-6 rounded-3xl bg-accent/25 blur-3xl" aria-hidden="true" />
                   <motion.div style={{ rotateX, rotateY, transformPerspective: 1400 }} className="relative">

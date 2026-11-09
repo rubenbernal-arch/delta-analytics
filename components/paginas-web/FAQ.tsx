@@ -26,7 +26,7 @@ const preguntas = [
       'Hosting de tu página',
       'Certificado de seguridad (SSL) vigente',
       'Respaldos y actualizaciones de seguridad',
-      'Hasta 3 cambios menores al mes (textos, fotos, horarios o precios)',
+      'Hasta 4 cambios menores al mes (textos, fotos, horarios o precios)',
       'Soporte por WhatsApp',
     ],
     aparte: 'Una función nueva, como un sistema de reservas, un carrito de compras o una sección nueva, es un proyecto aparte y se cotiza por separado.',

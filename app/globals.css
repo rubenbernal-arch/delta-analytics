@@ -208,3 +208,10 @@
     transition: none;
   }
 }
+
+/* En pantallas tactiles no hay cursor: se quita el circulo de cristal */
+@media (hover: none) {
+  .btn86::after {
+    display: none;
+  }
+}
