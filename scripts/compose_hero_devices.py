@@ -26,11 +26,11 @@ import cv2
 import numpy as np
 from PIL import Image
 
-SITE = sys.argv[1] if len(sys.argv) > 1 else "lapuerta"
+SITE = sys.argv[1] if len(sys.argv) > 1 else "tla"
 OUTPUT_NAME = {"lapuerta": "puerta", "tla": "tla"}.get(SITE, SITE)
-# the live site asset stays on lapuerta until a choice is made; other sites only
+# tla is the published default until a choice is made; other sites only
 # produce the _ref comparison PNG, they don't touch the published webp
-WRITE_PUBLIC_WEBP = SITE == "lapuerta"
+WRITE_PUBLIC_WEBP = SITE == "tla"
 
 SRC = "_ref/devices-hero.png"
 DESKTOP_SHOT = f"_ref/casos-source/{SITE}-laptop.png"
@@ -52,91 +52,56 @@ def green_mask(img):
     return mask
 
 
-def extreme_point(contour, key):
-    pts = contour.reshape(-1, 2)
-    idx = np.argmax([key(p[0], p[1]) for p in pts])
-    return pts[idx].astype(np.float64)
-
-
-def fit_line_xy(points):
-    """Fit x = a*y + b from (y, x) samples via least squares."""
-    ys = points[:, 0]
-    xs = points[:, 1]
-    A = np.vstack([ys, np.ones_like(ys)]).T
-    a, b = np.linalg.lstsq(A, xs, rcond=None)[0]
-    return a, b  # x = a*y + b
-
-
-def laptop_corners(contour, mask):
-    pts = contour.reshape(-1, 2)
-    tl = extreme_point(contour, lambda x, y: -(x + y))
-    tr = extreme_point(contour, lambda x, y: (x - y))
-    bl = extreme_point(contour, lambda x, y: (y - x))
-
-    # Right edge profile: for each row y in the upper half (unoccluded by phone),
-    # take the max x of the mask in that row -> points on the true right edge.
-    y_top = int(tl[1])
-    y_bottom = int(bl[1])
-    y_mid = y_top + int(0.55 * (y_bottom - y_top))
-    right_pts = []
-    for y in range(y_top + 5, y_mid):
-        row = np.where(mask[y] > 0)[0]
-        if row.size:
-            right_pts.append((y, row.max()))
-    right_pts = np.array(right_pts, dtype=np.float64)
-    a_r, b_r = fit_line_xy(right_pts)  # x = a_r*y + b_r
-
-    # Bottom edge profile: for each column x in the left half (unoccluded by phone),
-    # take the max y of the mask in that column -> points on the true bottom edge.
-    x_left = int(tl[0])
-    x_right = int(tr[0])
-    x_mid = x_left + int(0.5 * (x_right - x_left))
-    bottom_pts = []
-    for x in range(x_left + 5, x_mid):
-        col = np.where(mask[:, x] > 0)[0]
-        if col.size:
-            bottom_pts.append((col.max(), x))
-    bottom_pts = np.array(bottom_pts, dtype=np.float64)
-    # fit x = c*y + d too (same form), but here we sampled (y=col.max(), x=x) i.e. (bottom_y, x)
-    # we want y as function of x: y = c*x + d
-    xs = bottom_pts[:, 1]
-    ys = bottom_pts[:, 0]
-    A = np.vstack([xs, np.ones_like(xs)]).T
-    c, d = np.linalg.lstsq(A, ys, rcond=None)[0]  # y = c*x + d
-
-    # Intersect: x = a_r*y + b_r  and y = c*x + d
-    # x = a_r*(c*x + d) + b_r  => x*(1 - a_r*c) = a_r*d + b_r
-    x_br = (a_r * d + b_r) / (1 - a_r * c)
-    y_br = c * x_br + d
-    br = np.array([x_br, y_br])
-
-    return tl, tr, bl, br
-
-
-def phone_corners(contour):
-    hull = cv2.convexHull(contour).reshape(-1, 2)
-    tl = hull[np.argmin(hull[:, 0] + hull[:, 1])].astype(np.float64)
-    tr = hull[np.argmax(hull[:, 0] - hull[:, 1])].astype(np.float64)
-    bl = hull[np.argmax(hull[:, 1] - hull[:, 0])].astype(np.float64)
-    br = hull[np.argmax(hull[:, 0] + hull[:, 1])].astype(np.float64)
-    return tl, tr, bl, br
-
-
-def order_quad(tl, tr, bl, br):
+def order_points(pts):
+    """Standard 4-point ordering: TL (min sum), BR (max sum), TR (min y-x),
+    BL (max y-x)."""
+    s = pts.sum(axis=1)
+    d = (pts[:, 1] - pts[:, 0])  # y - x
+    tl = pts[np.argmin(s)]
+    br = pts[np.argmax(s)]
+    tr = pts[np.argmin(d)]
+    bl = pts[np.argmax(d)]
     return np.array([tl, tr, br, bl], dtype=np.float32)
 
 
+def quad_from_mask(mask):
+    """4 corners straight from the green mask: largest contour -> convex hull ->
+    approxPolyDP down to 4 points (falls back to minAreaRect if that doesn't
+    land on exactly 4)."""
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnt = max(contours, key=cv2.contourArea)
+    hull = cv2.convexHull(cnt)
+    peri = cv2.arcLength(hull, True)
+    pts = None
+    for eps_frac in (0.02, 0.03, 0.05, 0.08):
+        approx = cv2.approxPolyDP(hull, eps_frac * peri, True)
+        if len(approx) == 4:
+            pts = approx.reshape(-1, 2).astype(np.float32)
+            break
+    if pts is None:
+        pts = cv2.boxPoints(cv2.minAreaRect(cnt))
+    return order_points(pts)
+
+
 def warp_into(src_img, dst_quad, canvas_shape):
+    q = dst_quad.astype(np.float32)
     h, w = src_img.shape[:2]
+    # ancho real de la pantalla destino (borde mas largo, arriba o abajo)
+    target_w = max(np.linalg.norm(q[1] - q[0]), np.linalg.norm(q[2] - q[3]))
+    # 1) reducir primero con INTER_AREA (filtra de verdad, sin halos ni dientes)
+    scale = min(1.0, (target_w * 1.25) / w)
+    if scale < 1.0:
+        src_img = cv2.resize(
+            src_img, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA
+        )
+    h, w = src_img.shape[:2]
+    # 2) ya cerca del tamano final, aplicar la perspectiva con LINEAR
     src_quad = np.array([[0, 0], [w, 0], [w, h], [0, h]], dtype=np.float32)
-    M = cv2.getPerspectiveTransform(src_quad, dst_quad.astype(np.float32))
-    # LANCZOS4 keeps text/edges crisp when shrinking a ~2x screenshot down into
-    # the device quad; INTER_LINEAR was visibly softer on the screen content.
-    warped = cv2.warpPerspective(
+    M = cv2.getPerspectiveTransform(src_quad, q)
+    return cv2.warpPerspective(
         src_img, M, (canvas_shape[1], canvas_shape[0]),
-        flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0),
+        flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE,
     )
-    return warped
 
 
 def despill(img, mask=None, ring_px=None):
@@ -158,6 +123,39 @@ def draw_quad(img, quad, color):
     cv2.polylines(img, [pts], True, color, 4)
     for p in quad:
         cv2.circle(img, tuple(p.astype(int)), 10, color, -1)
+
+
+def refine_quad(mask, quad, band=10, lo=0.2, hi=0.8):
+    # Esquinas = interseccion de la recta de cada borde (las esquinas redondeadas
+    # desplazan los vertices de approxPolyDP hacia adentro y rompen la perspectiva)
+    cnts, _ = cv2.findContours((mask > 0).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    pts = max(cnts, key=cv2.contourArea).reshape(-1, 2).astype(np.float32)
+    q = quad.astype(np.float32)
+    lines = []
+    for i in range(4):
+        a, b = q[i], q[(i + 1) % 4]
+        d = b - a
+        L = float(np.linalg.norm(d))
+        u = d / L
+        n = np.array([-u[1], u[0]], dtype=np.float32)
+        rel = pts - a
+        t = rel @ u / L
+        dist = np.abs(rel @ n)
+        sel = pts[(t > lo) & (t < hi) & (dist < band)]
+        if len(sel) < 20:
+            return quad
+        vx, vy, x0, y0 = cv2.fitLine(sel, cv2.DIST_HUBER, 0, 0.01, 0.01).ravel()
+        lines.append((np.array([x0, y0], np.float32), np.array([vx, vy], np.float32)))
+    out = []
+    for i in range(4):
+        p1, d1 = lines[(i - 1) % 4]
+        p2, d2 = lines[i]
+        A = np.array([d1, -d2], dtype=np.float32).T
+        if abs(np.linalg.det(A)) < 1e-6:
+            return quad
+        sol = np.linalg.solve(A, p2 - p1)
+        out.append(p1 + sol[0] * d1)
+    return np.array(out, dtype=np.float32)
 
 
 def add_sheen(img, mask, strength=0.07):
@@ -207,16 +205,160 @@ def main():
     phone_mask = np.zeros(mask.shape, np.uint8)
     cv2.drawContours(phone_mask, [phone_cnt], -1, 255, -1)
 
-    tl, tr, bl, br = laptop_corners(laptop_cnt, laptop_mask)
-    laptop_quad = order_quad(tl, tr, bl, br)
-
-    ptl, ptr, pbl, pbr = phone_corners(phone_cnt)
-    phone_quad = order_quad(ptl, ptr, pbl, pbr)
+    laptop_quad = quad_from_mask(laptop_mask)
+    phone_quad = quad_from_mask(phone_mask)
 
     debug = img.copy()
     draw_quad(debug, laptop_quad, (0, 0, 255))
     draw_quad(debug, phone_quad, (255, 0, 0))
     cv2.imwrite(DEBUG_OUT, debug)
+    phone_quad = refine_quad(phone_mask, phone_quad)
+    # bordes limpios: ambas pantallas = poligonos desde lineas ajustadas (laptop: solo los tramos visibles de cada lado)
+    phone_mask = cv2.bitwise_and(phone_mask, mask)
+    _el = lambda n: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (n, n))
+    def _fit(pts, a, b, t0, t1, band=14):
+        d = b - a; L = np.linalg.norm(d); u = d / L
+        t = (pts - a) @ u / L
+        dist = np.abs((pts - a) @ np.array([-u[1], u[0]]))
+        sel = pts[(t > t0) & (t < t1) & (dist < band)]
+        vx, vy, x0, y0 = cv2.fitLine(sel, cv2.DIST_HUBER, 0, 0.01, 0.01).ravel()
+        return np.array([x0, y0]), np.array([vx, vy])
+    def _cross(l1, l2):
+        (p1, d1), (p2, d2) = l1, l2
+        s_, _ = np.linalg.solve(np.array([d1, -d2]).T, p2 - p1)
+        return p1 + s_ * d1
+    _lp = laptop_cnt.reshape(-1, 2).astype(np.float32)
+    _q = np.array(laptop_quad, np.float32)
+    try:
+        _top = _fit(_lp, _q[0], _q[1], 0.15, 0.85)
+        _rig = _fit(_lp, _q[1], _q[2], 0.12, 0.34, band=40)
+        _bot = _fit(_lp, _q[2], _q[3], 0.10, 0.85)
+        _lef = _fit(_lp, _q[3], _q[0], 0.20, 0.80)
+        _nq = np.array([_cross(_lef, _top), _cross(_top, _rig), _cross(_rig, _bot), _cross(_bot, _lef)], np.float32)
+    except Exception as _e:
+        _nq = _q + 1000
+        print("laptop: no se pudo ajustar:", _e)
+    print("laptop esquinas antes:", _q.round(0).tolist())
+    print("laptop esquinas ahora:", _nq.round(0).tolist())
+    if np.abs(_nq - _q).max() < 200:
+        laptop_quad = _nq
+        _lm = np.zeros(laptop_mask.shape, np.uint8)
+        cv2.fillPoly(_lm, [_nq.astype(np.int32)], 255)
+        _lm = cv2.dilate(cv2.erode(_lm, _el(41)), _el(41))
+        _lm = cv2.erode(_lm, _el(3))
+        laptop_mask = cv2.bitwise_and(_lm, cv2.dilate(laptop_mask, _el(5)))
+    else:
+        print("laptop: ajuste descartado, se queda el anterior")
+    _pm = np.zeros(phone_mask.shape, np.uint8)
+    cv2.fillPoly(_pm, [phone_quad.astype(np.int32)], 255)
+    _pm = cv2.dilate(cv2.erode(_pm, _el(61)), _el(61))
+    _pm = cv2.erode(_pm, _el(3))
+    _hol = cv2.bitwise_and(cv2.erode(_pm, _el(17)), cv2.bitwise_not(phone_mask))
+    _n, _lb, _st, _ = cv2.connectedComponentsWithStats(_hol)
+    _isla = np.zeros_like(_pm)
+    _cand = [_i for _i in range(1, _n) if _st[_i, cv2.CC_STAT_AREA] > 300]
+    if _cand:
+        _i = max(_cand, key=lambda k: _st[k, cv2.CC_STAT_AREA])
+        _x, _y, _w, _h = [int(v) for v in _st[_i, :4]]
+        _r = _h // 2 + 2
+        cv2.rectangle(_isla, (_x + _r - 2, _y - 2), (_x + _w - _r + 2, _y + _h + 2), 255, -1)
+        cv2.circle(_isla, (_x + _r - 2, _y + _h // 2), _r, 255, -1)
+        cv2.circle(_isla, (_x + _w - _r + 2, _y + _h // 2), _r, 255, -1)
+        print("isla dinamica detectada:", _w, "x", _h)
+    _ys, _xs = np.nonzero(_isla)
+    if len(_xs) > 0:
+        _k = 0.86  # isla chica
+        _cx = (int(_xs.min()) + int(_xs.max())) / 2.0
+        _cy = (int(_ys.min()) + int(_ys.max())) / 2.0
+        _hw = (int(_xs.max()) - int(_xs.min()) + 1) * _k / 2.0
+        _hh = (int(_ys.max()) - int(_ys.min()) + 1) * _k / 2.0
+        _S, _P = 4, 8
+        _x0, _y0 = int(_cx - _hw) - _P, int(_cy - _hh) - _P
+        _rw, _rh = int(2 * _hw) + 2 * _P + 2, int(2 * _hh) + 2 * _P + 2
+        if _x0 >= 0 and _y0 >= 0 and _x0 + _rw <= _isla.shape[1] and _y0 + _rh <= _isla.shape[0]:
+            _big = np.zeros((_rh * _S, _rw * _S), np.uint8)
+            _bcx, _bcy = (_cx - _x0 + 0.5) * _S, (_cy - _y0 + 0.5) * _S
+            _r = int(round(_hh * _S))
+            cv2.rectangle(_big, (int(_bcx - _hw * _S + _r), int(_bcy - _r)), (int(_bcx + _hw * _S - _r), int(_bcy + _r)), 255, -1)
+            cv2.circle(_big, (int(_bcx - _hw * _S + _r), int(_bcy)), _r, 255, -1)
+            cv2.circle(_big, (int(_bcx + _hw * _S - _r), int(_bcy)), _r, 255, -1)
+            _small = cv2.resize(_big, (_rw, _rh), interpolation=cv2.INTER_AREA)
+            _isla = np.zeros_like(_isla)
+            _isla[_y0:_y0 + _rh, _x0:_x0 + _rw] = _small
+    _isla = cv2.erode(_isla, _el(5))  # isla mas fina
+    phone_mask = cv2.bitwise_and(_pm, cv2.bitwise_not(_isla))
+    # cobertura exacta de la pantalla del celular (4x + distancias): antialias real, sin escalones
+    _S4 = 4
+    _qq = np.asarray(phone_quad, np.float64).reshape(-1, 2)
+    _bx0, _by0 = max(int(_qq[:, 0].min()) - 24, 0), max(int(_qq[:, 1].min()) - 24, 0)
+    _bx1, _by1 = min(int(_qq[:, 0].max()) + 24, _pm.shape[1]), min(int(_qq[:, 1].max()) + 24, _pm.shape[0])
+    _bw, _bh = _bx1 - _bx0, _by1 - _by0
+    _bg = np.zeros((_bh * _S4, _bw * _S4), np.uint8)
+    cv2.fillConvexPoly(_bg, np.round((_qq - [_bx0, _by0]) * _S4 + (_S4 - 1) / 2.0).astype(np.int32), 255)
+    _d1 = cv2.distanceTransform(_bg, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+    _d2 = cv2.distanceTransform(np.where(_d1 >= 30.0 * _S4, 0, 255).astype(np.uint8), cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+    _cov = np.where(_d2 <= 29.0 * _S4, 255, 0).astype(np.uint8)
+    _pm_aa = np.zeros(_pm.shape, np.float32)
+    _pm_aa[_by0:_by1, _bx0:_bx1] = cv2.resize(_cov, (_bw, _bh), interpolation=cv2.INTER_AREA).astype(np.float32) / 255.0
+    # occ_cut: el cuerpo del celular tapa la laptop (6 px alrededor, ~28 px por el lateral izquierdo): no pintar ahi
+    _poly = np.zeros(phone_mask.shape, np.uint8)
+    cv2.fillPoly(_poly, [phone_quad.astype(np.int32)], 255)
+    _base = cv2.dilate(_poly, _el(13))
+    occ_cut = _base.copy()
+    for _s in range(2, 23, 2):
+        occ_cut = cv2.bitwise_or(occ_cut, np.roll(_base, -_s, axis=1))
+    occ_round = cv2.dilate(cv2.erode(occ_cut, _el(69)), _el(69))  # esquinas redondeadas como el cuerpo real
+    occ_cut = occ_round
+    _antes = int((laptop_mask > 0).sum())
+    import os as _os
+    _UP = int(_os.environ.get('UP', '-1'))  # -1 = medirlo de la imagen
+    if _UP < 0:
+        # grosor real de filo+bezel arriba de la pantalla: de su borde superior hacia arriba hasta el primer
+        # pixel verde de la laptop; asi el recorte llega justo al filo metalico y no lo pisa
+        _meds = []
+        for _c in range(int(phone_quad[:, 0].min()) + 60, int(phone_quad[:, 0].max()) - 60, 6):
+            _yc = np.nonzero(_poly[:, _c])[0]
+            if len(_yc) == 0:
+                continue
+            _yt = int(_yc.min())
+            for _yy in range(_yt - 1, max(_yt - 60, 0), -1):
+                if mask[_yy, _c] > 0:
+                    _meds.append(_yt - _yy - 1)
+                    break
+        _M = int(np.median(_meds)) if len(_meds) >= 5 else None
+        _UP = max(_M - 6, 0) if _M is not None else 8  # 6 = lo que ya cubre _base (dilate 13)
+        print('grosor filo+bezel arriba:', _M, 'px (%d columnas) -> UP =' % len(_meds), _UP)
+    _up = occ_cut.copy()
+    for _k in range(1, _UP + 1):
+        _up = np.maximum(_up, np.roll(occ_cut, -_k, axis=0))
+    occ_cut = _up  # protege el marco superior
+    # radio real de la esquina del celular: del borde exterior hacia la diagonal hasta tocar el cuerpo
+    _rad_env = _os.environ.get('RAD')
+    _RAD = 55
+    if _rad_env is not None:
+        _RAD = int(_rad_env)
+    else:
+        try:
+            _qx, _qy = int(phone_quad[:, 0].min()), int(phone_quad[:, 1].min())
+            _row, _col = _qy + 130, _qx + 90
+            _X0 = next(x_ for x_ in range(_qx - 60, _qx + 10) if mask[_row, x_] == 0)
+            _Y0 = next(y_ for y_ in range(_qy - 60, _qy + 10) if mask[y_, _col] == 0)
+            _t = next(t_ for t_ in range(1, 60) if mask[_Y0 + t_, _X0 + t_] == 0)
+            _RAD = int(min(max(round(_t * 3.414), 35), 70))
+            print('radio real de la esquina del celular: X0=%d Y0=%d t=%d -> RAD = %d' % (_X0, _Y0, _t, _RAD))
+        except StopIteration:
+            print('radio de la esquina: no se pudo medir, RAD = 55')
+    _RR = _RAD * 2 + 1
+    occ_cut = cv2.dilate(cv2.erode(occ_cut, _el(_RR)), _el(_RR))  # esquina redonda como el celular
+    laptop_mask[occ_cut > 0] = 0
+    print("occ_cut: pixeles quitados a la laptop:", _antes - int((laptop_mask > 0).sum()))
+    import os
+    _rot = float(os.environ.get("PHONE_ROT", "0"))
+    if _rot:
+        _c = phone_quad.mean(axis=0)
+        _t = np.deg2rad(_rot)
+        _R = np.array([[np.cos(_t), -np.sin(_t)], [np.sin(_t), np.cos(_t)]], dtype=np.float32)
+        phone_quad = ((phone_quad - _c) @ _R.T * 1.06 + _c).astype(np.float32)
 
     # --- 1) despill the whole photo (bezel edges + phone notch pick up green spill) ---
     base = despill(img)
@@ -248,17 +390,36 @@ def main():
         return alpha.astype(np.float32)
 
     lap_alpha = soft_alpha(laptop_mask)[:, :, None]
+    _LK = float(_os.environ.get('LK', '4'))
+    lap_alpha = np.clip((lap_alpha - 0.5) * _LK + 0.5, 0.0, 1.0)  # borde nitido de la laptop
     phone_alpha = soft_alpha(phone_mask)[:, :, None]
 
     composed = base.astype(np.float32)
+    _neg = np.array([8, 8, 10], np.float32)  # negro del marco
+    _lring = cv2.dilate(laptop_mask, _el(17)); _lring[occ_cut > 0] = 0
+    _lra = cv2.GaussianBlur(_lring.astype(np.float32) / 255.0, (0, 0), 1.2)[:, :, None]
+    _lra[occ_cut > 0] = 0  # el negro del anillo (ya difuminado) no toca el filo del celular
+    composed = composed * (1 - _lra) + _neg * _lra
     composed = composed * (1 - lap_alpha) + warped_laptop.astype(np.float32) * lap_alpha
+    _pring = cv2.dilate(cv2.bitwise_or(phone_mask, _isla), _el(15))  # borde afilado
+    _py = np.nonzero(phone_mask.any(axis=1))[0]
+    if len(_py): _pring[:max(int(_py.min()) - 2, 0), :] = 0  # sin anillo extra arriba
+    _pra = cv2.GaussianBlur(_pring.astype(np.float32) / 255.0, (0, 0), 0.7)[:, :, None]
+    composed = composed * (1 - _pra) + _neg * _pra
+    import os as _os
+    _PHK = float(_os.environ.get('PHK', '2.5'))
+    phone_alpha = np.clip((phone_alpha - 0.5) * _PHK + 0.5, 0.0, 1.0)  # borde de pantalla nitido
+    phone_alpha = (_pm_aa * (1.0 - _isla.astype(np.float32) / 255.0))[:, :, None]  # borde con antialias real
     composed = composed * (1 - phone_alpha) + warped_phone.astype(np.float32) * phone_alpha
-    composed = np.clip(composed, 0, 255).astype(np.uint8)
+    _ia = cv2.GaussianBlur(cv2.dilate(_isla, _el(5)).astype(np.float32) / 255.0, (0, 0), 0.6)[:, :, None]
+    composed = composed * (1 - _ia) + _neg * _ia
+    composed = np.clip(composed, 0, 255).astype(np.uint8)   
+    cv2.imwrite("_ref/dbg-composed.png", composed)
 
     # --- 3) near-invisible diagonal sheen: the screen must keep the site's
     #     real contrast, not look brightened/washed out ---
-    composed = add_sheen(composed, laptop_mask, strength=0.02)
-    composed = add_sheen(composed, phone_mask, strength=0.015)
+    # composed = add_sheen(composed, laptop_mask, strength=0.02)
+    # composed = add_sheen(composed, phone_mask, strength=0.015)
 
     # --- 4) soft halo around the laptop silhouette (bezel/background only --
     #     excluded from both screens so it never washes out the site content) ---

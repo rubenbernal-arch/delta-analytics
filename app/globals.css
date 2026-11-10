@@ -10,7 +10,7 @@
   --color-navy:      #0D1B3E;
   --color-foreground:#FFFFFF;
   --color-muted:     #ABABA4;
-  --color-dim:       #63635C;
+  --color-dim:       #8F8F88;
   --font-display: var(--font-archivo, 'Archivo', sans-serif);
   --font-sans:    var(--font-inter, 'Inter', sans-serif);
   --font-mono:    var(--font-jetbrains-mono, 'JetBrains Mono', monospace);
@@ -75,4 +75,170 @@
 @keyframes logo-marquee {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
+}
+
+/* Entrada de lineas del titulo del hero: solo CSS, no depende de JS para verse */
+@keyframes subir-linea {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+.linea-hero { animation: subir-linea 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .linea-hero { animation: none; }
+}
+
+/* Cinta de giros (marquee) */
+@keyframes cinta-giros {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.cinta-giros { animation: cinta-giros 38s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .cinta-giros { animation: none; }
+}
+
+/* Boton: base plana + circulo de cristal que se expande al pasar el cursor */
+.btn86 {
+  --base: #ff8000;
+  --glass: rgba(255, 255, 255, 0.3);
+  --txt: #14161a;
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 30px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--txt);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.btn86 > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn86::before,
+.btn86::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn86::before {
+  width: 100%;
+  height: 100%;
+  background: var(--base);
+  border-radius: 10px;
+}
+.btn86::after {
+  width: 35px;
+  height: 35px;
+  transform: translate(10px, 10px);
+  background: var(--glass);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 50px;
+}
+.btn86-s {
+  --base: #2a2c31;
+  --glass: rgba(255, 255, 255, 0.12);
+  --txt: #ffffff;
+}
+.btn86-s::before {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.btn86-mini {
+  height: 40px;
+  padding: 0 18px;
+  font-size: 14px;
+  gap: 8px;
+}
+.btn86-mini::before {
+  border-radius: 8px;
+}
+.btn86-barra {
+  height: 48px;
+  padding: 0 18px;
+  font-size: 14px;
+  gap: 8px;
+}
+.btn86-barra::before {
+  border-radius: 8px;
+}
+.btn86-full {
+  display: flex;
+  width: 100%;
+}
+@media (hover: hover) {
+  .btn86:hover::before {
+    transform: translate(5%, 20%);
+    width: 110%;
+    height: 110%;
+  }
+  .btn86:hover::after {
+    border-radius: 10px;
+    transform: translate(0, 0);
+    width: 100%;
+    height: 100%;
+  }
+  .btn86-full:hover::before {
+    transform: none;
+    width: 100%;
+    height: 100%;
+  }
+}
+.btn86:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+.btn86:active::after {
+  transition: 0s;
+  transform: translate(0, 5%);
+}
+.btn86[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn86::before,
+  .btn86::after {
+    transition: none;
+  }
+}
+
+/* El circulo de cristal solo existe con cursor real (mouse o trackpad) */
+.btn86::after {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn86::after {
+    display: block;
+  }
+}
+
+/* Fila de botones del formulario: apilados en celular, en fila desde sm con Atras a la izquierda */
+.btn86-fila {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .btn86-fila {
+    flex-direction: row-reverse;
+  }
+  .btn86-fila .btn86-p {
+    flex: 1;
+  }
 }
