@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   title: TITULO,
   description: DESCRIPCION,
   alternates: { canonical: '/paginas-web' },
-  // Cuando el formulario funcione de punta a punta: cambiar a { index: true, follow: true }
-  robots: { index: false, follow: false },
   openGraph: {
     title: TITULO,
     description: DESCRIPCION,

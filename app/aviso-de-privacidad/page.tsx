@@ -47,6 +47,9 @@ export default function AvisoDePrivacidad() {
             <p className="mt-2">
               Usamos Microsoft Clarity para entender cómo se usa este sitio, con grabaciones de sesión y mapas de calor. Los campos del formulario de cotización quedan enmascarados, así que lo que escribes en ellos no se puede leer en esas grabaciones.
             </p>
+            <p className="mt-2">
+              También usamos Google Ads y su etiqueta de conversión para medir el resultado de nuestros anuncios, por ejemplo cuántas personas envían el formulario o nos escriben por WhatsApp después de verlos. Esta etiqueta usa cookies de Google. Puedes bloquearlas o borrarlas desde la configuración de tu navegador.
+            </p>
           </section>
           <section>
             <h2 className="font-display text-xl font-extrabold uppercase">Tus derechos</h2>
