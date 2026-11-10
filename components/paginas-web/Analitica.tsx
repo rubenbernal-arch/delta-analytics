@@ -14,8 +14,16 @@ type Gtag = (...args: unknown[]) => void
 
 function convertir(etiqueta?: string) {
   if (!ID || !etiqueta) return
-  const gtag = (window as unknown as { gtag?: Gtag }).gtag
-  gtag?.('event', 'conversion', { send_to: `${ID}/${etiqueta}` })
+  // Si el script de gtag aun no carga, crea la cola para que el evento no se pierda.
+  const w = window as unknown as { dataLayer?: unknown[]; gtag?: Gtag }
+  w.dataLayer = w.dataLayer || []
+  w.gtag =
+    w.gtag ||
+    function () {
+      // eslint-disable-next-line prefer-rest-params
+      w.dataLayer!.push(arguments)
+    }
+  w.gtag('event', 'conversion', { send_to: `${ID}/${etiqueta}` })
 }
 
 export function Analitica() {
