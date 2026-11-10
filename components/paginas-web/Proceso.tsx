@@ -45,8 +45,9 @@ export function Proceso() {
     setLlego(v <= 0 ? 0 : Math.min(N, Math.floor(v * (N - 1) + 0.001) + 1))
   })
 
+  // Solo transform: animar left/width/top/height recalcula layout en cada frame de scroll.
+  // Los contenedores del marcador miden lo mismo que la ruta, asi que su translate en % equivale al left/top original.
   const izq = useTransform(scrollYProgress, (v) => `${v * 75}%`)
-  const ancho = useTransform(scrollYProgress, (v) => `${v * 75}%`)
   const arriba = useTransform(scrollYProgress, (v) => `${v * 100}%`)
 
   return (
@@ -82,12 +83,16 @@ export function Proceso() {
         <div ref={zona} className="relative">
           {/* Ruta: vertical en celular, horizontal en escritorio */}
           <div className="absolute bottom-2 left-[6px] top-2 w-px bg-white/15 lg:hidden" aria-hidden="true">
-            <motion.div style={{ height: arriba }} className="w-px bg-accent" />
-            <motion.span style={{ top: arriba }} className="absolute -left-[6px] -translate-y-1/2 text-[13px] leading-none text-accent">▲</motion.span>
+            <motion.div style={{ scaleY: scrollYProgress, originY: 0 }} className="h-full w-px bg-accent" />
+            <motion.div style={{ y: arriba }} className="absolute inset-0">
+              <span className="absolute -left-[6px] top-0 -translate-y-1/2 text-[13px] leading-none text-accent">▲</span>
+            </motion.div>
           </div>
           <div className="absolute left-0 right-0 top-[6px] hidden h-px bg-white/15 lg:block" aria-hidden="true">
-            <motion.div style={{ width: ancho }} className="h-px bg-accent" />
-            <motion.span style={{ left: izq }} className="absolute -top-[7px] text-[13px] leading-none text-accent">▲</motion.span>
+            <motion.div style={{ scaleX: scrollYProgress, originX: 0 }} className="h-px w-[75%] bg-accent" />
+            <motion.div style={{ x: izq }} className="absolute inset-0">
+              <span className="absolute left-0 -top-[7px] text-[13px] leading-none text-accent">▲</span>
+            </motion.div>
           </div>
 
           <ol className="grid gap-12 lg:grid-cols-4 lg:gap-0">

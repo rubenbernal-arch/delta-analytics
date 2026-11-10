@@ -1,14 +1,25 @@
 'use client'
 
 import { useEffect, useRef, type ReactNode } from 'react'
-import Lenis from 'lenis'
+import type Lenis from 'lenis'
 import { motion, useInView } from 'framer-motion'
 
+/* Solo con mouse o trackpad: en pantallas tactiles Lenis no suaviza el dedo (syncTouch apagado),
+   solo dejaba un requestAnimationFrame corriendo sin parar. Ahi las anclas usan el scroll-behavior
+   smooth nativo de globals.css. Se importa bajo demanda para sacarlo del JS inicial. */
 export function SmoothScroll() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const lenis = new Lenis({ autoRaf: true, anchors: { duration: 0.8 }, lerp: 0.1 })
-    return () => lenis.destroy()
+    if (window.matchMedia('(prefers-reduced-motion: reduce), (hover: none), (pointer: coarse)').matches) return
+    let lenis: Lenis | undefined
+    let cancelado = false
+    import('lenis').then(({ default: L }) => {
+      if (cancelado) return
+      lenis = new L({ autoRaf: true, anchors: { duration: 0.8 }, lerp: 0.1 })
+    })
+    return () => {
+      cancelado = true
+      lenis?.destroy()
+    }
   }, [])
   return null
 }

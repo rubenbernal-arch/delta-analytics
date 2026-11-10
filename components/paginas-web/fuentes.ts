@@ -1,3 +1,4 @@
+// Solo la italica: todos los usos de serif llevan la clase italic, la normal se descargaba sin usarse.
 import { Instrument_Serif } from 'next/font/google'
 
-export const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], display: 'swap' })
+export const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: 'italic', display: 'swap' })
