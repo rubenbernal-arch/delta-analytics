@@ -6,6 +6,7 @@ import {
   motion,
   MotionConfig,
   useMotionValue,
+  useInView,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -132,6 +133,11 @@ export function Proyectos() {
   const escritorio = useEscritorio()
   const actual = proyectos[activo]
   const zona = useRef<HTMLDivElement>(null)
+
+  // Solo la primera captura se monta de inicio; el resto se monta cuando la seccion se acerca
+  // a la pantalla (o al llegar a ese proyecto), para no descargar 12 imagenes al cargar la pagina.
+  const cerca = useInView(zona, { once: true, margin: '600px 0px' })
+  const montar = (i: number) => cerca || i === 0 || i === activo
 
   // Scroll fijo: el progreso de la zona alta decide el proyecto activo (solo escritorio)
   const { scrollYProgress } = useScroll({ target: zona, offset: ['start start', 'end end'] })
@@ -321,18 +327,20 @@ export function Proyectos() {
                           </div>
                         </div>
                         <div className="relative aspect-[16/10] bg-black">
-                          {proyectos.map((p, i) => (
-                            <Image
-                              key={p.nombre}
-                              src={p.img}
-                              alt={p.alt}
-                              width={1200}
-                              height={750}
-                              loading="lazy"
-                              unoptimized
-                              className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${i === activo ? 'opacity-100' : 'opacity-0'}`}
-                            />
-                          ))}
+                          {proyectos.map((p, i) =>
+                            montar(i) ? (
+                              <Image
+                                key={p.nombre}
+                                src={p.img}
+                                alt={p.alt}
+                                width={1200}
+                                height={750}
+                                loading="lazy"
+                                sizes="(min-width: 1024px) 60vw, 100vw"
+                                className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${i === activo ? 'opacity-100' : 'opacity-0'}`}
+                              />
+                            ) : null,
+                          )}
                           <a href={actual.href} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true" className="absolute inset-0" />
                         </div>
                       </div>
@@ -343,18 +351,20 @@ export function Proyectos() {
                       className="absolute -bottom-6 -right-2 w-[22%] min-w-[92px] max-w-[200px] rounded-[1.7rem] border-[5px] border-[#2b2e34] bg-black shadow-[0_30px_60px_-15px_rgba(0,0,0,0.85)] lg:-right-10"
                     >
                       <div className="relative aspect-[9/19] overflow-hidden rounded-[1.25rem]">
-                        {proyectos.map((p, i) => (
-                          <Image
-                            key={p.nombre}
-                            src={p.movil}
-                            alt=""
-                            width={390}
-                            height={820}
-                            loading="lazy"
-                            unoptimized
-                            className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${i === activo ? 'opacity-100' : 'opacity-0'}`}
-                          />
-                        ))}
+                        {proyectos.map((p, i) =>
+                          montar(i) ? (
+                            <Image
+                              key={p.nombre}
+                              src={p.movil}
+                              alt=""
+                              width={390}
+                              height={820}
+                              loading="lazy"
+                              sizes="(min-width: 1024px) 200px, 22vw"
+                              className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${i === activo ? 'opacity-100' : 'opacity-0'}`}
+                            />
+                          ) : null,
+                        )}
                       </div>
                     </motion.div>
                   </motion.div>
