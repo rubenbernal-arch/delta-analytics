@@ -12,18 +12,31 @@ const GRACIAS = '/paginas-web/gracias'
 
 type Gtag = (...args: unknown[]) => void
 
-function convertir(etiqueta?: string) {
-  if (!ID || !etiqueta) return
-  // Si el script de gtag aun no carga, crea la cola para que el evento no se pierda.
-  const w = window as unknown as { dataLayer?: unknown[]; gtag?: Gtag }
-  w.dataLayer = w.dataLayer || []
-  w.gtag =
-    w.gtag ||
-    function () {
-      // eslint-disable-next-line prefer-rest-params
-      w.dataLayer!.push(arguments)
+const REINTENTO_MS = 250
+const ESPERA_MAX_MS = 10000
+
+// Dispara la conversion una sola vez. Si gtag aun no carga, reintenta cada 250 ms hasta 10 s.
+// alTerminar se llama al enviar el evento o al agotar la espera. Devuelve una funcion para cancelar.
+function convertir(etiqueta?: string, alTerminar?: () => void): () => void {
+  if (!ID || !etiqueta) {
+    alTerminar?.()
+    return () => {}
+  }
+  const inicio = Date.now()
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const intentar = () => {
+    const gtag = (window as unknown as { gtag?: Gtag }).gtag
+    if (typeof gtag === 'function') {
+      gtag('event', 'conversion', { send_to: `${ID}/${etiqueta}` })
+      alTerminar?.()
+    } else if (Date.now() - inicio >= ESPERA_MAX_MS) {
+      alTerminar?.()
+    } else {
+      timer = setTimeout(intentar, REINTENTO_MS)
     }
-  w.gtag('event', 'conversion', { send_to: `${ID}/${etiqueta}` })
+  }
+  intentar()
+  return () => clearTimeout(timer)
 }
 
 export function Analitica() {
@@ -34,11 +47,15 @@ export function Analitica() {
     if (ruta !== GRACIAS) return
     try {
       if (sessionStorage.getItem('dw_lead_ok') !== '1') return
-      sessionStorage.removeItem('dw_lead_ok')
     } catch {
       return
     }
-    convertir(ETIQUETA_LEAD)
+    // La marca se borra solo cuando el evento ya se envio o se agoto la espera de gtag.
+    return convertir(ETIQUETA_LEAD, () => {
+      try {
+        sessionStorage.removeItem('dw_lead_ok')
+      } catch {}
+    })
   }, [ruta])
 
   // Clic a WhatsApp: no cuenta en la pagina de gracias para no duplicar al que ya lleno el formulario.
